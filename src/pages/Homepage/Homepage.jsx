@@ -1,11 +1,7 @@
 import React from "react";
 
 const Homepage = () => {
-  return (
-    <div>
-      <button className="btn btn-primary">Click Me</button>
-    </div>
-  );
+  return <div>Homepage</div>;
 };
 
 export default Homepage;
