@@ -12,10 +12,14 @@
 }
 
 .sidebar {
+  position: fixed;
   width: 20%;
+  height: 100vh;
+  left: 0;
   background-color: var(--primary-color);
 }
 .page-content {
   background-color: var(--soft-purple);
   width: 80%;
+  margin-left: 20%;
 }

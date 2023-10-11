@@ -1,20 +1,35 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import "./App.css";
 import Homepage from "./pages/Homepage/Homepage";
 import Sidebar from "./components/Sidebar/Sidebar";
 import JobDescription from "./pages/JobDescription/JobDescription";
+import JobContext from "./contexts/JobContext";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
+  const [currentPage, setCurrentPage] = useState(1);
+  console.log("current page", currentPage);
   return (
     <div className="App">
-      <Sidebar />
-      <section className="page-content">
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/job-description" element={<JobDescription />}></Route>
-        </Routes>
-      </section>
+      <JobContext.Provider>
+        <Sidebar setCurrentPage={setCurrentPage} />
+        <section className="page-content p-20 overflow-y-scroll">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Homepage
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              }
+            />
+            <Route path="/job/search" element={<SearchPage />} />
+            <Route path="/job/:jobId" element={<JobDescription />} />
+          </Routes>
+        </section>
+      </JobContext.Provider>
     </div>
   );
 }
