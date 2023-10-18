@@ -39,7 +39,7 @@ const JobDescription = () => {
                 làm việc: {jobData.location}
               </li>
               <li className="opacity-70 flex gap-2">
-                <i className="icon fa fa-dollar-sign"></i>
+                <ion-icon name="cash"></ion-icon>
                 Mức lương: {jobData.salary}
               </li>
               <li className="opacity-70 flex gap-2">

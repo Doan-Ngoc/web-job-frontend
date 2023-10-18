@@ -9,7 +9,6 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
-  console.log("current page", currentPage);
   return (
     <div className="App">
       <JobContext.Provider>
