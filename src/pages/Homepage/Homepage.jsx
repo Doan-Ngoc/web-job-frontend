@@ -30,6 +30,7 @@ const Homepage = (props) => {
       const searchParams = new URLSearchParams(location.search);
       searchParams.set("page", currentPage.toString());
       navigate(`${location.pathname}?${searchParams.toString()}`);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error fetching job data:", error);
     }
