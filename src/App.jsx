@@ -9,6 +9,7 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import CreateJobNews from "./pages/CreateJobNews/CreateJobNews";
 import jobFields from "../jobFields.json";
 import RecruiterJobList from "./pages/RecruiterJobList/RecruiterJobList";
+import EditJob from "./pages/EditJob/EditJob";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +31,8 @@ function App() {
             <Route path="/job/search" element={<SearchPage />} />
             <Route path="/job/created" element={<RecruiterJobList />} />
             <Route path="/job/new" element={<CreateJobNews />} />
+            <Route path="/job/edit/:jobId" element={<EditJob />} />
+            <Route path="/job/restore/:jobId" element={<EditJob />} />
             <Route path="/job/:jobId" element={<JobDescription />} />
           </Routes>
         </section>

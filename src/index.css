@@ -58,3 +58,7 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
+
+Input {
+  background-color: white;
+}

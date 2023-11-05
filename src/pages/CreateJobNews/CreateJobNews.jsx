@@ -9,7 +9,6 @@ import {
   Typography,
   Button,
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
@@ -22,15 +21,12 @@ const CreateJobNews = () => {
   today.setDate(today.getDate() + 10);
   const minDate = today.toISOString().split("T")[0];
   //Use React Hook Form
-  const { register, handleSubmit, formState, setValue, getValues, reset } =
-    useForm();
+  const { register, handleSubmit } = useForm();
   //Open dialog when click button
   const [open, setOpen] = React.useState(false);
   const openConfirmDialog = () => setOpen(!open);
   const navigate = useNavigate();
-  const backToHomePage = () => {
-    navigate("/");
-  };
+
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
@@ -57,7 +53,6 @@ const CreateJobNews = () => {
         }),
       });
       const res = await response.json();
-      console.log(res.status);
       openConfirmDialog();
     } catch {
       console.error("Creating job failed");
@@ -199,7 +194,7 @@ const CreateJobNews = () => {
           <Button
             className="bg-[#ffce00] text-black font-medium"
             color="black"
-            onClick={backToHomePage}
+            onClick={() => navigate("/")}
           >
             <span>OK</span>
           </Button>
