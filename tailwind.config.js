@@ -1,15 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+import withMT from '@material-tailwind/react/utils/withMT';
 
-export default {
-  darkMode: false,
-  content: [],
+/** @type {import('tailwindcss').Config} */
+export default withMT({
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {
-      colors: {
-        primaryColor: "#4c50d3",
-        secondaryColor: "#ffce00",
-      },
-    },
+    extend: {},
   },
-  plugins: [tailwindcss],
-};
+  plugins: [require('daisyui')],
+});

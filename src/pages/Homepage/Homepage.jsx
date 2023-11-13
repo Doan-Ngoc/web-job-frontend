@@ -20,7 +20,9 @@ const Homepage = (props) => {
   const fetchJobs = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/job?page=${currentPage}&limit=${limitPerPage}`
+        `http://localhost:3000/job?page=${
+          currentPage || 1
+        }&limit=${limitPerPage}`,
       );
       const { docs, totalPages } = response.data;
       setAllJobs(docs);
@@ -33,7 +35,6 @@ const Homepage = (props) => {
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error fetching job data:", error);
-    }
   };
 
   return (
@@ -46,6 +47,7 @@ const Homepage = (props) => {
             key={index}
             onClick={() => setCurrentPage(index + 1)}
             className={currentPage === index + 1 ? "active" : ""}
+            
           >
             {index + 1}
           </button>
@@ -53,6 +55,6 @@ const Homepage = (props) => {
       </div>
     </div>
   );
-};
+}};
 
 export default Homepage;

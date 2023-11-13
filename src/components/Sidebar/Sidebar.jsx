@@ -1,5 +1,7 @@
-import "./Sidebar.css";
-import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { authActions } from '../../features/auth/auth-slice';
+import './Sidebar.css';
 
 const Sidebar = ({ setCurrentPage }) => {
   return (
@@ -34,10 +36,12 @@ const Sidebar = ({ setCurrentPage }) => {
             Create New Job
           </li>
         </Link>
-        <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
-          <ion-icon name="log-in"></ion-icon>
-          Log In
-        </li>
+        <Link to="/signin">
+          <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+            <ion-icon name="log-in"></ion-icon>
+            Sign In
+          </li>
+        </Link>
       </ul>
       <button className="btn bg-white hover:bg-[#ffce00] m-10 gap-2">
         <ion-icon name="log-in" size="large"></ion-icon>
