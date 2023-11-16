@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import "./JobList.css";
-import JobItem from "../JobItem/JobItem";
-import JobContext from "../../contexts/JobContext";
+import { useContext } from 'react';
+import './JobList.css';
+import JobItem from '../JobItem/JobItem';
+import JobContext from '../../contexts/JobContext';
 
 const JobList = ({ allJobs }) => {
   return (

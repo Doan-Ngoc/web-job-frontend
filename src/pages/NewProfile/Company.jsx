@@ -42,7 +42,7 @@ export function NewBusinessProfile({}) {
         toast.error('You are not permitted to access this resource');
       }
       if (account.associatedCompany) {
-        navigate('/home');
+        navigate('/');
       }
     };
     getAccount()

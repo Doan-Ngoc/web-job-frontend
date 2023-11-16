@@ -63,7 +63,7 @@ export function NewEmployeeProfile({}) {
     try {
       await employeeApi.createEmployeeProfile(data);
       toast.success('Successfully created an employee profile!');
-      navigate('/home');
+      navigate('/');
     } catch (err) {
       if (err.response?.status === HttpStatusCode.BadRequest) {
         if (err.response?.data?.errors?.length) {
@@ -81,93 +81,95 @@ export function NewEmployeeProfile({}) {
   };
 
   return (
-    <FormWrapper
-      title="New Employee Profile"
-      description="Impress your dream business and get a job"
-      onSubmit={handleSubmit(onSubmit)}
-      isLoading={isLoading}
-    >
-      <div className="flex flex-col gap-6">
-        <InputWrapper error={errors.name}>
-          <Input
-            color="purple"
-            size="lg"
-            type="text"
-            label="Name"
-            {...register('name')}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.dob}>
-          <Input
-            color="purple"
-            size="lg"
-            type="date"
-            label="D.O.B"
-            {...register('dob')}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.gender}>
-          <Controller
-            control={control}
-            name="gender"
-            render={({ field }) => (
-              <Select
-                label="Select for gender"
-                error={errors.gender}
-                {...field}
-              >
-                <Option className="items-start" value="male">
-                  Male
-                </Option>
-                <Option className="items-start" value="female">
-                  Female
-                </Option>
-                <Option className="items-start" value="none">
-                  Prefer not to say
-                </Option>
-              </Select>
-            )}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.phone}>
-          <Input
-            size="lg"
-            type="tel"
-            label="Phone number"
-            {...register('phone')}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.email}>
-          <Input size="lg" type="text" label="Email" {...register('email')} />
-        </InputWrapper>
-        <InputWrapper error={errors.professions}>
-          <Input
-            size="lg"
-            type="text"
-            label="Professions"
-            {...register('professions')}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.address}>
-          <Input
-            size="lg"
-            type="text"
-            label="Address"
-            {...register('address')}
-          />
-        </InputWrapper>
-        <InputWrapper error={errors.description}>
-          <Textarea
-            size="lg"
-            type="text"
-            label="Description"
-            {...register('description')}
-          />
-        </InputWrapper>
-      </div>
-      <Button type="submit" className="mt-6" fullWidth>
-        Create Profile
-      </Button>
-    </FormWrapper>
+    <div className="flex m-20 items-center justify-center">
+      <FormWrapper
+        title="New Employee Profile"
+        description="Impress your dream business and get a job"
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isLoading}
+      >
+        <div className="flex flex-col gap-6">
+          <InputWrapper error={errors.name}>
+            <Input
+              color="purple"
+              size="lg"
+              type="text"
+              label="Name"
+              {...register('name')}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.dob}>
+            <Input
+              color="purple"
+              size="lg"
+              type="date"
+              label="D.O.B"
+              {...register('dob')}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.gender}>
+            <Controller
+              control={control}
+              name="gender"
+              render={({ field }) => (
+                <Select
+                  label="Select for gender"
+                  error={errors.gender}
+                  {...field}
+                >
+                  <Option className="items-start" value="male">
+                    Male
+                  </Option>
+                  <Option className="items-start" value="female">
+                    Female
+                  </Option>
+                  <Option className="items-start" value="none">
+                    Prefer not to say
+                  </Option>
+                </Select>
+              )}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.phone}>
+            <Input
+              size="lg"
+              type="tel"
+              label="Phone number"
+              {...register('phone')}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.email}>
+            <Input size="lg" type="text" label="Email" {...register('email')} />
+          </InputWrapper>
+          <InputWrapper error={errors.professions}>
+            <Input
+              size="lg"
+              type="text"
+              label="Professions"
+              {...register('professions')}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.address}>
+            <Input
+              size="lg"
+              type="text"
+              label="Address"
+              {...register('address')}
+            />
+          </InputWrapper>
+          <InputWrapper error={errors.description}>
+            <Textarea
+              size="lg"
+              type="text"
+              label="Description"
+              {...register('description')}
+            />
+          </InputWrapper>
+        </div>
+        <Button type="submit" className="mt-6" fullWidth>
+          Create Profile
+        </Button>
+      </FormWrapper>
+    </div>
   );
 }

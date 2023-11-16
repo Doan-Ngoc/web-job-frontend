@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import "./JobDescription.css";
-import { useParams } from "react-router-dom";
-import CustomDate from "../../utils/dateUtils";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import './JobDescription.css';
+import { useParams } from 'react-router-dom';
+import CustomDate from '../../utils/dateUtils';
+import { Link } from 'react-router-dom';
 
 const JobDescription = () => {
   const { jobId } = useParams();
@@ -14,9 +15,10 @@ const JobDescription = () => {
       setIsLoading(false);
     });
   }, [jobId]);
+
   return (
     <div className="job-description grow flex flex-col ">
-      {isLoading ? ( // Conditional rendering while loading
+      {isLoading ? (
         <p>Loading...</p>
       ) : (
         <div>
@@ -37,7 +39,7 @@ const JobDescription = () => {
                   </li>
                   <li className="opacity-70 flex gap-2 ">
                     <ion-icon className="icon" name="calendar"></ion-icon>
-                    Valid Until:{" "}
+                    Valid Until:{' '}
                     {new CustomDate(jobData.closedDate).formatDate()}
                   </li>
                   <li className="opacity-70 flex gap-2 ">
@@ -60,10 +62,14 @@ const JobDescription = () => {
               </div>
             </div>
           </header>
-
+          <Link to={`/job/${jobId}/apply`}>
+            <button className="bg-[#ffce00] hover:bg-[#ffce00] w-1/5 ml-0">
+              Apply
+            </button>
+          </Link>
           <main
-            className="p-8 text-justify text-lg"
-            style={{ whiteSpace: "pre-line" }}
+            className="p-8 text-justify text-lg flex flex-col gap-10"
+            style={{ whiteSpace: 'pre-line' }}
           >
             {jobData.description}
           </main>

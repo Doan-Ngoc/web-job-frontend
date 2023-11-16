@@ -1,9 +1,9 @@
-import "./homepage.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import JobList from "../../components/JobList/JobList";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import { useNavigate, useLocation } from "react-router-dom";
+import './homepage.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import JobList from '../../components/JobList/JobList';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Homepage = (props) => {
   const { currentPage, setCurrentPage } = props;
@@ -30,11 +30,12 @@ const Homepage = (props) => {
 
       // Update the URL when changing the page
       const searchParams = new URLSearchParams(location.search);
-      searchParams.set("page", currentPage.toString());
+      searchParams.set('page', currentPage.toString());
       navigate(`${location.pathname}?${searchParams.toString()}`);
       window.scrollTo(0, 0);
     } catch (error) {
-      console.error("Error fetching job data:", error);
+      console.error('Error fetching job data:', error);
+    }
   };
 
   return (
@@ -46,8 +47,7 @@ const Homepage = (props) => {
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-            
+            className={currentPage === index + 1 ? 'active' : ''}
           >
             {index + 1}
           </button>
@@ -55,6 +55,6 @@ const Homepage = (props) => {
       </div>
     </div>
   );
-}};
+};
 
 export default Homepage;

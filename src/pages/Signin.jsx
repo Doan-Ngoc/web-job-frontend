@@ -35,7 +35,7 @@ export function Signin() {
 
   useEffect(() => {
     if (authState.isLogined) {
-      navigate('/home');
+      navigate('/');
     }
   }, []);
 
@@ -45,7 +45,7 @@ export function Signin() {
       const response = await authApi.signin(data);
       dispatch(authActions.login(response.data));
       toast.success('Successfully logged in');
-      navigate('/home');
+      navigate('/');
     } catch (err) {
       if (
         err.response &&

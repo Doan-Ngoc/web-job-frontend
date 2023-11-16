@@ -1,12 +1,18 @@
 import { request } from '../utils/request';
 
 export const signup = async (data) => {
-  const response = await request.post('/auth/signup', data);
+  const response = await request.post(
+    'http://localhost:3000/auth/signup',
+    data,
+  );
   return response;
 };
 
 export const signin = async (data) => {
-  const response = await request.post('/auth/signin', data);
+  const response = await request.post(
+    'http://localhost:3000/auth/signin',
+    data,
+  );
   return response;
 };
 

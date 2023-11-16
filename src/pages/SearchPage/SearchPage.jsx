@@ -1,6 +1,6 @@
-import JobList from "../../components/JobList/JobList";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import { useLocation } from "react-router-dom";
+import JobList from '../../components/JobList/JobList';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { useLocation } from 'react-router-dom';
 
 const SearchPage = () => {
   const { state } = useLocation();
