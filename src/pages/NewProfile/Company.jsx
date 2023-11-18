@@ -42,7 +42,7 @@ export function NewBusinessProfile({}) {
         toast.error('You are not permitted to access this resource');
       }
       if (account.associatedCompany) {
-        navigate('/home');
+        navigate('/');
       }
     };
     getAccount()
@@ -56,7 +56,7 @@ export function NewBusinessProfile({}) {
     try {
       await companyApi.createCompanyProfile(data);
       toast.success('Successfully created a company profile!');
-      navigate('/home');
+      navigate('/');
     } catch (err) {
       if (err.response?.status === HttpStatusCode.BadRequest) {
         if (err.response?.data?.errors?.length) {
@@ -65,7 +65,7 @@ export function NewBusinessProfile({}) {
           });
         } else {
           toast.error(err.response?.data?.message);
-          navigate('/home');
+          navigate('/');
         }
       } else {
         toast.error('Opps! There are issues!');

@@ -49,7 +49,7 @@ export function NewEmployeeProfile({}) {
         toast.error('You are not permitted to access this resource');
       }
       if (account.associatedProfile) {
-        navigate('/home');
+        navigate('/');
       }
     };
     getAccount()
@@ -63,7 +63,7 @@ export function NewEmployeeProfile({}) {
     try {
       await employeeApi.createEmployeeProfile(data);
       toast.success('Successfully created an employee profile!');
-      navigate('/home');
+      navigate('/');
     } catch (err) {
       if (err.response?.status === HttpStatusCode.BadRequest) {
         if (err.response?.data?.errors?.length) {
@@ -72,7 +72,7 @@ export function NewEmployeeProfile({}) {
           });
         } else {
           toast.error(err.response?.data?.message);
-          navigate('/home');
+          navigate('/');
         }
       } else {
         toast.error('Opps! There are issues!');

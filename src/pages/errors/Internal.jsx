@@ -36,7 +36,7 @@ export function InternalServerError() {
           free to contact us if the problem presists.
         </p>
         <Button variant="outlined" color="purple">
-          <Link to="/home">Back to home</Link>
+          <Link to="/">Back to home</Link>
         </Button>
       </div>
     </div>

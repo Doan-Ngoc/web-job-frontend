@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css';
 import Homepage from './pages/Homepage/Homepage';
 import Sidebar from './components/Sidebar/Sidebar';
+import ProtectedRoute from './components/private-route';
 import JobDescription from './pages/JobDescription/JobDescription';
 import JobContext from './contexts/JobContext';
 import SearchPage from './pages/SearchPage/SearchPage';
@@ -34,11 +35,13 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/job/search" element={<SearchPage />} />
-            <Route path="/job/created" element={<RecruiterJobList />} />
-            <Route path="/job/new" element={<CreateJobNews />} />
-            <Route path="/job/edit/:jobId" element={<EditJob />} />
-            <Route path="/job/restore/:jobId" element={<EditJob />} />
             <Route path="/job/:jobId" element={<JobDescription />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/job/created" element={<RecruiterJobList />} />
+              <Route path="/job/new" element={<CreateJobNews />} />
+              <Route path="/job/edit/:jobId" element={<EditJob />} />
+              <Route path="/job/restore/:jobId" element={<EditJob />} />
+            </Route>
           </Routes>
         </section>
       </JobContext.Provider>

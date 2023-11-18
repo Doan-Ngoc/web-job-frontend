@@ -41,7 +41,7 @@ export function Signup() {
 
   useEffect(() => {
     if (authState.isLogined) {
-      navigate('/home');
+      navigate('/');
     }
   });
 
