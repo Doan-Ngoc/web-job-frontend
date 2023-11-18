@@ -5,14 +5,30 @@ import { useParams } from 'react-router-dom';
 import CustomDate from '../../utils/dateUtils';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  Card,
+  Input,
+  Typography,
+  Button,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+} from '@material-tailwind/react';
 
 const ApplyJob = () => {
   const { jobId } = useParams();
   const [jobData, setJobData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { register, handleSubmit } = useForm();
-  const today = new Date();
-  const applicationDate = today.toLocaleDateString().split('T')[0];
+
+  //Open dialog when click button
+  const [open, setOpen] = React.useState(false);
+  const openConfirmDialog = () => setOpen(!open);
+  const navigate = useNavigate();
+
+  //Get appliedjob data
   useEffect(() => {
     axios.get(`http://localhost:3000/job/${jobId}`).then((response) => {
       setJobData(response.data);
@@ -20,13 +36,12 @@ const ApplyJob = () => {
     });
   }, [jobId]);
 
+  // Send application
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
       formData.append('file', data.file[0]);
-      formData.append('description', data.description);
-      formData.append('applicationDate', applicationDate);
-      formData.append('status', 'sent');
+      formData.append('notes', data.notes);
       console.log(...formData);
       const token = localStorage.getItem('refreshToken');
       const response = await axios.post(
@@ -40,59 +55,11 @@ const ApplyJob = () => {
       );
       const responseData = response.data;
       console.log(responseData);
+      openConfirmDialog();
     } catch (error) {
       console.error('Error uploading files:', error);
     }
   };
-
-  // useEffect(() => {
-  //   const setupFormListener = () => {
-  //     const form = document.querySelector('form');
-
-  //     if (form) {
-  //       form.addEventListener('submit', async (e) => {
-  //         e.preventDefault();
-  //         const files = document.getElementById('files');
-  //         const applicationDescription = document.getElementById(
-  //           'application-description',
-  //         );
-  //         const formData = new FormData();
-
-  //         for (let i = 0; i < files.files.length; i++) {
-  //           formData.append('files', files.files[i]);
-  //         }
-  //         formData.append('description', applicationDescription);
-  //         formData.append(
-  //           'applicationDate',
-  //           new Date().toISOString().split('T')[0],
-  //         );
-  //         formData.append('status', 'active');
-
-  //         console.log(...formData);
-  //         try {
-  //           const token = localStorage.getItem('refreshToken');
-  //           const response = await axios.post(
-  //             'http://localhost:3000/applicant/apply',
-  //             formData,
-  //             {
-  //               headers: {
-  //                 Authorization: `Bearer ${token}`,
-  //               },
-  //             },
-  //           );
-  //           const data = response.data;
-  //           console.log(data);
-  //         } catch (error) {
-  //           console.error('Error uploading files:', error);
-  //         }
-  //       });
-  //     }
-  //   };
-
-  //   if (!isLoading) {
-  //     setupFormListener();
-  //   }
-  // }, [isLoading]);
 
   return (
     <div className="job-apply grow flex flex-col ">
@@ -144,7 +111,13 @@ const ApplyJob = () => {
             className="p-8 text-justify text-lg flex flex-col gap-10"
             style={{ whiteSpace: 'pre-line' }}
           >
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-5"
+            >
+              <Typography variant="h5" color="blue-gray">
+                Upload your CV:
+              </Typography>
               <input
                 type="file"
                 name="file"
@@ -152,17 +125,43 @@ const ApplyJob = () => {
                 required
                 {...register('file')}
               />
-
+              <Typography variant="h5" color="blue-gray">
+                Notes:
+              </Typography>
               <textarea
-                id="application-description"
+                id="application-notes"
                 rows={8}
                 className="text-xl bg-white h-full min-h-[100px] w-full resize-none rounded-[7px] border
              px-3 py-2  transition-all !border-t-blue-gray-200 focus:!border-t-gray-900"
                 placeholder=" "
-                {...register('description')}
+                {...register('notes')}
               ></textarea>
-              <button type="submit">Submit</button>
+              <Button
+                className="btn mt-10 mx-auto text-black text-base font-medium w-1/4 bg-[#ffce00] hover:bg-[#ffce00]"
+                type="submit"
+              >
+                Submit
+              </Button>
             </form>
+            <Dialog
+              open={open}
+              size="xs"
+              handler={openConfirmDialog}
+              className="w-44"
+            >
+              <DialogBody className="font-medium text-lg text-center ">
+                Your application has been sent!
+              </DialogBody>
+              <DialogFooter className="flex justify-center">
+                <Button
+                  className="bg-[#ffce00] text-black font-medium"
+                  color="black"
+                  onClick={() => navigate('/')}
+                >
+                  <span>OK</span>
+                </Button>
+              </DialogFooter>
+            </Dialog>
           </main>
         </div>
       )}
