@@ -1,8 +1,8 @@
-import React from "react";
-import { useContext } from "react";
-import { useForm } from "react-hook-form";
-import JobContext from "../../contexts/JobContext";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import JobContext from '../../contexts/JobContext';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   Input,
@@ -11,7 +11,7 @@ import {
   Dialog,
   DialogBody,
   DialogFooter,
-} from "@material-tailwind/react";
+} from '@material-tailwind/react';
 
 const CreateJobNews = () => {
   //Get the job field list
@@ -19,7 +19,7 @@ const CreateJobNews = () => {
   // Calculate the minimum date (10 days from today)
   const today = new Date();
   today.setDate(today.getDate() + 10);
-  const minDate = today.toISOString().split("T")[0];
+  const minDate = today.toISOString().split('T')[0];
   //Use React Hook Form
   const { register, handleSubmit } = useForm();
   //Open dialog when click button
@@ -30,32 +30,32 @@ const CreateJobNews = () => {
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost:3000/job/new", {
-        method: "POST",
+      const response = await fetch('http://localhost:3000/job/new', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: data.title,
-          company: "Google",
-          logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png",
-          createdAt: new Date().toISOString().split("T")[0],
+          company: 'Google',
+          logo: 'https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png',
+          createdAt: new Date().toISOString().split('T')[0],
           closedDate: data.closedDate,
-          createdBy: "Google",
+          createdBy: 'Google',
           salary: data.salary,
           location: data.location,
           field: data.field,
           position: data.position,
           maxApplicants: data.maxApplicants,
           description: data.description,
-          status: "active",
+          status: 'active',
           applicants: [],
         }),
       });
       const res = await response.json();
       openConfirmDialog();
     } catch {
-      console.error("Creating job failed");
+      console.error('Creating job failed');
     }
   };
   return (
@@ -75,10 +75,10 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("title")}
+            {...register('title')}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3  text-lg">
             Expiration Date <br></br> (At least 10 days after created date)
@@ -89,7 +89,7 @@ const CreateJobNews = () => {
             name="datepicker"
             min={minDate}
             required
-            {...register("closedDate")}
+            {...register('closedDate')}
           />
 
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
@@ -100,7 +100,7 @@ const CreateJobNews = () => {
             id="jobField"
             className="block w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
             required
-            {...register("field")}
+            {...register('field')}
           >
             <option value="" selected disabled hidden>
               --Select an option--
@@ -119,10 +119,10 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("salary")}
+            {...register('salary')}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Location
@@ -131,10 +131,10 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("location")}
+            {...register('location')}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Position
@@ -143,10 +143,10 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("position")}
+            {...register('position')}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Expected Number of Applicants
@@ -158,10 +158,10 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("maxApplicants")}
+            {...register('maxApplicants')}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Description
@@ -171,7 +171,7 @@ const CreateJobNews = () => {
             className="text-xl bg-white h-full min-h-[100px] w-full resize-none rounded-[7px] border
              px-3 py-2  transition-all !border-t-blue-gray-200 focus:!border-t-gray-900"
             placeholder=" "
-            {...register("description")}
+            {...register('description')}
           ></textarea>
         </div>
         <Button
@@ -194,7 +194,7 @@ const CreateJobNews = () => {
           <Button
             className="bg-[#ffce00] text-black font-medium"
             color="black"
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           >
             <span>OK</span>
           </Button>

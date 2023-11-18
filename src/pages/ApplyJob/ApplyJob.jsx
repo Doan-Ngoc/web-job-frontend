@@ -8,8 +8,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Card,
-  Input,
   Typography,
   Button,
   Dialog,
@@ -40,13 +38,15 @@ const ApplyJob = () => {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
+      const token = localStorage.getItem('refreshToken');
+      const userId = localStorage.getItem('userId');
       formData.append('file', data.file[0]);
       formData.append('notes', data.notes);
-      console.log(...formData);
-      const token = localStorage.getItem('refreshToken');
+      formData.append('userId', userId);
       const response = await axios.post(
-        'http://localhost:3000/applicant/apply',
+        `http://localhost:3000/applicant/apply/${jobId}`,
         formData,
+        userId,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +54,6 @@ const ApplyJob = () => {
         },
       );
       const responseData = response.data;
-      console.log(responseData);
       openConfirmDialog();
     } catch (error) {
       console.error('Error uploading files:', error);

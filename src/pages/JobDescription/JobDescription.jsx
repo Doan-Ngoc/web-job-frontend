@@ -9,6 +9,8 @@ const JobDescription = () => {
   const { jobId } = useParams();
   const [jobData, setJobData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const role = localStorage.getItem('role');
+  console.log(role);
   useEffect(() => {
     axios.get(`http://localhost:3000/job/${jobId}`).then((response) => {
       setJobData(response.data);
@@ -62,11 +64,19 @@ const JobDescription = () => {
               </div>
             </div>
           </header>
-          <Link to={`/job/${jobId}/apply`}>
-            <button className="bg-[#ffce00] hover:bg-[#ffce00] w-1/5 ml-0">
-              Apply
-            </button>
-          </Link>
+          {role === 'employee' ? (
+            <Link to={`/job/${jobId}/apply`}>
+              <button className="bg-[#ffce00] hover:bg-[#ffce00] w-1/5 ml-0">
+                Apply
+              </button>
+            </Link>
+          ) : (
+            <Link to={`/job/applications/${jobId}`}>
+              <button className="bg-[#ffce00] hover:bg-[#ffce00] w-1/5 ml-0">
+                Applications
+              </button>
+            </Link>
+          )}
           <main
             className="p-8 text-justify text-lg flex flex-col gap-10"
             style={{ whiteSpace: 'pre-line' }}

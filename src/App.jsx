@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Homepage from './pages/Homepage/Homepage';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -15,14 +15,22 @@ import { Signup } from './pages/Signup';
 import { NewBusinessProfile } from './pages/NewProfile/Company';
 import { NewEmployeeProfile } from './pages/NewProfile/Employee';
 import ApplyJob from './pages/ApplyJob/ApplyJob';
+import CompanyApplicationManager from './pages/CompanyApplicationManager/CompanyApplicationManager';
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+    setIsLoggedIn(Boolean(storedIsLoggedIn));
+  }, []);
+  console.log('tình trạng login', isLoggedIn);
+
   //Fetch job field list
   return (
     <div className="App">
       <JobContext.Provider value={{ jobFields }}>
-        <Sidebar setCurrentPage={setCurrentPage} />
+        <Sidebar setCurrentPage={setCurrentPage} isLoggedIn={isLoggedIn} />
         <section className="page-content p-20 overflow-y-scroll">
           <Routes>
             <Route
@@ -51,6 +59,10 @@ function App() {
             <Route path="/job/restore/:jobId" element={<EditJob />} />
             <Route path="/job/:jobId" element={<JobDescription />} />
             <Route path="/job/:jobId/apply" element={<ApplyJob />} />
+            <Route
+              path="/job/applications/:jobId/"
+              element={<CompanyApplicationManager />}
+            />
           </Routes>
         </section>
       </JobContext.Provider>

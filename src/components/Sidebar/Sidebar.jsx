@@ -1,9 +1,25 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { authActions } from '../../features/auth/auth-slice';
+import { useEffect, useState } from 'react';
 import './Sidebar.css';
+const refreshToken = localStorage.getItem('refreshToken');
+const isUserLoggedIn = !!refreshToken;
 
-const Sidebar = ({ setCurrentPage }) => {
+const Sidebar = ({ setCurrentPage, isLoggedIn }) => {
+  console.log(localStorage.getItem('isLoggedIn'));
+  console.log('tình trạng login', isLoggedIn);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [role, setRole] = useState('');
+  // useEffect(() => {
+  //   // Read the isLoggedIn value from local storage
+  //   const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+  //   const storedRole = localStorage.getItem('role');
+  //   // Update the state with the value from local storage
+  //   setIsLoggedIn(Boolean(storedIsLoggedIn));
+  //   console.log('is logged in:', isLoggedIn);
+  // }, []);
+
   return (
     <div className="sidebar py-5 flex flex-col justify-between text-[#fff] bg-[#4c50d3]">
       <Link to="/">
@@ -36,17 +52,21 @@ const Sidebar = ({ setCurrentPage }) => {
             Create New Job
           </li>
         </Link>
-        <Link to="/signin">
-          <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
-            <ion-icon name="log-in"></ion-icon>
-            Sign In
-          </li>
-        </Link>
+        {!isUserLoggedIn && (
+          <Link to="/signin">
+            <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+              <ion-icon name="log-in"></ion-icon>
+              Sign In
+            </li>
+          </Link>
+        )}
       </ul>
-      <button className="btn bg-white hover:bg-[#ffce00] m-10 gap-2">
-        <ion-icon name="log-in" size="large"></ion-icon>
-        Logout
-      </button>
+      {isUserLoggedIn && (
+        <button className="btn bg-white hover:bg-[#ffce00] m-10 gap-2">
+          <ion-icon name="log-in" size="large"></ion-icon>
+          Logout
+        </button>
+      )}
     </div>
   );
 };
