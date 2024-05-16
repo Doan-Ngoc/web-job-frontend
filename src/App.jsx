@@ -13,6 +13,7 @@ import RecruiterJobList from './pages/RecruiterJobList/RecruiterJobList';
 import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
+import NewBusinessProfile from './pages/NewProfile/Company'
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,6 +34,7 @@ function App() {
               }
             />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/company/profile/new" element={<NewBusinessProfile />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/job/search" element={<SearchPage />} />
             <Route path="/job/:jobId" element={<JobDescription />} />

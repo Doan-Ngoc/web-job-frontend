@@ -6,6 +6,7 @@ export const getCompanyProfile = async () => {
 };
 
 export const createCompanyProfile = async (profile) => {
-  const response = await request.post('/company', profile);
+  const response = await request.post('/company/profile/new', profile);
+  console.log(response)
   return response;
 };

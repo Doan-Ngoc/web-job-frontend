@@ -1,5 +1,5 @@
 import { Button, Input, Textarea } from '@material-tailwind/react';
-import { useForm } from 'react-hook-form';
+import { useForm} from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormWrapper } from '../../components/form-warpper';
@@ -20,11 +20,12 @@ const companyDefaultValue = {
   description: '',
 };
 
-export function NewBusinessProfile({}) {
+function NewBusinessProfile({}) {
   const [isLoading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: companyDefaultValue,
@@ -56,7 +57,7 @@ export function NewBusinessProfile({}) {
     try {
       await companyApi.createCompanyProfile(data);
       toast.success('Successfully created a company profile!');
-      navigate('/');
+      // navigate('/');
     } catch (err) {
       if (err.response?.status === HttpStatusCode.BadRequest) {
         if (err.response?.data?.errors?.length) {
@@ -65,7 +66,7 @@ export function NewBusinessProfile({}) {
           });
         } else {
           toast.error(err.response?.data?.message);
-          navigate('/');
+          // navigate('/');
         }
       } else {
         toast.error('Opps! There are issues!');
@@ -126,3 +127,4 @@ export function NewBusinessProfile({}) {
     </FormWrapper>
   );
 }
+export default NewBusinessProfile

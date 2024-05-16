@@ -20,12 +20,13 @@ const Homepage = (props) => {
   const fetchJobs = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/job?page=${
-          currentPage || 1
+        `http://localhost:3000/job?page=${currentPage || 1
         }&limit=${limitPerPage}`,
       );
+      console.log(response.data)
       const { docs, totalPages } = response.data;
       setAllJobs(docs);
+      console.log(allJobs)
       setTotalPages(totalPages);
 
       // Update the URL when changing the page
@@ -33,28 +34,29 @@ const Homepage = (props) => {
       searchParams.set("page", currentPage.toString());
       navigate(`${location.pathname}?${searchParams.toString()}`);
       window.scrollTo(0, 0);
-    } catch (error) {
+    } catch (error) { 
       console.error("Error fetching job data:", error);
-  };
+    };
+  }
 
-  return (
-    <div className="homepage grow flex flex-col gap-8 bg-[#e7e8ff]">
-      <SearchBar />
-      <JobList allJobs={allJobs} />
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-            
-          >
-            {index + 1}
-          </button>
-        ))}
+    return (
+      <div className="homepage grow flex flex-col gap-8 bg-[#e7e8ff]">
+        <SearchBar />
+        <JobList allJobs={allJobs} />
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={currentPage === index + 1 ? "active" : ""}
+
+            >
+              {index + 1} 
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}};
+    );
+  }
 
 export default Homepage;
