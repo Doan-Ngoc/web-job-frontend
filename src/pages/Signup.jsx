@@ -24,6 +24,7 @@ const defaultAccountValue = {
   confirm_password: '',
   role: '',
 };
+
 export function Signup() {
   const {
     register,
@@ -34,6 +35,8 @@ export function Signup() {
   } = useForm({
     defaultValues: defaultAccountValue,
     resolver: yupResolver(userSignUpSchema),
+    mode: 'onSubmit',
+    shouldFocusError: false,
   });
 
   const navigate = useNavigate();
@@ -52,7 +55,7 @@ export function Signup() {
       navigate(`/signin`);
     } catch (err) {
       if (err?.response?.status == HttpStatusCode.BadRequest) {
-        console.log(err.response.data);
+        console.log(err.response);
         const { field, message } = err.response.data;
         setError(field, {
           type: 'server response',

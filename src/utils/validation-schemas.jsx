@@ -1,20 +1,24 @@
 import * as yup from 'yup';
 
 export const userSignUpSchema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup
+  .string()
+  .email()
+  .required("Please enter your email"),
   password: yup
     .string()
-    .required()
-    .min(6)
-    .matches(/^[a-zA-Z0-9]+$/),
+    .required("Please enter your password")
+    .min(6, 'Password must be at least 6 characters'),
   confirm_password: yup
     .string()
-    .required()
+    .required("Please confirm your password")
     .equals(
       [yup.ref('password')],
       'Confirm password must be the same as password',
     ),
-  role: yup.string().required().oneOf(['company', 'employee']),
+  role: yup
+  .string()
+  .required("Please select your role")
 });
 
 export const userSigninSchema = yup.object().shape({
