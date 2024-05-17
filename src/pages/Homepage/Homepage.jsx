@@ -23,10 +23,8 @@ const Homepage = (props) => {
         `http://localhost:3000/job?page=${currentPage || 1
         }&limit=${limitPerPage}`,
       );
-      console.log(response.data)
       const { docs, totalPages } = response.data;
       setAllJobs(docs);
-      console.log(allJobs)
       setTotalPages(totalPages);
 
       // Update the URL when changing the page

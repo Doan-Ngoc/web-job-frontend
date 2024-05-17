@@ -14,3 +14,8 @@ export const getAccessToken = async (refreshToken) => {
   const response = await request.post('/auth/token', { refreshToken });
   return response;
 };
+
+export const verifyAccessToken = async (accessToken) => {
+  const response = await request.post('/auth/token/verify', accessToken);
+  return response;
+};

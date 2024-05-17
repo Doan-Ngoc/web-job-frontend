@@ -14,14 +14,14 @@ const authSlice = createSlice({
       state.isLogined = true;
       state.user = action.payload.user;
       state.token = action.payload.accessToken;
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
+      localStorage.setItem('accessToken', action.payload.accessToken);
     },
     logout(state) {
       state.isLogined = false;
       state.user = null;
       state.token = null;
-      if (localStorage.getItem('refreshToken'))
-        localStorage.removeItem('refreshToken');
+      if (localStorage.getItem('accessToken'))
+        localStorage.removeItem('accessToken');
     },
   },
 });
