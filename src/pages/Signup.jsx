@@ -35,8 +35,7 @@ export function Signup() {
   } = useForm({
     defaultValues: defaultAccountValue,
     resolver: yupResolver(userSignUpSchema),
-    mode: 'onSubmit',
-    shouldFocusError: false,
+    mode: 'onSubmit'
   });
 
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ export function Signup() {
           message,
         });
       } else {
-        toast.error('Opps! There are issues!');
+        toast.error('Opps! There are issues with the sign up process!');
       }
     }
   };
@@ -77,6 +76,7 @@ export function Signup() {
         <div className="mb-8 flex flex-col gap-6">
           <InputWrapper error={errors.email}>
             <Input
+              type = "email"
               size="lg"
               label="Email"
               className={errors.email && 'outline-red-500'}

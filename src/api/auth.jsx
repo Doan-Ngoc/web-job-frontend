@@ -16,6 +16,22 @@ export const getAccessToken = async (refreshToken) => {
 };
 
 export const verifyAccessToken = async (accessToken) => {
-  const response = await request.post('/auth/token/verify', accessToken);
-  return response;
-};
+  try {
+    const response = await request.get('/auth/token/verify',
+      {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Backend responded with an error:', error.response.data);
+    } else {
+      console.error('Token verification failed', error.message);
+    }
+    return null
+  }
+
+}

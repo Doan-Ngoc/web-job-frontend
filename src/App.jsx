@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Homepage from './pages/Homepage/Homepage';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -13,15 +13,37 @@ import RecruiterJobList from './pages/RecruiterJobList/RecruiterJobList';
 import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
+import * as authApi from './api/auth'
 import NewBusinessProfile from './pages/NewProfile/Company'
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
-  //Fetch job field list
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //Check login status
+  const checkLoginStatus = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      const response = await authApi.verifyAccessToken(accessToken);
+      if (response) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }
+    else {
+      setIsLoggedIn(false);
+    }
+    console.log("checkLoginStatus run, current status", isLoggedIn)
+  }
+  useEffect(() => {
+    checkLoginStatus();
+  }, [isLoggedIn]);
   return (
     <div className="App">
       <JobContext.Provider value={{ jobFields }}>
-        <Sidebar setCurrentPage={setCurrentPage} />
+        <Sidebar setCurrentPage={setCurrentPage}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn} />
         <section className="page-content overflow-y-scroll">
           <Routes>
             <Route
@@ -35,7 +57,9 @@ function App() {
             />
             <Route path="/signup" element={<Signup />} />
             <Route path="/company/profile/new" element={<NewBusinessProfile />} />
-            <Route path="/signin" element={<Signin />} />
+            <Route path="/signin" element={<Signin
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/job/search" element={<SearchPage />} />
             <Route path="/job/:jobId" element={<JobDescription />} />
             <Route element={<ProtectedRoute />}>

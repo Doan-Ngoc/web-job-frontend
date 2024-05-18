@@ -18,7 +18,7 @@ const userSigninDefaultValues = {
   password: '',
 };
 
-export function Signin() {
+export function Signin({ setIsLoggedIn }) {
   const {
     register,
     handleSubmit,
@@ -27,6 +27,7 @@ export function Signin() {
   } = useForm({
     defaultValues: userSigninDefaultValues,
     resolver: yupResolver(userSigninSchema),
+    mode: 'onSubmit',
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +44,10 @@ export function Signin() {
     try {
       setLoading(true);
       const response = await authApi.signin(data);
-      dispatch(authActions.login(response.data));
+      // dispatch(authActions.login(response.data));
+      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem('isLoggedIn', true);
+      setIsLoggedIn(true);
       toast.success('Successfully logged in');
       navigate('/');
     } catch (err) {
@@ -59,7 +63,7 @@ export function Signin() {
           message,
         });
       } else {
-        toast.error('Opps! There are issues!');
+        toast.error('Opps! There are issues with the sign in process!');
       }
     } finally {
       setLoading(false);
@@ -78,6 +82,7 @@ export function Signin() {
         <div className="mb-8 flex flex-col gap-6">
           <InputWrapper error={errors.email}>
             <Input
+              type="email"
               size="lg"
               label="Email"
               className={errors.email && 'outline-red-500'}
