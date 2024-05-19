@@ -4,10 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authActions } from '../../features/auth/auth-slice';
 import './Sidebar.css';
 import toast from 'react-hot-toast';
-import * as authApi from '../../api/auth';
+import * as authApi from '../../api/authenticate';
 
 const Sidebar = ({ setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
-  console.log('')
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,6 +51,12 @@ const Sidebar = ({ setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
             <i className="fa fa-edit"></i>
             Create New Job
+          </li>
+        </Link>
+        <Link to="/company/profile">
+          <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+          <i class="fa fa-user"></i>
+            My Profile
           </li>
         </Link>
         {isLoggedIn ? (

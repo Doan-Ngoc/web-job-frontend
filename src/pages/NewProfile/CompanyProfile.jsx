@@ -7,9 +7,12 @@ import { InputWrapper } from '../../components/input-wrapper';
 import { companySchema } from '../../utils/validation-schemas';
 import * as accountApi from '../../api/account';
 import * as companyApi from '../../api/company';
+import * as authApi from '../../api/authenticate'
 import { HttpStatusCode } from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { NoPermission } from '../errors/NoPermission';
+import * as authorizeApi from '../../api/authorize'
 
 const companyDefaultValue = {
   name: '',
@@ -22,6 +25,7 @@ const companyDefaultValue = {
 
 function NewBusinessProfile({}) {
   const [isLoading, setLoading] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(false)
   const {
     register,
     handleSubmit,
@@ -35,22 +39,37 @@ function NewBusinessProfile({}) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getAccount = async () => {
+    //Check if the user is logged in and has the role of company or not
+    const confirmCompany = async () => {
       setLoading(true);
-      const response = await accountApi.getAccount();
-      const account = response.data.account;
-      if (account.role !== 'company') {
-        toast.error('You are not permitted to access this resource');
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (accessToken) {
+        console.log('a')
+        const response = await authApi.verifyAccessToken(accessToken);
+        console.log(response.user)
+        setIsAllowed(true)
+        setLoading(false)
       }
-      if (account.associatedCompany) {
-        navigate('/');
+      else {
+        setIsAllowed(false)
+        setLoading(false)
       }
+      // const response = await accountApi.getAccount();
+      // const account = response.data.account;
+      // if (account.role !== 'company') {
+      //   toast.error('You are not permitted to access this resource');
+      // }
+      // if (account.associatedCompany) {
+      //   navigate('/');
+      // }
     };
-    getAccount()
-      .catch((_) => {
-        navigate('/error/500');
-      })
-      .finally(() => setLoading(false));
+    // confirmCompany()
+    //   .catch((_) => {
+    //     navigate('/error/500');
+    //   })
+    //   .finally(() => setLoading(false));
+    confirmCompany()
   }, []);
 
   const onSubmit = async (data) => {
@@ -73,6 +92,14 @@ function NewBusinessProfile({}) {
       }
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAllowed) {
+    return <NoPermission />
+  }
 
   return (
     <FormWrapper

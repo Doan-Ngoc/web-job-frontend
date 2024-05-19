@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { store } from './store';
-import { getAccessToken } from './api/auth.jsx';
+import { getAccessToken } from './api/authenticate.jsx';
 import { authActions } from './features/auth/auth-slice.jsx';
-import { verifyAccessToken } from './api/auth.jsx';
+import { verifyAccessToken } from './api/authenticate.jsx';
 import App from './App.jsx';
 import './index.css';
 

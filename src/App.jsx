@@ -13,8 +13,10 @@ import RecruiterJobList from './pages/RecruiterJobList/RecruiterJobList';
 import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
-import * as authApi from './api/auth'
-import NewBusinessProfile from './pages/NewProfile/Company'
+import * as authApi from './api/authenticate'
+import CompanyProfile from './pages/NewProfile/CompanyProfile'
+import { AlreadyLogin } from './pages/errors/AlreadyLogin';
+import { NoPermission } from './pages/errors/NoPermission';
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,8 +57,9 @@ function App() {
                 />
               }
             />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/company/profile/new" element={<NewBusinessProfile />} />
+            <Route path="/signup" element={<Signup 
+            isLoggedIn={isLoggedIn}/>} />
+            <Route path="/company/profile" element={<CompanyProfile />} />
             <Route path="/signin" element={<Signin
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn} />} />

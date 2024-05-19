@@ -10,15 +10,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSigninSchema } from '../utils/validation-schemas';
 import { FormWrapper } from '../components/form-warpper';
 import { InputWrapper } from '../components/input-wrapper';
-import * as authApi from '../api/auth';
+import * as authApi from '../api/authenticate';
 import { authActions } from '../features/auth/auth-slice';
+import { AlreadyLogin } from './errors/AlreadyLogin';
 
 const userSigninDefaultValues = {
   email: '',
   password: '',
 };
 
-export function Signin({ setIsLoggedIn }) {
+export function Signin({ isLoggedIn, setIsLoggedIn }) {
   const {
     register,
     handleSubmit,
@@ -70,6 +71,10 @@ export function Signin({ setIsLoggedIn }) {
     }
   };
 
+  if (isLoggedIn) {
+    return <AlreadyLogin />;
+  }
+  
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <FormWrapper

@@ -11,12 +11,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { HttpStatusCode } from 'axios';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import * as authApi from '../api/auth';
+import * as authApi from '../api/authenticate';
 import { userSignUpSchema } from '../utils/validation-schemas';
 import { FormWrapper } from '../components/form-warpper';
 import { InputWrapper } from '../components/input-wrapper';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { AlreadyLogin } from './errors/AlreadyLogin';
 
 const defaultAccountValue = {
   email: '',
@@ -25,7 +26,7 @@ const defaultAccountValue = {
   role: '',
 };
 
-export function Signup() {
+export function Signup({isLoggedIn}) {
   const {
     register,
     handleSubmit,
@@ -38,20 +39,21 @@ export function Signup() {
     mode: 'onSubmit'
   });
 
-  const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
+  // const navigate = useNavigate();
+  // const authState = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (authState.isLogined) {
-      navigate('/');
-    }
-  });
+  // useEffect(() => {
+  //   if (authState.isLogined) {
+  //     navigate('/');
+  //   }
+  // });
 
   const onSubmit = async (data) => {
     try {
-      await authApi.signup(data);
+      const response = await authApi.signup(data);
       toast.success('Successfully signed up');
       navigate(`/signin`);
+      
     } catch (err) {
       if (err?.response?.status == HttpStatusCode.BadRequest) {
         console.log(err.response);
@@ -66,6 +68,9 @@ export function Signup() {
     }
   };
 
+  if (isLoggedIn) {
+    return <AlreadyLogin />;
+  }
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <FormWrapper
