@@ -35,7 +35,6 @@ function App() {
     else {
       setIsLoggedIn(false);
     }
-    console.log("checkLoginStatus run, current status", isLoggedIn)
   }
   useEffect(() => {
     checkLoginStatus();

@@ -33,7 +33,7 @@ export const companySchema = yup.object().shape({
     .required()
     .matches(/^(0|\+84)[1-9]{1}[0-9]{8}$/, 'invalid phone number'),
   email: yup.string().email().required(),
-  working_fields: yup.string().min(1).max(200),
+  workingFields: yup.string().min(1).max(200),
   description: yup.string().min(1).max(500),
   address: yup.string().min(1).max(500),
 });

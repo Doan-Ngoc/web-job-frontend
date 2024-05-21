@@ -19,13 +19,14 @@ const companyDefaultValue = {
   phone: '',
   email: '',
   address: '',
-  working_fields: '',
+  workingFields: '',
   description: '',
 };
 
 function NewBusinessProfile({}) {
   const [isLoading, setLoading] = useState(false);
   const [isAllowed, setIsAllowed] = useState(false)
+  const [accountId, setAccountId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -37,19 +38,23 @@ function NewBusinessProfile({}) {
   });
 
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
     //Check if the user is logged in and has the role of company or not
     const confirmCompany = async () => {
       setLoading(true);
-      const accessToken = localStorage.getItem('accessToken');
-
       if (accessToken) {
-        console.log('a')
         const response = await authApi.verifyAccessToken(accessToken);
-        console.log(response.user)
+        if (response.user.role ==="company") {
         setIsAllowed(true)
         setLoading(false)
+        setAccountId(response.user.id)
+        }
+        else {
+          setIsAllowed(false)
+          setLoading(false)
+        }
       }
       else {
         setIsAllowed(false)
@@ -74,7 +79,16 @@ function NewBusinessProfile({}) {
 
   const onSubmit = async (data) => {
     try {
-      await companyApi.createCompanyProfile(data);
+      const newProfileData = { ...data, accountId }
+      await companyApi.createCompanyProfile(
+        newProfileData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       toast.success('Successfully created a company profile!');
       // navigate('/');
     } catch (err) {
@@ -131,12 +145,12 @@ function NewBusinessProfile({}) {
             {...register('address')}
           />
         </InputWrapper>
-        <InputWrapper error={errors.working_fields}>
+        <InputWrapper error={errors.workingFields}>
           <Input
             size="lg"
             type="text"
             label="Work fields"
-            {...register('working_fields')}
+            {...register('workingFields')}
           />
         </InputWrapper>
         <InputWrapper error={errors.description}>
