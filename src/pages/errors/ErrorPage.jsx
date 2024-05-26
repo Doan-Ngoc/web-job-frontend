@@ -1,7 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 
-export function InternalServerError() {
+export function ErrorPage() {
   return (
     <div className="flex h-[calc(100vh-80px)] items-center justify-center p-5 w-full bg-white">
       <div className="text-center">

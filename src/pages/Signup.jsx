@@ -18,6 +18,7 @@ import { InputWrapper } from '../components/input-wrapper';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { AlreadyLogin } from './errors/AlreadyLogin';
+import { useAuth } from '../contexts/AuthContext';
 
 const defaultAccountValue = {
   email: '',
@@ -26,7 +27,8 @@ const defaultAccountValue = {
   role: '',
 };
 
-export function Signup({isLoggedIn}) {
+export function Signup() {
+  const { isLoggedIn } = useAuth();
   const {
     register,
     handleSubmit,

@@ -13,13 +13,15 @@ import { InputWrapper } from '../components/input-wrapper';
 import * as authApi from '../api/authenticate';
 import { authActions } from '../features/auth/auth-slice';
 import { AlreadyLogin } from './errors/AlreadyLogin';
+import { useAuth } from '../contexts/AuthContext';
 
 const userSigninDefaultValues = {
   email: '',
   password: '',
 };
 
-export function Signin({ isLoggedIn, setIsLoggedIn }) {
+export function Signin() {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const {
     register,
     handleSubmit,

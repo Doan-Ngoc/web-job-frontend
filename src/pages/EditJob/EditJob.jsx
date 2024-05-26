@@ -58,8 +58,6 @@ const EditJob = () => {
           ...data,
         }
       );
-
-      console.log(response.status);
       openConfirmDialog();
     } catch (error) {
       console.error("Updating job failed", error);

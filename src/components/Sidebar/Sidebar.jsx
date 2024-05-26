@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { authActions } from '../../features/auth/auth-slice';
+import { useAuth } from '../../contexts/AuthContext';
 import './Sidebar.css';
 import toast from 'react-hot-toast';
 import * as authApi from '../../api/authenticate';
 
-const Sidebar = ({ setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
+const Sidebar = ({ setCurrentPage}) => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,13 +55,15 @@ const Sidebar = ({ setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
             Create New Job
           </li>
         </Link>
-        <Link to="/company/profile">
+        
+        {isLoggedIn ? (
+          <div>
+          <Link to="/profile">
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
           <i class="fa fa-user"></i>
             My Profile
           </li>
         </Link>
-        {isLoggedIn ? (
           <button
             className="btn bg-white hover:bg-[#ffce00] m-10 gap-2"
             onClick={handleLogout}
@@ -67,6 +71,7 @@ const Sidebar = ({ setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
             <ion-icon name="log-in" size="large"></ion-icon>
             Logout
           </button>
+          </div>
         ) : (
           <Link to="/signin">
             <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">

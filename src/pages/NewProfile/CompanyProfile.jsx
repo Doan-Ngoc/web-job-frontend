@@ -25,7 +25,7 @@ const companyDefaultValue = {
 
 function NewBusinessProfile({}) {
   const [isLoading, setLoading] = useState(false);
-  const [isAllowed, setIsAllowed] = useState(false)
+  const [isAllowed, setIsAllowed] = useState(false);
   const [accountId, setAccountId] = useState(null);
   const {
     register,
@@ -41,12 +41,21 @@ function NewBusinessProfile({}) {
   const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
-    //Check if the user is logged in and has the role of company or not
-    const confirmCompany = async () => {
+    //Check if the user: (1) is logged in (2) has the role of company (3) hasn't had a profile
+    const confirmAccess = async () => {
       setLoading(true);
       if (accessToken) {
-        const response = await authApi.verifyAccessToken(accessToken);
-        if (response.user.role ==="company") {
+        const response = await companyApi.getCompanyProfile(
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        //Check if the user is logged in
+        if (response ==="company") {
+          console.log(response)
         setIsAllowed(true)
         setLoading(false)
         setAccountId(response.user.id)
@@ -56,26 +65,14 @@ function NewBusinessProfile({}) {
           setLoading(false)
         }
       }
+      //If not logged in
       else {
         setIsAllowed(false)
         setLoading(false)
       }
-      // const response = await accountApi.getAccount();
-      // const account = response.data.account;
-      // if (account.role !== 'company') {
-      //   toast.error('You are not permitted to access this resource');
-      // }
-      // if (account.associatedCompany) {
-      //   navigate('/');
-      // }
-    };
-    // confirmCompany()
-    //   .catch((_) => {
-    //     navigate('/error/500');
-    //   })
-    //   .finally(() => setLoading(false));
-    confirmCompany()
-  }, []);
+    confirmAccess()
+  }}, []);
+
 
   const onSubmit = async (data) => {
     try {
