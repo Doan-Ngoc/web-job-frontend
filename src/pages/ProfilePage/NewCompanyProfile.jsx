@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
 import * as authorizeApi from '../../api/authorize'
+import { useAuth } from '../../contexts/AuthContext';
 
 const companyDefaultValue = {
   name: '',
@@ -23,10 +24,11 @@ const companyDefaultValue = {
   description: '',
 };
 
-function NewBusinessProfile({}) {
-  const [isLoading, setLoading] = useState(false);
-  const [isAllowed, setIsAllowed] = useState(false);
-  const [accountId, setAccountId] = useState(null);
+function NewCompanyProfile({accountId}) {
+  console.log('newcompanyprofile id', accountId)
+  // const [isLoading, setLoading] = useState(false);
+  // const [isAllowed, setIsAllowed] = useState(false);
+  // const [accountId, setAccountId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -36,88 +38,85 @@ function NewBusinessProfile({}) {
     defaultValues: companyDefaultValue,
     resolver: yupResolver(companySchema),
   });
+  const { accessToken } = useAuth();
+  // const navigate = useNavigate();
 
-  const navigate = useNavigate();
-  const accessToken = localStorage.getItem('accessToken');
-
-  useEffect(() => {
-    //Check if the user: (1) is logged in (2) has the role of company (3) hasn't had a profile
-    const confirmAccess = async () => {
-      setLoading(true);
-      if (accessToken) {
-        const response = await companyApi.getCompanyProfile(
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        //Check if the user is logged in
-        if (response ==="company") {
-          console.log(response)
-        setIsAllowed(true)
-        setLoading(false)
-        setAccountId(response.user.id)
-        }
-        else {
-          setIsAllowed(false)
-          setLoading(false)
-        }
-      }
-      //If not logged in
-      else {
-        setIsAllowed(false)
-        setLoading(false)
-      }
-    confirmAccess()
-  }}, []);
+  // useEffect(() => {
+  //   //Check if the user: (1) is logged in (2) has the role of company (3) hasn't had a profile
+  //   const confirmAccess = async () => {
+  //     setLoading(true);
+  //     if (accessToken) {
+  //       const response = await companyApi.getCompanyProfile(
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //             'Content-Type': 'application/json'
+  //           }
+  //         }
+  //       );
+  //       //Check if the user is logged in
+  //       if (response ==="company") {
+  //         console.log(response)
+  //       setIsAllowed(true)
+  //       setLoading(false)
+  //       setAccountId(response.user.id)
+  //       }
+  //       else {
+  //         setIsAllowed(false)
+  //         setLoading(false)
+  //       }
+  //     }
+  //     //If not logged in
+  //     else {
+  //       setIsAllowed(false)
+  //       setLoading(false)
+  //     }
+  //   confirmAccess()
+  // }}, []);
 
 
-  const onSubmit = async (data) => {
-    try {
-      const newProfileData = { ...data, accountId }
-      await companyApi.createCompanyProfile(
-        newProfileData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      toast.success('Successfully created a company profile!');
-      // navigate('/');
-    } catch (err) {
-      if (err.response?.status === HttpStatusCode.BadRequest) {
-        if (err.response?.data?.errors?.length) {
-          err.response?.data?.errors.forEach(({ message, path }) => {
-            setError(path, { type: 'value', message });
-          });
-        } else {
-          toast.error(err.response?.data?.message);
-          // navigate('/');
-        }
-      } else {
-        toast.error('Opps! There are issues!');
-      }
-    }
-  };
+  // const onSubmit = async (data) => {
+  //   try {
+  //     const newProfileData = { ...data, accountId }
+  //     await companyApi.createCompanyProfile(
+  //       newProfileData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //           'Content-Type': 'application/json'
+  //         }
+  //       }
+  //     );
+  //     toast.success('Successfully created a company profile!');
+  //     // navigate('/');
+  //   } catch (err) {
+  //     if (err.response?.status === HttpStatusCode.BadRequest) {
+  //       if (err.response?.data?.errors?.length) {
+  //         err.response?.data?.errors.forEach(({ message, path }) => {
+  //           setError(path, { type: 'value', message });
+  //         });
+  //       } else {
+  //         toast.error(err.response?.data?.message);
+  //         // navigate('/');
+  //       }
+  //     } else {
+  //       toast.error('Opps! There are issues!');
+  //     }
+  //   }
+  // };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (!isAllowed) {
-    return <NoPermission />
-  }
+  // if (!isAllowed) {
+  //   return <NoPermission />
+  // }
 
   return (
     <FormWrapper
       title="New Business Profile"
       description="Let your candidate know more of your business"
-      onSubmit={handleSubmit(onSubmit)}
-      isLoading={isLoading}
     >
       <div className="flex flex-col gap-6">
         <InputWrapper error={errors.name}>
@@ -164,5 +163,8 @@ function NewBusinessProfile({}) {
       </Button>
     </FormWrapper>
   );
+  // return (
+  // <div>Hello</div>s
+  // )
 }
-export default NewBusinessProfile
+export default NewCompanyProfile

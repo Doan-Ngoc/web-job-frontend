@@ -15,7 +15,7 @@ import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
 import * as authApi from './api/authenticate'
-import CompanyProfile from './pages/NewProfile/CompanyProfile'
+import CompanyProfile from './pages/ProfilePage/NewCompanyProfile'
 import ProfilePageWrapper from './pages/ProfilePage/ProfilePageWrapper';
 import { ErrorPage } from './pages/errors/ErrorPage';
 

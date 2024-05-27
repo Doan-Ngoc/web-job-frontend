@@ -9,13 +9,10 @@ import * as authApi from '../../api/authenticate';
 
 const Sidebar = ({ setCurrentPage}) => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
-  const authState = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // const onLogoutBtnClick = () => {
-  //   dispatch(authActions.logout());
-  //   navigate('/signin');
-  // };
+  // const authState = useSelector((state) => state.auth);
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  console.log(isLoggedIn)
 
   const handleLogout = () => {
     // Delete item from localStorage

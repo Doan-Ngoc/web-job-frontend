@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
 import * as companyApi from '../../api/company';
-// import NewBusinessProfile from './NewBusinessProfile';
-// import ExistingBusinessProfile from './ExistingBusinessProfile';
 import { toast } from 'react-hot-toast';
 import * as authApi from '../../api/authenticate';
 import { useAuth } from '../../contexts/AuthContext';
+import CompanyProfile from './CompanyProfile';
+import NewCompanyProfile from './NewCompanyProfile';
+import { HttpStatusCode } from 'axios';
 
 const ProfilePageWrapper = () => {
   const {accessToken, isLoggedIn} = useAuth();
@@ -26,19 +27,36 @@ const ProfilePageWrapper = () => {
           if (response.user.role === 'company') {
             setIsAllowed(true);
             setAccountId(response.user.id);
-            const profileData = await companyApi.getCompanyProfile(response.user.id);
-            setProfile(profileData);
+              const res = await companyApi.getCompanyProfile(response.user.id);
+              console.log('received')
+              if (res.data) {
+                console.log("if")
+              setProfile(res.data);
+              }
+              else {
+                console.log('else')
+                setProfile(null)
+              }
+            } 
           }
-      }
-     } catch (err) {
+            // const profileData = await companyApi.getCompanyProfile(response.user.id);
+            // if (profileData) {
+            // setProfile(profileData);
+            // }
+            // else {
+            //   setProfile(null)
+            // }
+          }
+      catch (err) {
         toast.error('Failed to load profile');
-      } finally {
+      }
+       finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [accessToken]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -48,10 +66,12 @@ const ProfilePageWrapper = () => {
     return <NoPermission />;
   }
 
-  if (profileData) {
-    return <ExistingBusinessProfile profile={profile} />;
+  if (profile) {
+    console.log('Profile sent to front end is', profile)
+    return <CompanyProfile profile={profile} />;
   } else {
-    return <NewBusinessProfile accountId={accountId} />;
+    console.log('no profile found', profile)
+    return <NewCompanyProfile accountId={accountId} />;
   }
 };
 
