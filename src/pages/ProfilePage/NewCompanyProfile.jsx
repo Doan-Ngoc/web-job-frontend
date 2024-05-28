@@ -24,8 +24,7 @@ const companyDefaultValue = {
   description: '',
 };
 
-function NewCompanyProfile({accountId}) {
-  console.log('newcompanyprofile id', accountId)
+function NewCompanyProfile({accountId, setReloadProfile}) {
   // const [isLoading, setLoading] = useState(false);
   // const [isAllowed, setIsAllowed] = useState(false);
   // const [accountId, setAccountId] = useState(null);
@@ -75,35 +74,43 @@ function NewCompanyProfile({accountId}) {
   // }}, []);
 
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const newProfileData = { ...data, accountId }
-  //     await companyApi.createCompanyProfile(
-  //       newProfileData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //           'Content-Type': 'application/json'
-  //         }
-  //       }
-  //     );
-  //     toast.success('Successfully created a company profile!');
-  //     // navigate('/');
-  //   } catch (err) {
-  //     if (err.response?.status === HttpStatusCode.BadRequest) {
-  //       if (err.response?.data?.errors?.length) {
-  //         err.response?.data?.errors.forEach(({ message, path }) => {
-  //           setError(path, { type: 'value', message });
-  //         });
-  //       } else {
-  //         toast.error(err.response?.data?.message);
-  //         // navigate('/');
-  //       }
-  //     } else {
-  //       toast.error('Opps! There are issues!');
-  //     }
-  //   }
-  // };
+  const onSubmit = async (data) => {
+    const newProfileData = { ...data, accountId }
+    try {
+      const newProfileData = { ...data, accountId }
+      await companyApi.createCompanyProfile(
+        newProfileData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      toast.success('Successfully created a company profile!');
+      setReloadProfile(true)
+      // navigate('/');
+    } 
+    catch (err) {
+      const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
+      toast.error(errorMessage);
+    }
+    
+    // catch (err) {
+    //   if (err.response?.status === HttpStatusCode.BadRequest) {
+    //     if (err.response?.data?.errors?.length) {
+    //       err.response?.data?.errors.forEach(({ message, path }) => {
+    //         setError(path, { type: 'value', message });
+    //       });
+    //     } else {
+    //       toast.error(err.response?.data?.message);
+    //       // navigate('/');
+    //     }
+    //   } else {
+    //     toast.error('Opps! There are issues!');
+    //   }
+    // }
+  };
 
   // if (isLoading) {
   //   return <div>Loading...</div>;
@@ -117,6 +124,7 @@ function NewCompanyProfile({accountId}) {
     <FormWrapper
       title="New Business Profile"
       description="Let your candidate know more of your business"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-6">
         <InputWrapper error={errors.name}>

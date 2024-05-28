@@ -14,6 +14,7 @@ const ProfilePageWrapper = () => {
   const [isLoading, setLoading] = useState(true);
   const [isAllowed, setIsAllowed] = useState(false);
   const [accountId, setAccountId] = useState(null);
+  const [reloadProfile, setReloadProfile] = useState(false)
   const [profile, setProfile] = useState(null);
   // const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
@@ -28,24 +29,14 @@ const ProfilePageWrapper = () => {
             setIsAllowed(true);
             setAccountId(response.user.id);
               const res = await companyApi.getCompanyProfile(response.user.id);
-              console.log('received')
               if (res.data) {
-                console.log("if")
-              setProfile(res.data);
+              setProfile(res.data[0]);
               }
               else {
-                console.log('else')
                 setProfile(null)
               }
             } 
           }
-            // const profileData = await companyApi.getCompanyProfile(response.user.id);
-            // if (profileData) {
-            // setProfile(profileData);
-            // }
-            // else {
-            //   setProfile(null)
-            // }
           }
       catch (err) {
         toast.error('Failed to load profile');
@@ -56,7 +47,7 @@ const ProfilePageWrapper = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [isLoggedIn, reloadProfile]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -67,11 +58,9 @@ const ProfilePageWrapper = () => {
   }
 
   if (profile) {
-    console.log('Profile sent to front end is', profile)
     return <CompanyProfile profile={profile} />;
   } else {
-    console.log('no profile found', profile)
-    return <NewCompanyProfile accountId={accountId} />;
+    return <NewCompanyProfile accountId={accountId} setReloadProfile={setReloadProfile} />;
   }
 };
 

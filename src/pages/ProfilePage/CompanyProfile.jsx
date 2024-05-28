@@ -1,8 +1,9 @@
 import React from 'react'
 
-const CompanyProfile = ({profileData}) => {
+const CompanyProfile = ({profile}) => {
+  console.log('data', profile)
   return (
-    <div>{profileData}</div>
+    <div>Data</div>
   )
 }
 

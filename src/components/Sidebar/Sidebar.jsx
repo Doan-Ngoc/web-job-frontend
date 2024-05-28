@@ -8,17 +8,16 @@ import toast from 'react-hot-toast';
 import * as authApi from '../../api/authenticate';
 
 const Sidebar = ({ setCurrentPage}) => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
-  // const authState = useSelector((state) => state.auth);
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  console.log(isLoggedIn)
+  const { isLoggedIn, setIsLoggedIn, setAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Delete item from localStorage
     localStorage.removeItem('accessToken');
+    setAccessToken(null)
     setIsLoggedIn(false);
     toast.success('Logged out successfully');
+    navigate('/');
   };
   return (
     <div className="sidebar py-5 flex flex-col justify-around text-[#fff] bg-[#4c50d3]">
@@ -40,7 +39,10 @@ const Sidebar = ({ setCurrentPage}) => {
             Home
           </li>
         </Link>
-        <Link to="/job/created">
+        
+        {isLoggedIn ? (
+          <div>
+          <Link to="/job/created">
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
             <ion-icon name="briefcase"></ion-icon>
             Manage Jobs
@@ -52,9 +54,6 @@ const Sidebar = ({ setCurrentPage}) => {
             Create New Job
           </li>
         </Link>
-        
-        {isLoggedIn ? (
-          <div>
           <Link to="/profile">
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
           <i class="fa fa-user"></i>

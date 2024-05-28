@@ -21,7 +21,7 @@ const userSigninDefaultValues = {
 };
 
 export function Signin() {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, setAccessToken } = useAuth();
   const {
     register,
     handleSubmit,
@@ -49,7 +49,7 @@ export function Signin() {
       const response = await authApi.signin(data);
       // dispatch(authActions.login(response.data));
       localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('isLoggedIn', true);
+      setAccessToken(localStorage.getItem('accessToken'))
       setIsLoggedIn(true);
       toast.success('Successfully logged in');
       navigate('/');
