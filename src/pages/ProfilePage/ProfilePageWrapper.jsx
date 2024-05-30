@@ -58,7 +58,8 @@ const ProfilePageWrapper = () => {
   }
 
   if (profile) {
-    return <CompanyProfile profile={profile} />;
+    navigate(`/profile/${profile._id}`, { state: { profile: profile } });
+    // return <CompanyProfile profile={profile} />;
   } else {
     return <NewCompanyProfile accountId={accountId} setReloadProfile={setReloadProfile} />;
   }

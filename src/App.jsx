@@ -15,8 +15,9 @@ import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
 import * as authApi from './api/authenticate'
-import CompanyProfile from './pages/ProfilePage/NewCompanyProfile'
+import CompanyProfile from './pages/ProfilePage/CompanyProfile'
 import ProfilePageWrapper from './pages/ProfilePage/ProfilePageWrapper';
+import NewCompanyProfile from './pages/ProfilePage/NewCompanyProfile';
 import { ErrorPage } from './pages/errors/ErrorPage';
 
 
@@ -58,7 +59,9 @@ function App() {
               }
             />
             <Route path="/signup" element={<Signup/>} />
-            <Route path="/company/profile" element={<CompanyProfile />} />
+            {/* <Route path="/company/profile" element={<CompanyProfile />} /> */}
+            <Route path="/profile/create" element={<NewCompanyProfile />} />
+            <Route path="/profile/:profileId" element={<CompanyProfile />} />
             <Route path="/profile" element={<ProfilePageWrapper />} />
             <Route path="/signin" element={<Signin/>} />
             <Route path="/job/search" element={<SearchPage />} />

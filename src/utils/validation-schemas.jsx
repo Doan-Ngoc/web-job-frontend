@@ -27,13 +27,21 @@ export const userSigninSchema = yup.object().shape({
 });
 
 export const companySchema = yup.object().shape({
-  name: yup.string().min(1).max(200),
+  name: yup.string()
+  .required("Please enter your company name")
+  .max(200, "Your company name must be at most 200 characters"),
   phone: yup
     .string()
-    .required()
-    .matches(/^(0|\+84)[1-9]{1}[0-9]{8}$/, 'invalid phone number'),
-  email: yup.string().email().required(),
+    .required("Please enter your company's phone number")
+    .matches(/^(0|\+84)[1-9]{1}[0-9]{8}$/, 'Invalid phone number'),
+  email: yup.string()
+  .email("Please enter a valid email address")
+  .required("Please enter your company's email address"),
   workingFields: yup.string().min(1).max(200),
-  description: yup.string().min(1).max(500),
-  address: yup.string().min(1).max(500),
+  description: yup.string().required("Please give a brief description about your business")
+  .min(10, "Your description must be at least 10 characters")
+  .max(1000, "Your description must be at most 1000 characters"),
+  address: yup.string()
+  .required("Please enter your company's address")
+  .max(200, "Your company's address must be at most 200 characters"),
 });

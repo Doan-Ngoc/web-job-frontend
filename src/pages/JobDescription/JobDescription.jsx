@@ -21,7 +21,7 @@ const JobDescription = () => {
       ) : (
         <div>
           <header className="hero h-80 justify-start bg-[#e7e8ff]">
-            <div className="hero-content w-full px-8 flex gap-12">
+            <div className="hero-content w-full px-8 flex gap-12 bg-[#ff9999]">
               <div className="job-description-logo">
                 <img src={jobData.logo} className=" rounded-lg" />
               </div>

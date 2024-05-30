@@ -17,6 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const companyDefaultValue = {
   name: '',
+  logo: '',
   phone: '',
   email: '',
   address: '',
@@ -25,9 +26,6 @@ const companyDefaultValue = {
 };
 
 function NewCompanyProfile({accountId, setReloadProfile}) {
-  // const [isLoading, setLoading] = useState(false);
-  // const [isAllowed, setIsAllowed] = useState(false);
-  // const [accountId, setAccountId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -38,46 +36,13 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
     resolver: yupResolver(companySchema),
   });
   const { accessToken } = useAuth();
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   //Check if the user: (1) is logged in (2) has the role of company (3) hasn't had a profile
-  //   const confirmAccess = async () => {
-  //     setLoading(true);
-  //     if (accessToken) {
-  //       const response = await companyApi.getCompanyProfile(
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //             'Content-Type': 'application/json'
-  //           }
-  //         }
-  //       );
-  //       //Check if the user is logged in
-  //       if (response ==="company") {
-  //         console.log(response)
-  //       setIsAllowed(true)
-  //       setLoading(false)
-  //       setAccountId(response.user.id)
-  //       }
-  //       else {
-  //         setIsAllowed(false)
-  //         setLoading(false)
-  //       }
-  //     }
-  //     //If not logged in
-  //     else {
-  //       setIsAllowed(false)
-  //       setLoading(false)
-  //     }
-  //   confirmAccess()
-  // }}, []);
-
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    const newProfileData = { ...data, accountId }
+    const newProfileData = { ...data, 
+      accountId,
+      logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" }
     try {
-      const newProfileData = { ...data, accountId }
       await companyApi.createCompanyProfile(
         newProfileData,
         {
@@ -95,30 +60,7 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
       const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
       toast.error(errorMessage);
     }
-    
-    // catch (err) {
-    //   if (err.response?.status === HttpStatusCode.BadRequest) {
-    //     if (err.response?.data?.errors?.length) {
-    //       err.response?.data?.errors.forEach(({ message, path }) => {
-    //         setError(path, { type: 'value', message });
-    //       });
-    //     } else {
-    //       toast.error(err.response?.data?.message);
-    //       // navigate('/');
-    //     }
-    //   } else {
-    //     toast.error('Opps! There are issues!');
-    //   }
-    // }
-  };
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (!isAllowed) {
-  //   return <NoPermission />
-  // }
+  }
 
   return (
     <FormWrapper
@@ -128,7 +70,7 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
     >
       <div className="flex flex-col gap-6">
         <InputWrapper error={errors.name}>
-          <Input size="lg" type="text" label="Name" {...register('name')} />
+          <Input size="lg" type="text" label="Company Name" {...register('name')} />
         </InputWrapper>
         <InputWrapper error={errors.phone}>
           <Input
