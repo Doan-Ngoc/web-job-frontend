@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import JobContext from "../../contexts/JobContext";
+import { useJobContext } from "../../contexts/JobContext";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -15,7 +15,7 @@ import {
 
 const CreateJobNews = () => {
   //Get the job field list
-  const { jobFields } = useContext(JobContext);
+  const { jobFields } = useJobContext()
   // Calculate the minimum date (10 days from today)
   const today = new Date();
   today.setDate(today.getDate() + 10);

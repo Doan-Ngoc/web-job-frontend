@@ -5,7 +5,7 @@ import Homepage from './pages/Homepage/Homepage';
 import Sidebar from './components/Sidebar/Sidebar';
 import ProtectedRoute from './components/private-route';
 import JobDescription from './pages/JobDescription/JobDescription';
-import JobContext from './contexts/JobContext';
+import { JobProvider } from './contexts/JobContext';
 import { AuthProvider } from './contexts/AuthContext';
 import SearchPage from './pages/SearchPage/SearchPage';
 import CreateJobNews from './pages/CreateJobNews/CreateJobNews';
@@ -45,7 +45,7 @@ function App() {
   return (
     <div className="App">
       <AuthProvider>
-      <JobContext.Provider value={{ jobFields }}>
+      <JobProvider>
         <Sidebar setCurrentPage={setCurrentPage}/>
         <section className="page-content overflow-y-scroll">
           <Routes>
@@ -75,7 +75,7 @@ function App() {
             </Route>
           </Routes>
         </section>
-      </JobContext.Provider>
+      </JobProvider>
       </AuthProvider>
     </div>
   );

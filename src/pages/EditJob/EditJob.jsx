@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import JobContext from "../../contexts/JobContext";
+import { useJobContext } from "../../contexts/JobContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
@@ -27,7 +27,7 @@ const EditJob = () => {
     });
   }, [jobId]);
   //Get the job field list
-  const { jobFields } = useContext(JobContext);
+  const { jobFields } = useJobContext()
   //Conditionally rendering the edit page or the restore page
   const location = useLocation();
   const currentPath = location.pathname;

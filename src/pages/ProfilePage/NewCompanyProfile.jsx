@@ -1,6 +1,6 @@
 import { Button, Input, Textarea } from '@material-tailwind/react';
 import { useForm} from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormWrapper } from '../../components/form-warpper';
 import { InputWrapper } from '../../components/input-wrapper';
@@ -14,17 +14,20 @@ import { useNavigate } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
 import * as authorizeApi from '../../api/authorize'
 import { useAuth } from '../../contexts/AuthContext';
+import { useJobContext } from '../../contexts/JobContext';
 
-const companyDefaultValue = {
-  name: '',
-  logo: '',
-  phone: '',
-  email: '',
-  address: '',
-  workingFields: '',
-  description: '',
-};
+// const companyDefaultValue = {
+//   name: '',
+//   logo: '',
+//   phone: '',
+//   email: '',
+//   address: '',
+//   workingFields: '',
+//   description: '',
+// };
 
+const { jobFields } = useJobContext();
+  const { accessToken } = useAuth();
 function NewCompanyProfile({accountId, setReloadProfile}) {
   const {
     register,
@@ -32,10 +35,9 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: companyDefaultValue,
+    // defaultValues: companyDefaultValue,
     resolver: yupResolver(companySchema),
   });
-  const { accessToken } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -91,14 +93,32 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
             {...register('address')}
           />
         </InputWrapper>
-        <InputWrapper error={errors.workingFields}>
+        <InputWrapper>
+        <select
+            name="jobField"
+            id="jobField"
+            className="block w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+            required
+            {...register("field")}
+          >
+            <option value="" selected disabled hidden>
+              --Select an option--
+            </option>
+            {jobFields.map((field) => (
+              <option key={field} value={field}>
+                {field}
+              </option>
+            ))}
+          </select>
+          </InputWrapper>
+        {/* <InputWrapper error={errors.workingFields}>
           <Input
             size="lg"
             type="text"
             label="Work fields"
             {...register('workingFields')}
           />
-        </InputWrapper>
+        </InputWrapper> */}
         <InputWrapper error={errors.description}>
           <Textarea
             size="lg"
