@@ -26,9 +26,12 @@ import { useJobContext } from '../../contexts/JobContext';
 //   description: '',
 // };
 
-const { jobFields } = useJobContext();
-  const { accessToken } = useAuth();
+
 function NewCompanyProfile({accountId, setReloadProfile}) {
+  const { jobFields } = useJobContext();
+  // {jobFields.map((field) => (
+  //     console.log(field.field)))}
+  const { accessToken } = useAuth();
   const {
     register,
     handleSubmit,
@@ -45,6 +48,7 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
       accountId,
       logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" }
     try {
+      console.log('profile dâta', newProfileData)
       await companyApi.createCompanyProfile(
         newProfileData,
         {
@@ -95,18 +99,18 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
         </InputWrapper>
         <InputWrapper>
         <select
-            name="jobField"
-            id="jobField"
+            name="workingFields"
+            id="workingFields"
             className="block w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
             required
-            {...register("field")}
+            {...register("workingFields")}
           >
             <option value="" selected disabled hidden>
               --Select an option--
             </option>
             {jobFields.map((field) => (
-              <option key={field} value={field}>
-                {field}
+              <option key={field.field} value={field.field}>
+                {field.field}
               </option>
             ))}
           </select>

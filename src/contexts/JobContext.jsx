@@ -11,12 +11,10 @@ export const JobProvider = ({ children }) => {
   const [jobFields, setJobFields] = useState([]);
 
   useEffect(() => {
-    console.log('working')
     // Fetch job fields when the context is initialized
     axios
       .get("http://localhost:3000/job/api/fields")
       .then((response) => {
-        console.log('work fields', response.data)
         setJobFields(response.data);
       })
       .catch((error) => {
