@@ -15,9 +15,11 @@ import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
 import * as authApi from './api/authenticate'
-import CompanyProfile from './pages/ProfilePage/CompanyProfile'
 import ProfilePageWrapper from './pages/ProfilePage/ProfilePageWrapper';
+import CompanyProfile from './pages/ProfilePage/CompanyProfile'
 import NewCompanyProfile from './pages/ProfilePage/NewCompanyProfile';
+import ApplicantProfile from './pages/ProfilePage/ApplicantProfile';
+import NewApplicantProfile from './pages/ProfilePage/NewApplicantProfile';
 import { ErrorPage } from './pages/errors/ErrorPage';
 
 
@@ -60,8 +62,11 @@ function App() {
             />
             <Route path="/signup" element={<Signup/>} />
             {/* <Route path="/company/profile" element={<CompanyProfile />} /> */}
-            <Route path="/profile/create" element={<NewCompanyProfile />} />
-            <Route path="/profile/:profileId" element={<CompanyProfile />} />
+            <Route path="/profile/company/create" element={<NewCompanyProfile />} />
+            <Route path="/profile/company/:profileId" element={<CompanyProfile />} />
+            <Route path="/profile/applicant/create" element={<NewApplicantProfile />} />
+            <Route path="/profile/applicant/:profileId" element={<ApplicantProfile />} />
+            
             <Route path="/profile" element={<ProfilePageWrapper />} />
             <Route path="/signin" element={<Signin/>} />
             <Route path="/job/search" element={<SearchPage />} />

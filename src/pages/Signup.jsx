@@ -118,8 +118,8 @@ export function Signup() {
                   <Option className="items-start" value="company">
                     Recruiter/Company
                   </Option>
-                  <Option className="items-start" value="employee">
-                    Employee
+                  <Option className="items-start" value="applicant">
+                    Applicant
                   </Option>
                 </Select>
               )}

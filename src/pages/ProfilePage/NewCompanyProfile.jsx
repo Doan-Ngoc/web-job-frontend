@@ -10,7 +10,7 @@ import * as companyApi from '../../api/company';
 import * as authApi from '../../api/authenticate'
 import { HttpStatusCode } from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,  useLocation } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
 import * as authorizeApi from '../../api/authorize'
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,10 +27,15 @@ import { useJobContext } from '../../contexts/JobContext';
 // };
 
 
-function NewCompanyProfile({accountId, setReloadProfile}) {
+function NewCompanyProfile() {
+  const location = useLocation();
+  const { accountId, setReloadProfile } = location.state || ""; 
+  useEffect(() => {
+    if (!accountId) {
+      navigate('/error'); 
+    }
+  }, [accountId]);
   const { jobFields } = useJobContext();
-  // {jobFields.map((field) => (
-  //     console.log(field.field)))}
   const { accessToken } = useAuth();
   const {
     register,
@@ -38,7 +43,6 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
     setError,
     formState: { errors },
   } = useForm({
-    // defaultValues: companyDefaultValue,
     resolver: yupResolver(companySchema),
   });
   const navigate = useNavigate();
@@ -48,7 +52,6 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
       accountId,
       logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" }
     try {
-      console.log('profile dâta', newProfileData)
       await companyApi.createCompanyProfile(
         newProfileData,
         {
@@ -59,8 +62,7 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
         }
       );
       toast.success('Successfully created a company profile!');
-      setReloadProfile(true)
-      // navigate('/');
+      navigate('/profile')
     } 
     catch (err) {
       const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
@@ -97,37 +99,33 @@ function NewCompanyProfile({accountId, setReloadProfile}) {
             {...register('address')}
           />
         </InputWrapper>
-        <InputWrapper>
+        <InputWrapper error={errors.companyIndustry}>
+        <label
+        className="pb-2"
+        >
+          Select Industry
+        </label>
         <select
-            name="workingFields"
-            id="workingFields"
+            name="companyIndustry"
+            id="companyIndustry"
             className="block w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-            required
-            {...register("workingFields")}
+            {...register("companyIndustry")}
           >
             <option value="" selected disabled hidden>
               --Select an option--
             </option>
             {jobFields.map((field) => (
-              <option key={field.field} value={field.field}>
-                {field.field}
+              <option key={field} value={field}>
+                {field}
               </option>
             ))}
           </select>
           </InputWrapper>
-        {/* <InputWrapper error={errors.workingFields}>
-          <Input
-            size="lg"
-            type="text"
-            label="Work fields"
-            {...register('workingFields')}
-          />
-        </InputWrapper> */}
         <InputWrapper error={errors.description}>
           <Textarea
             size="lg"
             type="text"
-            label="Description"
+            label="Company Description"
             {...register('description')}
           />
         </InputWrapper>

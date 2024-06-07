@@ -6,12 +6,11 @@ const CompanyProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile } = location.state || {}; 
-  console.log('profile', profile)
   useEffect(() => {
     if (!profile) {
       navigate('/error'); 
     }
-  }, [profile, navigate]);
+  }, [profile]);
   return (
     <div className="company-profile grow flex flex-col items-center justify-center">
       <header className="hero h-80  bg-[#e7e8ff]">
@@ -41,7 +40,7 @@ const CompanyProfile = () => {
                   </li>
                   <li className="opacity-70 flex gap-3 ">
                     <ion-icon className="icon" name="briefcase"></ion-icon>
-                    Field: {profile.workingFields}
+                    Field: {profile.companyIndustry}
                   </li>
                 </ul>
               </div>
