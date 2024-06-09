@@ -50,24 +50,17 @@ export const applicantSchema = yup.object().shape({
   name: yup.string()
   .required("Please enter your name")
   .max(200, "Your company name must be at most 200 characters"),
-  // age: yup.number()
-  // .required(),
-  // gender: yup.string()
-  // .required(),
-  // phone: yup
-  //   .string()
-  //   .required("Please enter your company's phone number")
-  //   .matches(/^(0|\+84)[1-9]{1}[0-9]{8}$/, 'Invalid phone number'),
-  // email: yup.string()
-  // .email("Please enter a valid email address")
-  // .required("Please enter your company's email address"),
+  phone: yup
+    .string()
+    .required("Please enter your phone number")
+    .matches(/^(0|\+84)[1-9]{1}[0-9]{8}$/, 'Invalid phone number'),
+  email: yup.string()
+  .email("Please enter a valid email address")
+  .required("Please enter your email address"),
   workingFields: yup.array().required()
   .min(1, "Please select at least one working field")
   .max(3, "You can select up to three working fields"),
-  // description: yup.string().required("Please give a brief description about your business")
-  // .min(10, "Your description must be at least 10 characters")
-  // .max(1000, "Your description must be at most 1000 characters"),
-  // address: yup.string()
-  // .required("Please enter your company's address")
-  // .max(200, "Your company's address must be at most 200 characters"),
+  description: yup.string().required("Please give a brief description about yourself")
+  .min(10, "Your description must be at least 10 characters")
+  .max(1000, "Your description must be at most 1000 characters")
 });

@@ -29,7 +29,7 @@ import { useJobContext } from '../../contexts/JobContext';
 
 function NewCompanyProfile() {
   const location = useLocation();
-  const { accountId, setReloadProfile } = location.state || ""; 
+  const { accountId} = location.state || ""; 
   useEffect(() => {
     if (!accountId) {
       navigate('/error'); 
@@ -37,6 +37,7 @@ function NewCompanyProfile() {
   }, [accountId]);
   const { jobFields } = useJobContext();
   const { accessToken } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -45,12 +46,13 @@ function NewCompanyProfile() {
   } = useForm({
     resolver: yupResolver(companySchema),
   });
-  const navigate = useNavigate();
+  
 
   const onSubmit = async (data) => {
     const newProfileData = { ...data, 
       accountId,
-      logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" }
+      logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" 
+    }
     try {
       await companyApi.createCompanyProfile(
         newProfileData,

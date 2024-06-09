@@ -8,6 +8,7 @@ import { applicantSchema } from '../../utils/validation-schemas';
 import * as accountApi from '../../api/account';
 import * as companyApi from '../../api/company';
 import * as authApi from '../../api/authenticate'
+import * as applicantApi from '../../api/applicant'
 import { HttpStatusCode } from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -17,6 +18,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useJobContext } from '../../contexts/JobContext';
 
 export default function NewApplicantProfile() {
+  const location = useLocation();
+  const { accountId} = location.state || ""; 
+  const { jobFields } = useJobContext();
+  const navigate = useNavigate();
+  const { accessToken } = useAuth();
   const {
     register,
     handleSubmit,
@@ -28,26 +34,63 @@ export default function NewApplicantProfile() {
       workingFields: [], // Set default value as an empty array
     },
   });
-  const { jobFields } = useJobContext();
-  console.log(jobFields)
-  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    
-    console.log('click')
-    console.log("data", data)
+    const newProfileData = { ...data, 
+      accountId,
+      profilePicture: "https://e7.pngegg.com/pngimages/213/828/png-clipart-facebook-logo-facebook-messenger-logo-social-media-icon-facebook-icon-blue-text-thumbnail.png" }
+    // console.log("data", newProfileData)
+    try {
+      console.log('a', newProfileData)
+      await applicantApi.createApplicantProfile(
+        newProfileData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      toast.success('Your profile is created!');
+      navigate('/profile')
+    } 
+    catch (err) {
+      const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
+      toast.error(errorMessage);
+    }
+
   }
 
   return (
     <FormWrapper
       title="New Applicant Profile"
-      description="Let your candidate know more of your business"
+      description="Tell us more about yourself"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-6 ">
+      <InputWrapper error={errors.name}>
+          <Input size="lg" type="text" label="Full Name" {...register('name')} />
+        </InputWrapper>
+        <InputWrapper error={errors.phone}>
+          <Input
+            size="lg"
+            type="tel"
+            label="Phone number"
+            {...register('phone')}
+          />
+        </InputWrapper>
+        <InputWrapper error={errors.email}>
+          <Input size="lg" type="text" label="Email" {...register('email')} />
+        </InputWrapper>
         <InputWrapper error={errors.workingFields}>
-          <div className="dropdown bg-[#33FF7D] w-full">
-            <div tabIndex={0} role="button" className="bg-[#ff5733] btn m-1 w-full">Select an option</div>
+        <label className="pb-2">
+          Working Fields
+        </label>
+          <div className="dropdown w-full">
+            <div tabIndex={0} role="button" className="btn m-1 w-full">
+              Select options
+              <ion-icon name="caret-down"></ion-icon>
+              </div>
             <div tabIndex={0} className="form-control dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-b-lg w-full">
               {/* <label className="label cursor-pointer" key="Remember me">
                 <span className="label-text">Remember me</span>
@@ -63,26 +106,28 @@ export default function NewApplicantProfile() {
               </label> */}
               <div className="max-h-60 overflow-y-auto">
               {jobFields.map((field) => (
-                <label className="label cursor-pointer" >
+                <label className="label cursor-pointer" key={field}>
                 <span className="label-text">{field}</span>
                 <input type="checkbox" value={field}
                   className="checkbox checkbox-primary"
                   {...register("workingFields")}/>
               </label>
-              // <option key={field} value={field}>
-              //   {field}
-              // </option>
             ))}
             </div>
             </div>
           </div>
         </InputWrapper>
-        <InputWrapper error={errors.name}>
-          <Input size="lg" type="text" label="Company Name" {...register('name')} />
+        <InputWrapper error={errors.description}>
+          <Textarea
+            size="lg"
+            type="text"
+            label="Self Introduction"
+            {...register('description')}
+          />
         </InputWrapper>
       </div>
       <Button type="submit" className="mt-6" fullWidth>
-        Create Business Profile
+        Create Profile
       </Button>
     </FormWrapper>
   )
