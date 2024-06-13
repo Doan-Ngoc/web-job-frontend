@@ -40,7 +40,7 @@ const CompanyProfile = () => {
                   </li>
                   <li className="opacity-70 flex gap-3 ">
                     <ion-icon className="icon" name="briefcase"></ion-icon>
-                    Field: {profile.companyIndustry}
+                    Field: {profile.companyIndustries.join(", ")}
                   </li>
                 </ul>
               </div>

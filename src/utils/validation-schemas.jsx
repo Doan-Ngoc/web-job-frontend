@@ -37,7 +37,9 @@ export const companySchema = yup.object().shape({
   email: yup.string()
   .email("Please enter a valid email address")
   .required("Please enter your company's email address"),
-  companyIndustry: yup.string().required("Please enter your company's industry"),
+  companyIndustries: yup.array().required()
+  .min(1, "Please select at least one industry")
+  .max(3, "You can select up to three industries"),
   description: yup.string().required("Please give a brief description about your business")
   .min(10, "Your description must be at least 10 characters")
   .max(1000, "Your description must be at most 1000 characters"),

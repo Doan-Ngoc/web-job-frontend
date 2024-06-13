@@ -92,18 +92,6 @@ export default function NewApplicantProfile() {
               <ion-icon name="caret-down"></ion-icon>
               </div>
             <div tabIndex={0} className="form-control dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-b-lg w-full">
-              {/* <label className="label cursor-pointer" key="Remember me">
-                <span className="label-text">Remember me</span>
-                <input type="checkbox" value="Remember me"
-                  className="checkbox checkbox-primary"
-                  {...register("workingFields")}/>
-              </label>
-              <label className="label cursor-pointer" key="Second one">
-                <span className="label-text">Second one</span>
-                <input type="checkbox" value="Second one"
-                  className="checkbox checkbox-primary"
-                  {...register("workingFields")} />
-              </label> */}
               <div className="max-h-60 overflow-y-auto">
               {jobFields.map((field) => (
                 <label className="label cursor-pointer" key={field}>

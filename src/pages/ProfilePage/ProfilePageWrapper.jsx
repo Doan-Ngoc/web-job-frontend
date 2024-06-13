@@ -32,14 +32,13 @@ const ProfilePageWrapper = () => {
             setAccountId(response.user.id);
               const res = await companyApi.getCompanyProfile(response.user.id);
               if (res.data) {
-              setProfile(res.data[0]);
+              setProfile(res.data);
               }
               else {
                 setProfile(null)
               }
             }
             else if (response.user.role === 'applicant') {
-              console.log('applicant')
             setIsAllowed(true);
             setAccountType("applicant")
             setAccountId(response.user.id);
@@ -49,7 +48,6 @@ const ProfilePageWrapper = () => {
             }
             else {
               setProfile(null)
-              console.log('done')
             }
             }
           }

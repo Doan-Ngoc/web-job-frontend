@@ -16,17 +16,6 @@ import * as authorizeApi from '../../api/authorize'
 import { useAuth } from '../../contexts/AuthContext';
 import { useJobContext } from '../../contexts/JobContext';
 
-// const companyDefaultValue = {
-//   name: '',
-//   logo: '',
-//   phone: '',
-//   email: '',
-//   address: '',
-//   workingFields: '',
-//   description: '',
-// };
-
-
 function NewCompanyProfile() {
   const location = useLocation();
   const { accountId} = location.state || ""; 
@@ -101,7 +90,7 @@ function NewCompanyProfile() {
             {...register('address')}
           />
         </InputWrapper>
-        <InputWrapper error={errors.companyIndustry}>
+        {/* <InputWrapper error={errors.companyIndustry}>
         <label
         className="pb-2"
         >
@@ -122,7 +111,30 @@ function NewCompanyProfile() {
               </option>
             ))}
           </select>
-          </InputWrapper>
+          </InputWrapper> */}
+        <InputWrapper error={errors.companyIndustries}>
+        <label className="pb-2">
+          Industries
+        </label>
+          <div className="dropdown w-full">
+            <div tabIndex={0} role="button" className="btn m-1 w-full">
+              Select options
+              <ion-icon name="caret-down"></ion-icon>
+              </div>
+            <div tabIndex={0} className="form-control dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-b-lg w-full">
+              <div className="max-h-60 overflow-y-auto">
+              {jobFields.map((field) => (
+                <label className="label cursor-pointer" key={field}>
+                <span className="label-text">{field}</span>
+                <input type="checkbox" value={field}
+                  className="checkbox checkbox-primary"
+                  {...register("companyIndustries")}/>
+              </label>
+            ))}
+            </div>
+            </div>
+          </div>
+        </InputWrapper>
         <InputWrapper error={errors.description}>
           <Textarea
             size="lg"
