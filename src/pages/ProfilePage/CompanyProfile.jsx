@@ -8,7 +8,7 @@ const CompanyProfile = () => {
   const { profile } = location.state || {}; 
   useEffect(() => {
     if (!profile) {
-      navigate('/error'); 
+      navigate('/error/500'); 
     }
   }, [profile]);
   return (

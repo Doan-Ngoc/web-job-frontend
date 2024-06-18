@@ -7,13 +7,14 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accountRole, setAccountRole] = useState('')
   const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-
   const checkLoginStatus = async () => {
     if (accessToken) {
       const response = await authApi.verifyAccessToken(accessToken);
       if (response) {
         setIsLoggedIn(true);
+        setAccountRole(response.user.role)
       } else {
         setIsLoggedIn(false);
         setAccessToken(null);
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   }, [accessToken]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken, checkLoginStatus }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, accessToken, setAccessToken, checkLoginStatus, accountRole }}>
       {children}
     </AuthContext.Provider>
   );

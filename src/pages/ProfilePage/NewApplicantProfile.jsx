@@ -2,8 +2,8 @@ import { Button, Input, Textarea } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, useContext } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormWrapper } from '../../components/form-warpper';
-import { InputWrapper } from '../../components/input-wrapper';
+import { FormWrapper } from '../../components/FormWrapper';
+import { InputWrapper } from '../../components/InputWrapper';
 import { applicantSchema } from '../../utils/validation-schemas';
 import * as accountApi from '../../api/account';
 import * as companyApi from '../../api/company';
@@ -41,7 +41,6 @@ export default function NewApplicantProfile() {
       profilePicture: "https://e7.pngegg.com/pngimages/213/828/png-clipart-facebook-logo-facebook-messenger-logo-social-media-icon-facebook-icon-blue-text-thumbnail.png" }
     // console.log("data", newProfileData)
     try {
-      console.log('a', newProfileData)
       await applicantApi.createApplicantProfile(
         newProfileData,
         {

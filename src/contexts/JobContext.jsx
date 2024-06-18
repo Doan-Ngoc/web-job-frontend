@@ -20,7 +20,7 @@ export const JobProvider = ({ children }) => {
     }
     catch(err) {
       console.error("Error fetching job fields:", err);
-      navigate("/error")
+      navigate("/error/500")
     }
   }
   useEffect(() => {

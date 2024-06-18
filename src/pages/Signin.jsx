@@ -8,8 +8,8 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSigninSchema } from '../utils/validation-schemas';
-import { FormWrapper } from '../components/form-warpper';
-import { InputWrapper } from '../components/input-wrapper';
+import { FormWrapper } from '../components/FormWrapper';
+import { InputWrapper } from '../components/InputWrapper';
 import * as authApi from '../api/authenticate';
 import { authActions } from '../features/auth/auth-slice';
 import { AlreadyLogin } from './errors/AlreadyLogin';

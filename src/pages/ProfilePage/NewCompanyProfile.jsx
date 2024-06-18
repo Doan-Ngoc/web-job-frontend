@@ -2,8 +2,8 @@ import { Button, Input, Textarea } from '@material-tailwind/react';
 import { useForm} from 'react-hook-form';
 import { useState, useEffect, useContext } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormWrapper } from '../../components/form-warpper';
-import { InputWrapper } from '../../components/input-wrapper';
+import { FormWrapper } from '../../components/FormWrapper';
+import { InputWrapper } from '../../components/InputWrapper';
 import { companySchema } from '../../utils/validation-schemas';
 import * as accountApi from '../../api/account';
 import * as companyApi from '../../api/company';
@@ -21,7 +21,7 @@ function NewCompanyProfile() {
   const { accountId} = location.state || ""; 
   useEffect(() => {
     if (!accountId) {
-      navigate('/error'); 
+      navigate('/error/500'); 
     }
   }, [accountId]);
   const { jobFields } = useJobContext();

@@ -14,6 +14,7 @@ const JobDescription = () => {
       setIsLoading(false);
     });
   }, [jobId]);
+  
   return (
     <div className="job-description grow flex flex-col ">
       {isLoading ? ( // Conditional rendering while loading
