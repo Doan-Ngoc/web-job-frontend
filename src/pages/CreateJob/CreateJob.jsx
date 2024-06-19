@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import * as authApi from '../../api/authenticate';
 import * as companyApi from '../../api/company';
 import { request } from '../../utils/request';
+import toast from 'react-hot-toast';
 import {
   Card,
   Input,
@@ -61,7 +62,6 @@ const CreateJobNews = () => {
           companyData.name = companyProfile.data.name,
           companyData.logo = companyProfile.data.logo
       }
-      console.log('jb data', companyData)
       const newJobData = {
         title: data.title,
         company: companyData.name,
@@ -78,61 +78,12 @@ const CreateJobNews = () => {
         status: "active",
         applicants: [],
       }
-      console.log('new job data', newJobData)
       const res = await request.post('/job/new', newJobData)
       openConfirmDialog();
-      //   const res = await fetch("http://localhost:3000/job/new", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     title: data.title,
-      //     company: "Google",
-      //     logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png",
-      //     createdAt: new Date().toISOString().split("T")[0],
-      //     closedDate: data.closedDate,
-      //     createdBy: "Google",
-      //     salary: data.salary,
-      //     location: data.location,
-      //     field: data.field,
-      //     position: data.position,
-      //     maxApplicants: data.maxApplicants,
-      //     description: data.description,
-      //     status: "active",
-      //     applicants: [],
-      //   }),
-      // });
-      // const res = await response.json();
-      // openConfirmDialog();
-    }
-
-    // const response = await fetch("http://localhost:3000/job/new", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     title: data.title,
-    //     company: "Google",
-    //     logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png",
-    //     createdAt: new Date().toISOString().split("T")[0],
-    //     closedDate: data.closedDate,
-    //     createdBy: "Google",
-    //     salary: data.salary,
-    //     location: data.location,
-    //     field: data.field,
-    //     position: data.position,
-    //     maxApplicants: data.maxApplicants,
-    //     description: data.description,
-    //     status: "active",
-    //     applicants: [],
-    //   }),
-    // });
-    // const res = await response.json();
-    // openConfirmDialog();
-    catch {
-      console.error("Creating job failed");
+    }catch(error) {
+      console.error("Creating job failed:", error.message);
+      const errorMessage = error.response?.data?.message || ' Oops something went wrong! ';
+      toast.error(errorMessage);
     }
   };
   return (

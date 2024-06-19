@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CustomDate from "../../utils/dateUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
+import { request } from '../../utils/request';
 import Axios from "axios";
 import {
   Card,
@@ -19,7 +20,9 @@ import {
 const TABLE_HEAD = ["Job Title", "Created Date", "Status", ""];
 
 function RecruiterJobList() {
+  const {accessToken} = useAuth();
   const [companyCreatedJobs, setCompanyCreatedJobs] = useState([]);
+
   useEffect(() => {
     fetchCreatedJobs();
   }, []);
@@ -27,18 +30,21 @@ function RecruiterJobList() {
   //Fetch job data
   const fetchCreatedJobs = async () => {
     try {
-      const data = {
-        company: "Google",
-      };
-
-      const response = await Axios.post(
-        "http://localhost:3000/job/created",
-        data,
+    console.log(accessToken)
+      const response = await request.get(
+        "/job/created", 
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
         }
+        // data,
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
 
       const responseData = response.data;
@@ -56,7 +62,6 @@ function RecruiterJobList() {
   const [open, setOpen] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState("");
   const openConfirmDialog = (_id) => {
-    console.log("id1", _id);
     setSelectedJobId(_id);
     setOpen(!open);
   };
