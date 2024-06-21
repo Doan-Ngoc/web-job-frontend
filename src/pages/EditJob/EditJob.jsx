@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { useJobContext } from "../../contexts/JobContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
+import { useAuth } from '../../contexts/AuthContext';
+import * as authorizeApi from '../../api/authorize';
+import { request } from '../../utils/request';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
@@ -18,14 +21,39 @@ import {
 const EditJob = () => {
   //Get data of this job
   const { jobId } = useParams();
+  const {accessToken} = useAuth();
+  const [accountId, setAccountId] = useState(null);
   const [jobData, setJobData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    axios.get(`http://localhost:3000/job/${jobId}`).then((response) => {
-      setJobData(response.data);
-      setIsLoading(false);
-    });
-  }, [jobId]);
+    fetchJobData()
+  }, []);
+  //Verify account and get job data
+  const fetchJobData = async () => {
+    try {
+      // const response = await authApi.verifyAccessToken(accessToken);
+      // if (response) {
+      // const fetchedJob = await request.get(`/job/${jobId}`)
+      // if (fetchedJob.data.createdBy === response.user.id) {
+      //   setJobData(fetchedJob.data)
+      // }
+      // else {
+      //   navigate("/error/no-permission")
+      // }
+      // setIsLoading(false)
+      // }
+      const jobData = await authorizeApi.jobCreatorAuthorize(accessToken, jobId)
+      if (jobData) {
+        setJobData(jobData)
+      }
+      else {
+          navigate("/error/no-permission")
+      }
+      setIsLoading(false)
+    } catch (error) {
+      console.error("Error fetching job data:", error);
+    }
+  };
   //Get the job field list
   const { jobFields } = useJobContext()
   //Conditionally rendering the edit page or the restore page
@@ -42,11 +70,10 @@ const EditJob = () => {
   const [open, setOpen] = React.useState(false);
   const openConfirmDialog = () => setOpen(!open);
   const navigate = useNavigate();
-  const backToHomePage = () => {
-    axios.get(`http://localhost:3000/job/${jobId}`).then((response) => {
-      setJobData(response.data);
+  const backToHomePage = async () => {
+    const res = await request.get(`/job/${jobId}`)
+      setJobData(res.data);
       navigate(`/job/${jobId}`);
-    });
   };
   //Submit form
   const handleFormSubmit = async (data) => {
@@ -63,6 +90,7 @@ const EditJob = () => {
       console.error("Updating job failed", error);
     }
   };
+
   return (
     <>
       {isLoading ? ( // Conditional rendering while loading

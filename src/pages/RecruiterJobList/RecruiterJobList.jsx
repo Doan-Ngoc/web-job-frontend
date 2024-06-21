@@ -30,7 +30,6 @@ function RecruiterJobList() {
   //Fetch job data
   const fetchCreatedJobs = async () => {
     try {
-    console.log(accessToken)
       const response = await request.get(
         "/job/created", 
         {
@@ -39,12 +38,6 @@ function RecruiterJobList() {
             'Content-Type': 'application/json'
           }
         }
-        // data,
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
       );
 
       const responseData = response.data;

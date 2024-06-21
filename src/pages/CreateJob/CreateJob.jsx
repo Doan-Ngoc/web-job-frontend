@@ -46,19 +46,10 @@ const CreateJobNews = () => {
       //Account authentication
       const response = await authApi.verifyAccessToken(accessToken);
       if (response.user.role === 'company') {
-        // setCompanyData(prevData => ({
-        //   ...prevData,
-        //   accountId: response.user.id
-        // }))
         companyData.accountId =  response.user.id
       }
       const companyProfile = await companyApi.getCompanyProfile(response.user.id);
       if (companyProfile.data) {
-        // setCompanyData(prevData => ({
-        //   ...prevData,
-        //   companyData.name: companyProfile.data.name,
-        //   companyData.logo: companyProfile.data.logo
-        // }))
           companyData.name = companyProfile.data.name,
           companyData.logo = companyProfile.data.logo
       }
