@@ -54,7 +54,7 @@ const Sidebar = ({ setCurrentPage}) => {
             Create New Job
           </li>
         </Link>
-          <Link to="/profile">
+          <Link to="/my-profile">
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
           <i class="fa fa-user"></i>
             My Profile

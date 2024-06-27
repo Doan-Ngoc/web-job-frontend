@@ -32,8 +32,8 @@ export function ErrorPage() {
           500 - Server error
         </h1>
         <p className="text-slate-600 mt-5 lg:text-lg mb-5">
-          Oops something went wrong. Try to refresh this page or <br /> feel
-          free to contact us if the problem presists.
+          Oops something went wrong. Try to refresh the page or <br /> feel
+          free to contact us if the problem presizts.
         </p>
         <Button variant="outlined" color="purple">
           <Link to="/">Back to home</Link>

@@ -3,6 +3,8 @@ import CustomDate from "../../utils/dateUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 import { request } from '../../utils/request';
+import * as authorizeApi from '../../api/authorize';
+import toast from 'react-hot-toast';
 import Axios from "axios";
 import {
   Card,
@@ -22,10 +24,11 @@ const TABLE_HEAD = ["Job Title", "Created Date", "Status", ""];
 function RecruiterJobList() {
   const {accessToken} = useAuth();
   const [companyCreatedJobs, setCompanyCreatedJobs] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     fetchCreatedJobs();
-  }, []);
+  }, [refresh]);
 
   //Fetch job data
   const fetchCreatedJobs = async () => {
@@ -65,8 +68,15 @@ function RecruiterJobList() {
   //Remove job
   const handleRemoveJob = async (_id) => {
     try {
+      const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, _id)
+      if (validateAccount) {
       await Axios.post(`http://localhost:3000/job/remove/${_id}`);
       setOpen(!open);
+      setRefresh(true)
+      }
+      else {
+        toast.error("Oops something went wrong");
+      }
     } catch (error) {
       console.error("Error removing job:", error);
     }

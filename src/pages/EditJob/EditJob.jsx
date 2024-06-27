@@ -8,6 +8,7 @@ import * as authorizeApi from '../../api/authorize';
 import { request } from '../../utils/request';
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import toast from 'react-hot-toast';
 import {
   Card,
   Input,
@@ -31,17 +32,6 @@ const EditJob = () => {
   //Verify account and get job data
   const fetchJobData = async () => {
     try {
-      // const response = await authApi.verifyAccessToken(accessToken);
-      // if (response) {
-      // const fetchedJob = await request.get(`/job/${jobId}`)
-      // if (fetchedJob.data.createdBy === response.user.id) {
-      //   setJobData(fetchedJob.data)
-      // }
-      // else {
-      //   navigate("/error/no-permission")
-      // }
-      // setIsLoading(false)
-      // }
       const jobData = await authorizeApi.jobCreatorAuthorize(accessToken, jobId)
       if (jobData) {
         setJobData(jobData)
@@ -78,14 +68,20 @@ const EditJob = () => {
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
-      const response = await axios.put(
-        `http://localhost:3000/job/update/${jobId}`,
+      const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, jobId)
+      if (validateAccount) {
+      const response = await request.put(
+        `/job/update/${jobId}`,
         {
           ...jobData,
           ...data,
         }
       );
       openConfirmDialog();
+    }
+    else {
+      toast.error("Oops something went wrong");
+    }
     } catch (error) {
       console.error("Updating job failed", error);
     }

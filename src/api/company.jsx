@@ -5,8 +5,8 @@ export const getCompanyProfile = async (accountId) => {
   return response;
 };
 
-export const createCompanyProfile = async (profile, { headers }) => {
-  const response = await request.post('/company/profile/new', profile, { headers });
+export const createCompanyProfile = async (profile) => {
+  const response = await request.post('/company/profile/new', profile);
   return response;
 };
 

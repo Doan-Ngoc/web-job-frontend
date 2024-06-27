@@ -18,14 +18,15 @@ import { useJobContext } from '../../contexts/JobContext';
 
 function NewCompanyProfile() {
   const location = useLocation();
-  const { accountId} = location.state || ""; 
+  const {signUpData} = location.state || ""; 
+  const [accountId, setAccountId] = useState()
   useEffect(() => {
-    if (!accountId) {
+    if (!signUpData) {
       navigate('/error/500'); 
     }
-  }, [accountId]);
+  }, []);
   const { jobFields } = useJobContext();
-  const { accessToken } = useAuth();
+  // const { accessToken } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -36,26 +37,28 @@ function NewCompanyProfile() {
     resolver: yupResolver(companySchema),
   });
   
-
   const onSubmit = async (data) => {
-    const newProfileData = { ...data, 
-      accountId,
-      logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" 
-    }
     try {
-      await companyApi.createCompanyProfile(
-        newProfileData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
+        const response = await authApi.signup(signUpData);
+        const newProfileData = { ...data, 
+          accountId: response.data.id,
+          logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" 
         }
+        console.log('new profile data',newProfileData)
+        const res = await companyApi.createCompanyProfile(
+        newProfileData,
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //     'Content-Type': 'application/json'
+        //   }
+        // }
       );
       toast.success('Successfully created a company profile!');
-      navigate('/profile')
+      navigate(`/signin`);
     } 
     catch (err) {
+      console.log(err);
       const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
       toast.error(errorMessage);
     }

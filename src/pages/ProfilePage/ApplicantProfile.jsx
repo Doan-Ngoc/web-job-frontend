@@ -1,14 +1,54 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import * as applicantApi from '../../api/applicant'
+import {Button} from "@material-tailwind/react";
 
-
-const ApplicantProfile = () => {
+const ApplicantProfile = ({accountId}) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { profile } = location.state || {}; 
-  console.log('profile data', profile)
+  const [isLoading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const { accountId: paramAccountId } = useParams();
+  const [applicantId, setApplicantId] = useState();
+  // const location = useLocation();
+  // const { profile } = location.state || {}; 
+
+  const fetchProfile = async () => {
+    try {
+      const res = await applicantApi.getApplicantProfile(applicantId);
+      if (res.data) {
+        setProfile(res.data);
+      }
+    } catch (err) {
+      console.log(err)
+      navigate("/error/500")
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (accountId) {
+      setApplicantId(accountId);
+    } else if (paramAccountId) {
+      setApplicantId(paramAccountId);
+    } else {
+      navigate("/error/404");
+    }
+  }, [accountId, paramAccountId]);
+
+  useEffect(() => {
+    if (!applicantId) return;
+    fetchProfile();
+  }, [applicantId]);
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
+    <>
     <div className="company-profile grow flex flex-col items-center justify-center">
       <header className="hero h-80  bg-[#e7e8ff]">
             <div className="hero-content w-full px-8 flex items-center justify-center gap-24 ">
@@ -44,6 +84,15 @@ const ApplicantProfile = () => {
             {profile.description}
           </main>
     </div>
+    {accountId ? (
+      <Button
+      className="btn mt-10 mx-auto text-black text-base font-medium w-1/3 bg-[#ffce00] hover:bg-[#ffce00]">
+      Edit Profile
+    </Button>
+    ) : (
+      null
+    )}
+    </>
   )
 }
 

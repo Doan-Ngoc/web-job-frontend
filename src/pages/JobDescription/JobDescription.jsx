@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import "./JobDescription.css";
 import { useParams } from "react-router-dom";
 import CustomDate from "../../utils/dateUtils";
 
 const JobDescription = () => {
+  const navigate = useNavigate();
   const { jobId } = useParams();
   const [jobData, setJobData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -27,10 +29,11 @@ const JobDescription = () => {
                 <img src={jobData.logo} className=" rounded-lg" />
               </div>
               <div className="w-full">
-                <h1 className="text-3xl font-bold text-left pl-4">
-                  {jobData.company}
+                <h1 className="text-3xl font-bold text-left pl-4"
+                >
+                  {jobData.title}
                 </h1>
-                <p className="text-xl py-6 text-left pl-4">{jobData.title}</p>
+                <p onClick={() => navigate(`/profile/company/${jobData.createdBy}`)} className="cursor-pointer text-xl py-6 text-left pl-4" >{jobData.company}</p>
                 <ul className="grid grid-cols-2 gap-4 text-lg text-left">
                   <li className="opacity-70 flex gap-2 ">
                     <ion-icon className="icon" name="time"></ion-icon>

@@ -28,6 +28,7 @@ const defaultAccountValue = {
 };
 
 export function Signup() {
+  const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const {
     register,
@@ -41,34 +42,32 @@ export function Signup() {
     mode: 'onSubmit'
   });
 
-  // const navigate = useNavigate();
-  // const authState = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   if (authState.isLogined) {
-  //     navigate('/');
-  //   }
-  // });
-
   const onSubmit = async (data) => {
-    try {
-      const response = await authApi.signup(data);
-      toast.success('Successfully signed up');
-      navigate(`/signin`);
-      
-    } catch (err) {
-      if (err?.response?.status == HttpStatusCode.BadRequest) {
-        console.log(err.response);
-        const { field, message } = err.response.data;
-        setError(field, {
-          type: 'server response',
-          message,
-        });
-      } else {
-        toast.error('Opps! There are issues with the sign up process!');
-      }
+    console.log(data)
+    if (data.role === "company") {
+      navigate(`/profile/company/create`, { state: { signUpData: data } })
     }
-  };
+  }
+
+    
+    // try {
+    //   const response = await authApi.signup(data);
+    //   toast.success('Successfully signed up');
+    //   navigate(`/signin`);
+      
+    // } catch (err) {
+    //   if (err?.response?.status == HttpStatusCode.BadRequest) {
+    //     console.log(err.response);
+    //     const { field, message } = err.response.data;
+    //     setError(field, {
+    //       type: 'server response',
+    //       message,
+    //     });
+    //   } else {
+    //     toast.error('Opps! There are issues with the sign up process!');
+    //   }
+    // }
+  // };
 
   if (isLoggedIn) {
     return <AlreadyLogin />;
