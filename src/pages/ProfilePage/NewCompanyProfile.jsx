@@ -20,11 +20,6 @@ function NewCompanyProfile() {
   const location = useLocation();
   const {signUpData} = location.state || ""; 
   const [accountId, setAccountId] = useState()
-  useEffect(() => {
-    if (!signUpData) {
-      navigate('/error/500'); 
-    }
-  }, []);
   const { jobFields } = useJobContext();
   // const { accessToken } = useAuth();
   const navigate = useNavigate();
@@ -37,6 +32,12 @@ function NewCompanyProfile() {
     resolver: yupResolver(companySchema),
   });
   
+  useEffect(() => {
+    if (!signUpData) {
+      navigate('/error/500'); 
+    }
+  }, []);
+
   const onSubmit = async (data) => {
     try {
         const response = await authApi.signup(signUpData);
@@ -44,15 +45,8 @@ function NewCompanyProfile() {
           accountId: response.data.id,
           logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png" 
         }
-        console.log('new profile data',newProfileData)
         const res = await companyApi.createCompanyProfile(
         newProfileData,
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //     'Content-Type': 'application/json'
-        //   }
-        // }
       );
       toast.success('Successfully created a company profile!');
       navigate(`/signin`);

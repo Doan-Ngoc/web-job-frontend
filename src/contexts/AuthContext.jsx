@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
     if (accessToken) {
       const response = await authApi.verifyAccessToken(accessToken);
       if (response) {
-        console.log('auth context run')
         setIsLoggedIn(true);
         localStorage.setItem('login status', true);
         setAccountRole(response.user.role)

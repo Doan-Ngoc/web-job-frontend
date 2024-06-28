@@ -12,10 +12,12 @@ const JobItem = (props) => {
         </div>
       </div>
       <div className="flex-1 flex flex-col gap-1 text-left">
-        <p className="text-xl font-bold">{jobData.company}</p>
-        <Link to={`/job/${jobData._id}`}>
-          <p className="font-semibold">{jobData.title}</p>
+      <Link to={`/job/${jobData._id}`}>
+        <p className="text-xl font-bold">{jobData.title}</p>
         </Link>
+        <Link to={`/profile/company/${jobData.createdBy}`}>
+          <p className="font-semibold">{jobData.company}</p>
+          </Link>
         <p className="opacity-50">{jobData.location}</p>
       </div>
       <div className="flex-1 text-left flex flex-col gap-1 py-auto py-3">

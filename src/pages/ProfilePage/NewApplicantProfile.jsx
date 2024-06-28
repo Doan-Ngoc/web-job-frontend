@@ -10,6 +10,7 @@ import * as companyApi from '../../api/company';
 import * as authApi from '../../api/authenticate'
 import * as applicantApi from '../../api/applicant'
 import { HttpStatusCode } from 'axios';
+import { request } from '../../utils/request';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
@@ -19,10 +20,9 @@ import { useJobContext } from '../../contexts/JobContext';
 
 export default function NewApplicantProfile() {
   const location = useLocation();
-  const { accountId} = location.state || ""; 
+  const {signUpData} = location.state || ""; 
   const { jobFields } = useJobContext();
   const navigate = useNavigate();
-  const { accessToken } = useAuth();
   const {
     register,
     handleSubmit,
@@ -35,25 +35,43 @@ export default function NewApplicantProfile() {
     },
   });
 
+  useEffect(() => {
+    if (!signUpData) {
+      navigate('/error/500'); 
+    }
+  }, []);
+
   const onSubmit = async (data) => {
-    const newProfileData = { ...data, 
-      accountId,
-      profilePicture: "https://e7.pngegg.com/pngimages/213/828/png-clipart-facebook-logo-facebook-messenger-logo-social-media-icon-facebook-icon-blue-text-thumbnail.png" }
-    // console.log("data", newProfileData)
     try {
-      await applicantApi.createApplicantProfile(
-        newProfileData,
-        {
+    //   // formData.append("profilePicture", data.profilePicture[0])
+    //   console.log('profilePicture', data.profilePicture[0])
+      const response = await authApi.signup(signUpData);
+      const formData = new FormData();
+    formData.append('profilePicture', data.profilePicture[0]); 
+    formData.append('accountId', response.data.id)
+    Object.keys(data).forEach((key) => {
+      if (key !== 'profilePicture') {
+        formData.append(key, data[key]);
+      }
+    });
+    //   const newProfileData = { ...data, 
+    //     profilePicture: data.profilePicture[0]
+    // //     accountId: response.data.id,
+    // }
+      // const res = await applicantApi.createApplicantProfile(formData);
+      const res = await request.post('/applicant/profile/new',   formData, 
+          {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'multipart/form-data'
           }
         }
       );
+      // console.log('File upload response:', response.data);
       toast.success('Your profile is created!');
-      navigate('/profile')
+    //   navigate(`/signin`);
     } 
     catch (err) {
+      console.error("Signing up failed", err.message);
       const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
       toast.error(errorMessage);
     }
@@ -64,9 +82,13 @@ export default function NewApplicantProfile() {
     <FormWrapper
       title="New Applicant Profile"
       description="Tell us more about yourself"
+      // encType="multipart/form-data"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-6 ">
+      <InputWrapper error={errors.profilePicture}>
+          <Input size="lg" type="file" label="Profile Picture" {...register('profilePicture')} />
+        </InputWrapper>
       <InputWrapper error={errors.name}>
           <Input size="lg" type="text" label="Full Name" {...register('name')} />
         </InputWrapper>

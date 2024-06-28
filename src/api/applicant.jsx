@@ -5,9 +5,14 @@ export const getApplicantProfile = async (accountId) => {
   return response;
 };
 
-export const createApplicantProfile = async (profileData, { headers }) => {
-  console.log('a')
-  const response = await request.post('/applicant/profile/new', profileData, { headers });
+export const createApplicantProfile = async (profileData) => {
+  const response = await request.post('/applicant/profile/new', profileData, 
+  //   {
+  //   headers: {
+  //     'Content-Type': 'multipart/form-data'
+  //   }
+  // }
+);
   
   return response;
 };

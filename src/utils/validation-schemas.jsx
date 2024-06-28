@@ -49,6 +49,16 @@ export const companySchema = yup.object().shape({
 });
 
 export const applicantSchema = yup.object().shape({
+  profilePicture: yup
+  .mixed()
+  .required('Profile picture is required')
+  .test('fileSize', 'File is too large', (value) => {
+    // console.log('photosize', value[0])
+    return value && value[0].size <= 1000000; 
+  })
+  .test('fileType', 'Unsupported file format', (value) => {
+    return value && ['image/jpeg', 'image/png'].includes(value[0].type);
+  }),
   name: yup.string()
   .required("Please enter your name")
   .max(200, "Your company name must be at most 200 characters"),

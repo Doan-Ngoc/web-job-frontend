@@ -64,7 +64,6 @@ const CreateJobNews = () => {
         location: data.location,
         field: data.field,
         position: data.position,
-        maxApplicants: data.maxApplicants,
         description: data.description,
         status: "active",
         applicants: [],
@@ -170,18 +169,6 @@ const CreateJobNews = () => {
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Expected Number of Applicants
           </Typography>
-          <Input
-            type="number"
-            min="1"
-            max="1000"
-            size="lg"
-            className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            required
-            {...register("maxApplicants")}
-          />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Description
           </Typography>

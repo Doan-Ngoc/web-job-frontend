@@ -47,27 +47,10 @@ export function Signup() {
     if (data.role === "company") {
       navigate(`/profile/company/create`, { state: { signUpData: data } })
     }
+    else if (data.role === "applicant") {
+      navigate(`/profile/applicant/create`, { state: { signUpData: data } })
+    }
   }
-
-    
-    // try {
-    //   const response = await authApi.signup(data);
-    //   toast.success('Successfully signed up');
-    //   navigate(`/signin`);
-      
-    // } catch (err) {
-    //   if (err?.response?.status == HttpStatusCode.BadRequest) {
-    //     console.log(err.response);
-    //     const { field, message } = err.response.data;
-    //     setError(field, {
-    //       type: 'server response',
-    //       message,
-    //     });
-    //   } else {
-    //     toast.error('Opps! There are issues with the sign up process!');
-    //   }
-    // }
-  // };
 
   if (isLoggedIn) {
     return <AlreadyLogin />;
