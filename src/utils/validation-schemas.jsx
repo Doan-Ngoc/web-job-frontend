@@ -51,13 +51,14 @@ export const companySchema = yup.object().shape({
 export const applicantSchema = yup.object().shape({
   profilePicture: yup
   .mixed()
-  .required('Profile picture is required')
-  .test('fileSize', 'File is too large', (value) => {
-    // console.log('photosize', value[0])
-    return value && value[0].size <= 1000000; 
+  // .required('Profile picture is required')
+  .test('fileSize', 'File is too large. Please upload a file smaller than 3MB.', (value) => {
+    if (!value[0]) return true; // No file uploaded or empty file input
+    return value[0].size <= 3000000;
   })
-  .test('fileType', 'Unsupported file format', (value) => {
-    return value && ['image/jpeg', 'image/png'].includes(value[0].type);
+  .test('fileType', 'Only JPEG and PNG formats are supported.', (value) => {
+    if (!value[0]) return true;
+    return ['image/jpeg', 'image/png'].includes(value[0].type);
   }),
   name: yup.string()
   .required("Please enter your name")

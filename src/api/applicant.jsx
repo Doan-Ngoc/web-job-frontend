@@ -13,6 +13,5 @@ export const createApplicantProfile = async (profileData) => {
   //   }
   // }
 );
-  
   return response;
 };
