@@ -43,23 +43,18 @@ export default function NewApplicantProfile() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await authApi.signup(signUpData);
+      // const response = await authApi.signup(signUpData);
       const formData = new FormData();
       formData.append('profilePicture', data.profilePicture[0]);
-      formData.append('accountId', response.data.id)
+      formData.append('applicantCV', data.applicantCV[0]);
+      // formData.append('accountId', response.data.id)
       Object.keys(data).forEach((key) => {
-        if (key !== 'profilePicture') {
+        if (key !== 'profilePicture' && key !== 'applicantCV') {
           formData.append(key, data[key]);
         }
       });
-      const res = applicantApi.createApplicantProfile(formData)
-        // {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data'
-        //   }
-        // }
-      // );
-      toast.success('Your profile is created!');
+      const res = await applicantApi.createApplicantProfile(formData)
+        toast.success('Your profile is created!');
     }
     catch (err) {
       console.error("Signing up failed", err.message);
@@ -125,6 +120,10 @@ export default function NewApplicantProfile() {
             label="Self Introduction"
             {...register('description')}
           />
+        </InputWrapper>
+        <InputWrapper error={errors.applicantCV}>
+        <label className="pb-2">Upload your CV:</label>
+          <Input size="lg" type="file" {...register('applicantCV')} />
         </InputWrapper>
       </div>
       <Button type="submit" className="mt-6" fullWidth>

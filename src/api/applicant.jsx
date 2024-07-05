@@ -7,11 +7,11 @@ export const getApplicantProfile = async (accountId) => {
 
 export const createApplicantProfile = async (profileData) => {
   const response = await request.post('/applicant/profile/new', profileData, 
-  //   {
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data'
-  //   }
-  // }
+    {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
 );
   return response;
 };

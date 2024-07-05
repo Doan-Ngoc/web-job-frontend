@@ -51,7 +51,6 @@ export const companySchema = yup.object().shape({
 export const applicantSchema = yup.object().shape({
   profilePicture: yup
   .mixed()
-  // .required('Profile picture is required')
   .test('fileSize', 'File is too large. Please upload a file smaller than 3MB.', (value) => {
     if (!value[0]) return true; // No file uploaded or empty file input
     return value[0].size <= 3000000;
@@ -75,5 +74,15 @@ export const applicantSchema = yup.object().shape({
   .max(3, "You can select up to three working fields"),
   description: yup.string().required("Please give a brief description about yourself")
   .min(10, "Your description must be at least 10 characters")
-  .max(1000, "Your description must be at most 1000 characters")
+  .max(1000, "Your description must be at most 1000 characters"),
+  applicantCV: yup
+  .mixed()
+  .test('fileSize', 'File is too large. Please upload a file smaller than 3MB.', (value) => {
+    if (!value[0]) return true; // No file uploaded or empty file input
+    return value[0].size <= 3000000;
+  })
+  .test('fileType', 'Only PDF format is supported.', (value) => {
+    if (!value[0]) return true;
+    return ['application/pdf'].includes(value[0].type);
+  })
 });
