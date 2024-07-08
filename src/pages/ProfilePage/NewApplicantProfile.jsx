@@ -1,4 +1,5 @@
-import { Button, Input, Textarea, Card, Typography } from '@material-tailwind/react';
+import {
+  Button, Input, Textarea, Card, Typography, Dialog, DialogBody, DialogFooter} from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,20 +32,27 @@ export default function NewApplicantProfile() {
   } = useForm({
     resolver: yupResolver(applicantSchema),
     defaultValues: {
-      workingFields: [], // Set default value as an empty array
+      workingFields: [],
     },
   });
-
+  // If data was not passed from the Signup page
   useEffect(() => {
     if (!signUpData) {
       navigate('/error/500');
     }
   }, []);
 
+  ////Open dialog when click button
+  const [open, setOpen] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState(null);
+  const openErrorDialog = () => setOpen(!open);
+
+  //Declare variables for displaying photo
   const [profilePic, setProfilePic] = useState("http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg");
   const photoInputRef = useRef(null);
   const [photoUploaded, setphotoUploaded] = useState(false);
 
+  //Display default avatar if user removes uploaded photo
   const handlePhotoRemove = () => {
     setProfilePic("http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg");
     setphotoUploaded(false);
@@ -55,43 +63,51 @@ export default function NewApplicantProfile() {
 
   const onSubmit = async (data) => {
     try {
-      // const response = await authApi.signup(signUpData);
-      console.log('submitted', data)
+      const response = await authApi.signup(signUpData);
       const formData = new FormData();
-      console.log('come here', data.profilePicture)
-      if (photoUploaded && data.profilePicture && data.profilePicture[0]) {
-        formData.append('profilePicture', data.profilePicture[0]);
+      if (data.profilePicture[0]) {
+        // formData.append('profilePicture', data.profilePicture[0]);
+        const file = data.profilePicture[0];
+        const newFileName = `photo_${response.data.id}${file.name.slice(file.name.lastIndexOf('.'))}`;
+        const renamedFile = new File([file], newFileName, { type: file.type });
+        formData.append('profilePicture', renamedFile);
       }
-      formData.append('applicantCV', data.applicantCV[0]);
-      console.log('photo', data.profilePicture[0])
-      // formData.append('accountId', response.data.id)
+      if (data.applicantCV[0]) {
+        const file = data.applicantCV[0];
+        const newFileName = `cv_${response.data.id}${file.name.slice(file.name.lastIndexOf('.'))}`;
+        const renamedFile = new File([file], newFileName, { type: file.type });
+        formData.append('applicantCV', renamedFile);
+      // formData.append('applicantCV', data.applicantCV[0]);
+      }
+      formData.append('accountId', response.data.id)
       Object.keys(data).forEach((key) => {
         if (key !== 'profilePicture' && key !== 'applicantCV') {
           formData.append(key, data[key]);
         }
       });
-      const res = await applicantApi.createApplicantProfile(formData)
-      toast.success('Your profile is created!');
+      try {
+        const res = await applicantApi.createApplicantProfile(formData);
+        toast.success('Your profile is created!');
+        // navigate(`/signin`);
+      } catch (err) {
+        console.error("Creating applicant profile failed", err.message);
+        const errorMessage = err.response?.data?.message || 'Oops something went wrong!';
+        toast.error(errorMessage);
+      }
     }
     catch (err) {
       console.error("Signing up failed", err.message);
-      const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
-      toast.error(errorMessage);
+      const errorMessage = err.response?.data?.message || 'Oops something went wrong!';
+      setAuthErrorMessage(errorMessage);
+      openErrorDialog()
     }
   }
-
   return (
     <div className="w-screen flex items-center justify-center">
       <Card color="transparent" className="items-center p-12 shadow-2xl">
         <form
           className="mt-8 mb-2 sm:w-96 flex-col justify-evenly gap-2"
           onSubmit={handleSubmit(onSubmit)} >
-          {/* <FormWrapper
-      title="New Applicant Profile"
-      description="Tell us more about yourself"
-      // encType="multipart/form-data"
-      onSubmit={handleSubmit(onSubmit)}
-    > */}
           <div className="mb-8">
             <Typography variant="h4" color="blue-gray" className="text-center">
               New Applicant Profile
@@ -106,43 +122,36 @@ export default function NewApplicantProfile() {
               alt="Profile Picture"
               // src="http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg" 
               className="w-44 h-44 rounded-full my-6 object-cover" />
-            {/* <Button className="w-30"> */}
             {photoUploaded ?
               (<button
                 className="btn text-white text-xs bg-black hover:bg-black"
                 type='button'
                 onClick={handlePhotoRemove}>
                 Remove photo
-              </button>) 
+              </button>)
               : (<label for="photoInput" className='btn text-white text-xs bg-black hover:bg-black cursor-pointer'>
                 Upload photo</label>)
             }
-            {/* </Button> */}
+            <p>JPG or PNG. (Max 3MB)</p>
             <input type="file" id="photoInput" accept="image/jpeg, image/jpg, image/png"
               ref={photoInputRef}
               {...register('profilePicture', {
+                //Display chosen photo on img tag
                 onChange: (e) => {
                   const file = e.target.files[0];
                   if (file) {
                     setProfilePic(URL.createObjectURL(file))
-                    setphotoUploaded(true)}
+                    setphotoUploaded(true)
+                  }
                 }
               })}
               hidden />
-              {errors.profilePicture && (
-            <div className="text-red-500 text-sm w-full pl-2 mb-2">
-              {errors.profilePicture.message || ' '}
-            </div>
-          )}
-            {/* <div className="text-red-500 text-sm w-full h-1 pl-2">
-              {errors.profilePicture || ' '}
-            </div> */}
+            {errors.profilePicture && (
+              <div className="text-red-500 text-sm w-full pl-2 mb-2">
+                {errors.profilePicture.message || ' '}
+              </div>
+            )}
           </div>
-          
-          {/* <InputWrapper error={errors.profilePicture}>
-          <Input size="lg" type="file" label="Profile Picture" {...register('profilePicture')} />
-        <p className="pl-2">JPG or PNG. (Max 3MB)</p>
-        </InputWrapper>  */}
           <InputWrapper error={errors.name}>
             <Input size="lg" type="text" label="Full Name" {...register('name')} />
           </InputWrapper>
@@ -196,9 +205,29 @@ export default function NewApplicantProfile() {
           <Button type="submit" className="mt-6" fullWidth>
             Create Profile
           </Button>
-          {/* </FormWrapper> */}
         </form>
       </Card>
+
+      {authErrorMessage && <Dialog
+        open={open}
+        size="xs"
+        // handler={openErrorDialog}
+        className="w-44"
+      >
+        <DialogBody className="font-medium text-lg text-center ">
+          {authErrorMessage}
+        </DialogBody>
+        <DialogFooter className="flex justify-center">
+          <Button
+            className="bg-[#ffce00] text-black font-medium"
+            color="black"
+            onClick={() => navigate("/signup")}
+          >
+            <span>OK</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      }
     </div>
   )
 }

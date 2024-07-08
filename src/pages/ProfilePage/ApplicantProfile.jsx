@@ -49,11 +49,11 @@ const ApplicantProfile = ({accountId}) => {
 
   return (
     <>
-    <div className="company-profile grow flex flex-col items-center justify-center">
+    <div className="company-profile grow flex flex-col items-center justify-center px-8">
       <header className="hero h-80  bg-[#e7e8ff]">
             <div className="hero-content w-full px-8 flex items-center justify-center gap-24 ">
               <div className="company-logo w-40 ">
-                <img src={profile.profilePicture} className=" rounded-lg" />
+                <img src={`http://localhost:3000/uploads/${profile.profilePicture}`}  className="w-44 h-44 rounded-full object-cover" />
               </div>
               <div className="">
                 <h1 className="text-2xl font-bold py-6 text-left pl-4">{profile.name}</h1>
@@ -78,7 +78,7 @@ const ApplicantProfile = ({accountId}) => {
           </header>
 
           <main
-            className="p-8 text-justify text-lg "
+            className="p-8 text-justify text-lg bg-white w-full rounded-lg"
             style={{ whiteSpace: "pre-line" }}
           >
             {profile.description}
