@@ -42,19 +42,20 @@ export default function NewApplicantProfile() {
     }
   }, []);
 
-  ////Open dialog when click button
+  //Open dialog for signup error message
   const [open, setOpen] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState(null);
   const openErrorDialog = () => setOpen(!open);
 
   //Declare variables for displaying photo
-  const [profilePic, setProfilePic] = useState("http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg");
+  const defaultAvatar = "http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg"
+  const [profilePic, setProfilePic] = useState(defaultAvatar);
   const photoInputRef = useRef(null);
   const [photoUploaded, setphotoUploaded] = useState(false);
 
   //Display default avatar if user removes uploaded photo
   const handlePhotoRemove = () => {
-    setProfilePic("http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg");
+    setProfilePic(defaultAvatar);
     setphotoUploaded(false);
     if (photoInputRef.current) {
       photoInputRef.current.value = null;
@@ -87,8 +88,8 @@ export default function NewApplicantProfile() {
       });
       try {
         const res = await applicantApi.createApplicantProfile(formData);
-        toast.success('Your profile is created!');
-        // navigate(`/signin`);
+        toast.success('Your profile is created successfully!');
+        navigate(`/signin`);
       } catch (err) {
         console.error("Creating applicant profile failed", err.message);
         const errorMessage = err.response?.data?.message || 'Oops something went wrong!';
@@ -132,7 +133,7 @@ export default function NewApplicantProfile() {
               : (<label for="photoInput" className='btn text-white text-xs bg-black hover:bg-black cursor-pointer'>
                 Upload photo</label>)
             }
-            <p>JPG or PNG. (Max 3MB)</p>
+            <p>JPG, JPEG or PNG. (Max 3MB)</p>
             <input type="file" id="photoInput" accept="image/jpeg, image/jpg, image/png"
               ref={photoInputRef}
               {...register('profilePicture', {

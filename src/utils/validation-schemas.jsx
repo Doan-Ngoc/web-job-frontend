@@ -27,6 +27,20 @@ export const userSigninSchema = yup.object().shape({
 });
 
 export const companySchema = yup.object().shape({
+  companyLogo: yup
+  .mixed()
+  .required("Please upload your company logo")
+  .test('fileUploaded', 'Please upload your company logo.', (value) => {
+    return value && value.length > 0;
+  })
+  .test('fileSize', 'File is too large. Please upload a file smaller than 3MB.', (value) => {
+    if (!value[0]) return true; // No file uploaded or empty file input
+    return value[0].size <= 3000000;
+  })
+  .test('fileType', 'Only JPG, JPEG and PNG formats are supported.', (value) => {
+    if (!value[0]) return true;
+    return ['image/jpg', 'image/jpeg', 'image/png'].includes(value[0].type);
+  }),
   name: yup.string()
   .required("Please enter your company name")
   .max(200, "Your company name must be at most 200 characters"),
@@ -55,7 +69,7 @@ export const applicantSchema = yup.object().shape({
     if (!value[0]) return true; // No file uploaded or empty file input
     return value[0].size <= 3000000;
   })
-  .test('fileType', 'Only JPEG and PNG formats are supported.', (value) => {
+  .test('fileType', 'Only JPG, JPEG and PNG formats are supported.', (value) => {
     if (!value[0]) return true;
     return ['image/jpeg', 'image/png'].includes(value[0].type);
   }),
