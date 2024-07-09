@@ -84,14 +84,12 @@ const ApplicantProfile = ({accountId}) => {
             {profile.description}
           </main>
     </div>
-    {accountId ? (
-      <Button
+      <a href={`http://localhost:3000/applicant/download/${profile.applicantCV}`} download>
+      <Button  
       className="btn mt-10 mx-auto text-black text-base font-medium w-1/3 bg-[#ffce00] hover:bg-[#ffce00]">
-      Edit Profile
+      Download CV
     </Button>
-    ) : (
-      null
-    )}
+    </a>
     </>
   )
 }
