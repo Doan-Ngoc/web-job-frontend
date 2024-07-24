@@ -47,7 +47,6 @@ export function Signin() {
     try {
       setLoading(true);
       const response = await authApi.signin(data);
-      // dispatch(authActions.login(response.data));
       localStorage.setItem('accessToken', response.data.accessToken);
       setAccessToken(localStorage.getItem('accessToken'))
       setIsLoggedIn(true);

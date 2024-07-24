@@ -5,13 +5,14 @@ import Homepage from './pages/Homepage/Homepage';
 import Sidebar from './components/Sidebar/Sidebar';
 import ProtectedRoute from './components/ProtectedRoutes';
 import CompanyOnly from './components/CompanyOnly';
+import ApplicantOnly from './components/ApplicantOnly';
 import JobDescription from './pages/JobDescription/JobDescription';
 import { JobProvider } from './contexts/JobContext';
 import { AuthProvider } from './contexts/AuthContext';
 import SearchPage from './pages/SearchPage/SearchPage';
 import CreateJob from './pages/CreateJob/CreateJob';
-import jobFields from '../jobFields.json';
 import RecruiterJobList from './pages/RecruiterJobList/RecruiterJobList';
+import ManageApplications from './pages/ManageApplications/ManageApplications';
 import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
@@ -58,6 +59,9 @@ function App() {
               <Route path="/job/new" element={<CreateJob />} />
               <Route path="/job/edit/:jobId" element={<EditJob />} />
               <Route path="/job/restore/:jobId" element={<EditJob />} />
+              </Route>
+              <Route element={<ApplicantOnly />}>
+              <Route path="/job/applied" element={<ManageApplications />} />
               </Route>
             </Route>
             <Route path="/job/:jobId" element={<JobDescription />} />

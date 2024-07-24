@@ -5,12 +5,12 @@ import { toast } from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { useEffect } from 'react';
 
-const CompanyOnly = () => {
+const ApplicantOnly = () => {
   const navigate = useNavigate();
   const {accountRole, isLoggedIn} = useAuth();
 
-  return accountRole === "company" ? <Outlet /> : <Navigate to="/error/no-permission" />;
+  return accountRole === "applicant" ? <Outlet /> : <Navigate to="/error/no-permission" />;
   
 }
 
-export default CompanyOnly
+export default ApplicantOnly

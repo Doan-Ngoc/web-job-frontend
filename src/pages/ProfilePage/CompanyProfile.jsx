@@ -68,7 +68,7 @@ const CompanyProfile = ({accountId}) => {
       <header className="hero h-80  bg-[#e7e8ff]">
         <div className="hero-content w-full px-8 flex items-center justify-center gap-24 ">
           <div className="company-logo w-40 ">
-            <img src={profile.logo} className=" rounded-lg" />
+            <img src={`http://localhost:3000/uploads/${profile.logo}`} alt="Company Logo" className="w-44 h-44 rounded-full object-cover" />
           </div>
           <div className="">
             {/* <h1 className="text-3xl font-bold text-left pl-4">
@@ -108,14 +108,14 @@ const CompanyProfile = ({accountId}) => {
       {/* )
 } */}
     </div>
-    {accountId ? (
+    {/* {accountId ? (
       <Button
       className="btn mt-10 mx-auto text-black text-base font-medium w-1/3 bg-[#ffce00] hover:bg-[#ffce00]">
       Edit Profile
     </Button>
     ) : (
       null
-    )}
+    )} */}
     </>
   )
 }

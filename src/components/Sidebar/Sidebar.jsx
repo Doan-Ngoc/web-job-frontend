@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import * as authApi from '../../api/authenticate';
 
 const Sidebar = ({ setCurrentPage}) => {
-  const { isLoggedIn, setIsLoggedIn, setAccessToken } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, setAccessToken, accountRole } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -42,7 +42,8 @@ const Sidebar = ({ setCurrentPage}) => {
         
         {isLoggedIn ? (
           <div>
-          <Link to="/job/created">
+          {/* <Link to="/job/created"> */}
+          <Link to={accountRole === 'applicant' ? '/job/applied' : '/job/created'}>
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
             <ion-icon name="briefcase"></ion-icon>
             Manage Jobs

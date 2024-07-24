@@ -15,3 +15,17 @@ export const createApplicantProfile = async (profileData) => {
 );
   return response;
 };
+
+export const sendApllication = async (accessToken, jobId) => {
+  const response = await request.patch(`/applicant/apply/${jobId}`, 
+    {},
+    {
+    headers: {
+     'Authorization': `Bearer ${accessToken}`
+    }
+  }
+);
+  return response;
+};
+
+

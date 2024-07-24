@@ -30,6 +30,9 @@ function NewCompanyProfile() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(companySchema),
+    defaultValues: {
+      companyIndustries: [],
+    },
   });
 
   useEffect(() => {
@@ -82,12 +85,16 @@ function NewCompanyProfile() {
   const onSubmit = async (data) => {
     try {
       const response = await authApi.signup(signUpData);
+      console.log(data.companyIndustries)
       const formData = new FormData();
+      console.log('data.companyLogo[0]', data.companyLogo[0])
       if (data.companyLogo[0]) {
         // formData.append('profilePicture', data.profilePicture[0]);
         const file = data.companyLogo[0];
         const newFileName = `photo_${response.data.id}${file.name.slice(file.name.lastIndexOf('.'))}`;
+        // const newFileName = `photo_1_${file.name.slice(file.name.lastIndexOf('.'))}`;
         const renamedFile = new File([file], newFileName, { type: file.type });
+        console.log('renamed file ', renamedFile)
         formData.append('companyLogo', renamedFile);
       }
       formData.append('accountId', response.data.id)
@@ -96,10 +103,11 @@ function NewCompanyProfile() {
           formData.append(key, data[key]);
         }
       });
+      console.log('formData', formData)
       try {
         const res = await companyApi.createCompanyProfile(formData);
         toast.success('Your profile is created successfully!');
-        // navigate(`/signin`);
+        navigate(`/signin`);
       } catch (err) {
         console.error("Creating company profile failed", err.message);
         const errorMessage = err.response?.data?.message || 'Oops something went wrong!';

@@ -8,7 +8,7 @@ const JobItem = (props) => {
     <article className="h-36 flex gap-12 py-4 px-10 rounded-xl shadow-md bg-[#fff] text-lg">
       <div className="w-24 h-24 bg-white avatar">
         <div className="w-24 h-24 rounded-lg">
-          <img src={jobData.logo} alt="Avatar" />
+        <img src={`http://localhost:3000/uploads/${jobData.logo}`} alt="Company Logo" className="w-44 h-44 rounded-full object-cover" />
         </div>
       </div>
       <div className="flex-1 flex flex-col gap-1 text-left">
