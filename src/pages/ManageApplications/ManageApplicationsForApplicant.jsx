@@ -21,7 +21,7 @@ import {
 
 const TABLE_HEAD = ["Job Title", "Company", "Applied Date", "Status", ""];
 
-function ManageApplications() {
+function ManageApplicationsForApplicant() {
   const {accessToken, accountId} = useAuth();
   const [appliedJobList, setAppliedJobList] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -229,4 +229,4 @@ function ManageApplications() {
     </>
   );
 }
-export default ManageApplications;
+export default ManageApplicationsForApplicant;

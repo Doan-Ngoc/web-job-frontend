@@ -19,7 +19,7 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Job Title", "Created Date", "Status", ""];
+const TABLE_HEAD = ["Job Title", "Created Date", "Status", "Applications", ""];
 
 function RecruiterJobList() {
   const {accessToken} = useAuth();
@@ -146,6 +146,21 @@ function RecruiterJobList() {
                       />
                     </div>
                   </td>
+                  
+                  <td className={classes}>
+                    <div className="m-auto">
+                      {status === "active" && (
+                        <Link to={`/job/applications/${_id}`}>
+                          <Tooltip content="Open applications">
+                            <IconButton variant="text">
+                            <i className="fa fa-folder-open text-base"></i>
+                            </IconButton>
+                          </Tooltip>
+                        </Link>
+                      )}
+                      </div>
+                      </td>
+
                   <td className={classes}>
                     <div className="text-left">
                       {status === "active" && (

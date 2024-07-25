@@ -12,7 +12,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import SearchPage from './pages/SearchPage/SearchPage';
 import CreateJob from './pages/CreateJob/CreateJob';
 import RecruiterJobList from './pages/RecruiterJobList/RecruiterJobList';
-import ManageApplications from './pages/ManageApplications/ManageApplications';
+import ManageApplicationsForApplicant from './pages/ManageApplications/ManageApplicationsForApplicant';
+import ManageApplicationsForCompany from './pages/ManageApplications/ManageApplicationsForCompany';
 import EditJob from './pages/EditJob/EditJob';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
@@ -46,10 +47,9 @@ function App() {
             />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/profile/company/:accountId" element={<CompanyProfile />} />
-            {/* <Route path="/company/profile" element={<CompanyProfile />} /> */}
             <Route path="/profile/company/create" element={<NewCompanyProfile />} />
             <Route path="/profile/applicant/create" element={<NewApplicantProfile />} />
-            <Route path="/profile/applicant/:profileId" element={<ApplicantProfile />} />
+            <Route path="/profile/applicant/:accountId" element={<ApplicantProfile />} />
             <Route path="/signin" element={<Signin/>} />
             <Route path="/job/search" element={<SearchPage />} />
             <Route element={<ProtectedRoute />}>
@@ -59,9 +59,10 @@ function App() {
               <Route path="/job/new" element={<CreateJob />} />
               <Route path="/job/edit/:jobId" element={<EditJob />} />
               <Route path="/job/restore/:jobId" element={<EditJob />} />
+              <Route path="/job/applications/:jobId" element={<ManageApplicationsForCompany />} />
               </Route>
               <Route element={<ApplicantOnly />}>
-              <Route path="/job/applied" element={<ManageApplications />} />
+              <Route path="/job/applied" element={<ManageApplicationsForApplicant />} />
               </Route>
             </Route>
             <Route path="/job/:jobId" element={<JobDescription />} />

@@ -15,3 +15,18 @@ export const createCompanyProfile = async (profile) => {
   return response;
 };
 
+export const changeApplicationStatus = async(accessToken, profileId, jobId, status) => {
+  const response = await request.post('/job/applications/status', 
+    { 
+      profileId, 
+      jobId,
+      status 
+    }, 
+    {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+       }
+  });
+  return response;
+}
+
