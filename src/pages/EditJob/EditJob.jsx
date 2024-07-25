@@ -89,7 +89,7 @@ const EditJob = () => {
 
   return (
     <>
-      {isLoading ? ( // Conditional rendering while loading
+      {isLoading ? ( 
         <p>Loading...</p>
       ) : (
         <Card color="transparent" shadow={false}>

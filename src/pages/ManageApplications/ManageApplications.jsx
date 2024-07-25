@@ -3,7 +3,7 @@ import CustomDate from "../../utils/dateUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 import { request } from '../../utils/request';
-import * as authorizeApi from '../../api/authorize';
+import * as applicantApi from '../../api/applicant';
 import toast from 'react-hot-toast';
 import Axios from "axios";
 import {
@@ -24,58 +24,65 @@ const TABLE_HEAD = ["Job Title", "Company", "Applied Date", "Status", ""];
 function ManageApplications() {
   const {accessToken, accountId} = useAuth();
   const [appliedJobList, setAppliedJobList] = useState([]);
-//   const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchAppliedJobs();
-  }, []);
+  }, [refresh]);
 
 
   const fetchAppliedJobs = async () => {
     try {
       const response = await request.get(`/job/applied/${accountId}`);
       const appliedJobData = response.data;
-      console.log('abc', appliedJobData)
       //Sort data by created date in descending order
     //   appliedJobData.sort(
     //     (a, b) => new Date(b.appliedDate) - new Date(a.appliedDate)
     //   );
       setAppliedJobList(appliedJobData);
+      setIsLoading(false)
     } catch (error) {
       console.error("Error fetching job data:", error);
     }
   };
 
-//   //Open confirm dialog when clicking remove button
-//   const [open, setOpen] = useState(false);
-//   const [selectedJobId, setSelectedJobId] = useState("");
-//   const openConfirmDialog = (_id) => {
-//     setSelectedJobId(_id);
-//     setOpen(!open);
-//   };
-//   const navigate = useNavigate();
-//   const backToHomePage = () => {
-//     navigate("/");
-//   };
-//   //Remove job
-//   const handleRemoveJob = async (_id) => {
-//     try {
-//       const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, _id)
-//       if (validateAccount) {
-//       await Axios.post(`http://localhost:3000/job/remove/${_id}`);
-//       setOpen(!open);
-//       setRefresh(true)
-//       }
-//       else {
-//         toast.error("Oops something went wrong");
-//       }
-//     } catch (error) {
-//       console.error("Error removing job:", error);
-//     }
-//   };
+  //Open confirm dialog when clicking remove button
+  const [open, setOpen] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState("");
+  const openConfirmDialog = (jobId) => {
+    setSelectedJobId(jobId);
+    setOpen(!open);
+  };
+
+  //Cancel application
+  const handleCancelApplication = async (jobId) => {
+    try {
+      const cancelApplication = await applicantApi.cancelApllication(accessToken, jobId)
+      setOpen(!open);
+      toast.success('Your application has been canceled!');
+      setRefresh(true);
+    } catch (error) {
+      setOpen(!open);
+      console.error("Canceling application failed", error.message);
+      const errorMessage = error.response?.data?.message || 'Something went wrong! Please try again later.';
+      toast.error(errorMessage);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (appliedJobList.length <= 0 ) {
+    return <div>You haven't applied to any job.</div>
+  }
 
   return (
     <>
+    {/* {isLoading ? ( 
+        <p>Loading...</p>
+      ) : ( */}
        <table className="w-full bg-white py-auto rounded-lg min-w-max table-auto ">
          <thead>
            <tr>
@@ -96,7 +103,7 @@ function ManageApplications() {
         </thead>
          <tbody>
            {appliedJobList.map(
-            ({ _id, jobTitle, company, status, appliedDate }, index) => {
+            ({ _id, jobId, jobTitle, company, status, appliedDate }, index) => {
               const isLast = index === appliedJobList.length - 1;
               const classes = isLast
                 ? "py-4 "
@@ -106,7 +113,7 @@ function ManageApplications() {
                 <tr key={_id}>
                   <td className={classes}>
                     <div className="text-center">
-                      {/* <Link to={`/job/${_id}`}> */}
+                      <Link to={`/job/${jobId}`}>
                       <div className="text-center">
                         <Typography
                           color="blue-gray"
@@ -115,12 +122,11 @@ function ManageApplications() {
                           {jobTitle}
                         </Typography>
                         </div>
-                      {/* </Link> */}
+                      </Link>
                     </div>
                   </td>
                   <td className={classes}>
                     <div className="text-center">
-                      {/* <Link to={`/job/${_id}`}> */}
                       <div className="text-center">
                         <Typography
                           color="blue-gray"
@@ -129,7 +135,6 @@ function ManageApplications() {
                           {company}
                         </Typography>
                         </div>
-                      {/* </Link> */}
                     </div>
                   </td>
                   <td className={classes}>
@@ -178,7 +183,7 @@ function ManageApplications() {
                         <Tooltip content="Cancel">
                           <IconButton
                             variant="text"
-                            onClick={() => openConfirmDialog(_id)}
+                            onClick={() => openConfirmDialog(jobId)}
                           >
                             <i className="fa fa-trash text-base"></i>
                           </IconButton>
@@ -192,34 +197,35 @@ function ManageApplications() {
           )}
         </tbody>
       </table>
-
-{/* //       <Dialog
-//         open={open}
-//         handler={openConfirmDialog}
-//         size="xs"
-//         className="w-44"
-//       >
-//         <DialogBody className="font-medium text-lg text-center ">
-//           Are you sure you want to remove this job?
-//         </DialogBody>
-//         <DialogFooter className="flex justify-center">
-//           <Button
-//             className="bg-[#ffce00] text-black font-medium  mr-1"
-//             color="black"
-//             onClick={() => handleRemoveJob(selectedJobId)}
-//           >
-//             <span>Confirm</span>
-//           </Button>
-//           <Button
-//             variant="text"
-//             color="black"
-//             onClick={() => setOpen(!open)}
-//             className="mr-1"
-//           >
-//             <span>Cancel</span>
-//           </Button>
-//         </DialogFooter>
-//       </Dialog> */}
+    {/* )} */}
+      <Dialog
+        open={open}
+        handler={openConfirmDialog}
+        size="xs"
+        className="w-44"
+      >
+         <DialogBody className="font-medium text-lg text-center ">
+           Are you sure you want to cancel the application for this job?
+         </DialogBody>
+         <DialogFooter className="flex justify-center">
+            <Button
+            className="bg-[#ffce00] text-black font-medium  mr-1"
+            color="black"
+            onClick={() => handleCancelApplication(selectedJobId)}
+          >
+            <span>Confirm</span>
+          </Button>
+          <Button
+            variant="text"
+            color="black"
+            onClick={() => setOpen(!open)}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+        </DialogFooter>
+      </Dialog> 
+      
     </>
   );
 }

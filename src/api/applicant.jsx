@@ -28,4 +28,16 @@ export const sendApllication = async (accessToken, jobId) => {
   return response;
 };
 
+export const cancelApllication = async (accessToken, jobId) => {
+  const response = await request.post(`/applicant/cancel/${jobId}`, 
+    {},
+    {
+    headers: {
+     'Authorization': `Bearer ${accessToken}`
+    }
+  }
+);
+  return response;
+};
+
 
