@@ -1,4 +1,4 @@
-import "./homepage.css";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import JobList from "../../components/JobList/JobList";
