@@ -23,6 +23,7 @@ import CompanyProfile from './pages/ProfilePage/CompanyProfile'
 import NewCompanyProfile from './pages/ProfilePage/NewCompanyProfile';
 import ApplicantProfile from './pages/ProfilePage/ApplicantProfile';
 import NewApplicantProfile from './pages/ProfilePage/NewApplicantProfile';
+import Loading from './components/Loading';
 import { ErrorPage } from './pages/errors/ErrorPage';
 import { NoPermission } from './pages/errors/NoPermission';
 
@@ -46,6 +47,7 @@ function App() {
               }
             />
             <Route path="/signup" element={<Signup/>} />
+            <Route path="/loading" element={<Loading/>} />
             <Route path="/profile/company/:accountId" element={<CompanyProfile />} />
             <Route path="/profile/company/create" element={<NewCompanyProfile />} />
             <Route path="/profile/applicant/create" element={<NewApplicantProfile />} />

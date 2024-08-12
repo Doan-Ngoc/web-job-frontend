@@ -20,7 +20,7 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Applicant Name", "Applied Date", "Status", "Download CV", ""];
+const TABLE_HEAD = ["Applicant Name", "Applied Date", "Status", "Download CV", "Action"];
 
 function ManageApplicationsForCompany() {
   const { accessToken, accountId } = useAuth();

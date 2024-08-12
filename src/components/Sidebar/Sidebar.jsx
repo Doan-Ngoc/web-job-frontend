@@ -42,17 +42,10 @@ const Sidebar = ({ setCurrentPage}) => {
         
         {isLoggedIn ? (
           <div>
-          {/* <Link to="/job/created"> */}
           <Link to={accountRole === 'applicant' ? '/job/applied' : '/job/created'}>
           <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
             <ion-icon name="briefcase"></ion-icon>
             Manage Jobs
-          </li>
-        </Link>
-        <Link to="/job/new">
-          <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
-            <i className="fa fa-edit"></i>
-            Create New Job
           </li>
         </Link>
           <Link to="/my-profile">
@@ -61,6 +54,14 @@ const Sidebar = ({ setCurrentPage}) => {
             My Profile
           </li>
         </Link>
+        {accountRole === "company" && (
+        <Link to="/job/new">
+          <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+            <i className="fa fa-edit"></i>
+            Create New Job
+          </li>
+        </Link>
+        )}
           <button
             className="btn bg-white hover:bg-[#ffce00] m-10 gap-2"
             onClick={handleLogout}
