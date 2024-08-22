@@ -6,7 +6,12 @@ export const signup = async (data) => {
 };
 
 export const signin = async (data) => {
-  const response = await request.post('/auth/signin', data);
+  const response = await request.post('/auth/login', data);
+  return response;
+};
+
+export const signout = async () => {
+  const response = await request.post('/auth/logout', {}, { withCredentials: true });
   return response;
 };
 

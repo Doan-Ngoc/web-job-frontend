@@ -8,10 +8,12 @@ import toast from 'react-hot-toast';
 import * as authApi from '../../api/authenticate';
 
 const Sidebar = ({ setCurrentPage}) => {
-  const { isLoggedIn, setIsLoggedIn, setAccessToken, accountRole } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, setAccessToken, accountRole, accountId } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    //Remove refresh token
+    const response = await authApi.signout();
     // Delete item from localStorage
     localStorage.removeItem('accessToken');
     setAccessToken(null)
