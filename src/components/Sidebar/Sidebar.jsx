@@ -16,6 +16,7 @@ const Sidebar = ({ setCurrentPage}) => {
     const response = await authApi.signout();
     // Delete item from localStorage
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('login status');
     setAccessToken(null)
     setIsLoggedIn(false);
     toast.success('Logged out successfully');

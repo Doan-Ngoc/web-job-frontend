@@ -15,9 +15,10 @@ export const signout = async () => {
   return response;
 };
 
-export const getAccessToken = async (refreshToken) => {
-  const response = await request.post('/auth/token', { refreshToken });
-  return response;
+export const refreshAccessToken = async () => {
+  const response = await request.post('/auth/token/refresh', {}, { withCredentials: true });
+  const newAccessToken = response.data.accessToken;
+    localStorage.setItem('accessToken', newAccessToken);
 };
 
 export const verifyAccessToken = async (accessToken) => {

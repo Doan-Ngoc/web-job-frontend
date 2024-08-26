@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { store } from '../store/index';
+import { jwtDecode } from "jwt-decode";
+import * as authApi from '../api/authenticate'
 
 export const request = axios.create({
   baseURL: 'http://localhost:3000',
@@ -13,25 +15,33 @@ export const request = axios.create({
 });
 
 request.interceptors.request.use(async (config) => {
-  if (config.url === '/auth/logout' && config.method === 'post') {
+  if (config.url === '/auth/logout' || config.url === '/auth/token/refresh') {
     return config;
   }
   let accessToken = localStorage.getItem('accessToken');
 //   // Check if access token is expired and refresh it if needed
 if (accessToken) {
   if (isTokenExpired(accessToken)) {
-    const response = await axios.post('http://localhost:3000/auth/token/refresh');
-    accessToken = response.data.accessToken;
-    localStorage.setItem('accessToken', accessToken);
+    const response = await authApi.refreshAccessToken()
   }
-
-  config.headers['Authorization'] = `Bearer ${accessToken}`;
 }
   return config;
 });
 
 // // Function to check if the token is expired
 function isTokenExpired(token) {
-  if (!token) return true;
-  return false
+  try {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+    // Check if the token has expired
+    console.log("is it expired", decodedToken.exp < currentTime)
+    return decodedToken.exp < currentTime;
+  } catch (error) {
+    console.error("Failed to decode token:", error);
+    return true;
+  }
+  // console.log("isToken run", token)
+  // if (!token) return true;
+  // return false
 }
