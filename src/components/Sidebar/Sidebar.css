@@ -1,0 +1,8 @@
+.sidebar-item:hover {
+  background-color: var(--primary-color)
+  /* #494bc2; */
+}
+
+.logout-sidebar-btn:hover {
+  background-color: var(--secondary-color);
+}
