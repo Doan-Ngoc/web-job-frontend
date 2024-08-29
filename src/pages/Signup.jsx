@@ -43,7 +43,6 @@ export function Signup() {
   });
 
   const onSubmit = async (data) => {
-    console.log(data)
     if (data.role === "company") {
       navigate(`/profile/company/create`, { state: { signUpData: data } })
     }
@@ -56,13 +55,10 @@ export function Signup() {
     return <AlreadyLogin />;
   }
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <FormWrapper
-        title="Sign Up"
-        description="Create a new account"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="mb-8 flex flex-col gap-6">
+    <div className="w-full h-full shadow-2xl rounded-md flex flex-col gap-10 items-center justify-center ">
+      <h2 className='text-2xl font-bold'>Sign in to your account</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className=" w-1/3">
+        <div className="mb-8 flex flex-col gap-6 ">
           <InputWrapper error={errors.email}>
             <Input
               type = "email"
@@ -110,7 +106,7 @@ export function Signup() {
         </div>
         <Button
           type="submit"
-          className="mt-8 bg-[#ffce00] text-black"
+          className="mt-8 bg-[#ffce00] text-black text-sm"
           fullWidth
         >
           Register
@@ -121,7 +117,7 @@ export function Signup() {
             Sign In
           </Link>
         </Typography>
-      </FormWrapper>
+      </form>
     </div>
   );
 }

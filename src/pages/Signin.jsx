@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Input, Button, Typography } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { HttpStatusCode } from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { userSigninSchema } from '../utils/validation-schemas';
-import { FormWrapper } from '../components/FormWrapper';
 import { InputWrapper } from '../components/InputWrapper';
 import * as authApi from '../api/authenticate';
-import { authActions } from '../features/auth/auth-slice';
-import { AlreadyLogin } from './errors/AlreadyLogin';
 import { useAuth } from '../contexts/AuthContext';
+import { AlreadyLogin } from './errors/AlreadyLogin';
+import toast from 'react-hot-toast';
+import { Input, Button, Typography } from '@material-tailwind/react';
 
 const userSigninDefaultValues = {
   email: '',
@@ -32,20 +28,11 @@ export function Signin() {
     resolver: yupResolver(userSigninSchema),
     mode: 'onSubmit',
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
-  const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (authState.isLogined) {
-      navigate('/');
-    }
-  }, []);
-
+  //Log in request
   const onSubmit = async (data) => {
     try {
-      setLoading(true);
       const response = await authApi.signin(data);
       localStorage.setItem('accessToken', response.data.accessToken);
       setAccessToken(localStorage.getItem('accessToken'))
@@ -67,23 +54,19 @@ export function Signin() {
       } else {
         toast.error('Opps! There are issues with the sign in process!');
       }
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
-
+  //If accessed when already logged in
   if (isLoggedIn) {
     return <AlreadyLogin />;
   }
   
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <FormWrapper
-        title="Sign In"
-        description="Login to your account"
-        isLoading={isLoading}
+    <div className="w-full h-full shadow-2xl rounded-md flex flex-col items-center justify-center gap-20">
+      <h2 className='text-2xl font-bold'>Sign in to your account</h2>
+      <form
         onSubmit={handleSubmit(onSubmit)}
-        className=""
+        className=" w-1/3"
       >
         <div className="mb-8 flex flex-col gap-6">
           <InputWrapper error={errors.email}>
@@ -106,7 +89,7 @@ export function Signin() {
             />
           </InputWrapper>
         </div>
-        <Button type="submit" className="text-black bg-[#ffce00]" fullWidth>
+        <Button type="submit" className="text-black text-sm bg-[#ffce00]" fullWidth>
           Sign In
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
@@ -115,7 +98,7 @@ export function Signin() {
             Sign Up
           </Link>
         </Typography>
-      </FormWrapper>
+      </form>
     </div>
   );
 }

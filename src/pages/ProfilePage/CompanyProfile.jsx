@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import {useParams, useNavigate } from "react-router-dom";
 import { request } from "../../utils/request";
 import * as companyApi from '../../api/company';
 import "./CompanyProfile.css"
@@ -8,14 +7,23 @@ import Loading from "../../components/Loading";
 
 const CompanyProfile = ({accountId}) => {
   const navigate = useNavigate();
-  // const location = useLocation();
   const [isLoading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   const { accountId: paramAccountId } = useParams();
   const [companyId, setCompanyId] = useState();
 
-  // const { profile } = location.state || {}; 
+  //Get company's account id. If the user is the company itself, get it from props. If not, get it from URL param.
+  useEffect(() => {
+    if (accountId) {
+      setCompanyId(accountId);
+    } else if (paramAccountId) {
+      setCompanyId(paramAccountId);
+    } else {
+      navigate("/error/404");
+    }
+  }, [accountId, paramAccountId]);
 
+  //Fetch profile data
   const fetchProfile = async () => {
     try {
       const res = await companyApi.getCompanyProfile(companyId);
@@ -32,24 +40,9 @@ const CompanyProfile = ({accountId}) => {
   }
 
   useEffect(() => {
-    if (accountId) {
-      setCompanyId(accountId);
-    } else if (paramAccountId) {
-      setCompanyId(paramAccountId);
-    } else {
-      navigate("/error/404");
-    }
-  }, [accountId, paramAccountId]);
-
-  useEffect(() => {
     if (!companyId) return;
     fetchProfile();
   }, [companyId]);
-
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
   
   return (
     isLoading ? 
