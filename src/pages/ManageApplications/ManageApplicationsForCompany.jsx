@@ -224,16 +224,14 @@ function ManageApplicationsForCompany() {
          <DialogFooter className="flex justify-center">
             <Button
             className="bg-[#ffce00] text-black font-medium  mr-1"
-            color="black"
             onClick={() => handleChangingStatus(selectedProfileId, newStatus)}
           >
             <span>Confirm</span>
           </Button>
           <Button
             variant="text"
-            color="black"
             onClick={() => setOpen(!open)}
-            className="mr-1"
+            className="mr-1 text-black "
           >
             <span>Cancel</span>
           </Button>

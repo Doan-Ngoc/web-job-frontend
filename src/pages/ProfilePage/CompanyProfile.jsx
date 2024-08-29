@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { request } from "../../utils/request";
 import * as companyApi from '../../api/company';
-import {Button} from "@material-tailwind/react";
+import "./CompanyProfile.css"
+import Loading from "../../components/Loading";
 
 const CompanyProfile = ({accountId}) => {
   const navigate = useNavigate();
@@ -45,35 +47,23 @@ const CompanyProfile = ({accountId}) => {
   }, [companyId]);
 
 
-  // useEffect(() => { 
-  //   if (accountId) {
-  //     setCompanyId(accountId)
-  //   }
-  //   else {
-  //     setCompanyId(paramAccountId)
-  //   }
-  //   fetchProfile();
-  // }, [accountId, paramAccountId,]);
-
   if (isLoading) {
     return <div>Loading...</div>
   }
   
   return (
+    isLoading ? 
+       <Loading />
+       : 
     <>
     <div className="company-profile grow flex flex-col items-center justify-center">
-      {/* {isLoading ? (
-        <div>Loading...</div>
-      ) : ( */}
-      <header className="hero h-80  bg-[#e7e8ff]">
-        <div className="hero-content w-full px-8 flex items-center justify-center gap-24 ">
-          <div className="company-logo w-40 ">
-            <img src={`http://localhost:3000/uploads/${profile.logo}`} alt="Company Logo" className="w-44 h-44 rounded-full object-cover" />
+      <header className="hero rounded-md" style={{ backgroundColor: 'var(--slate-color)'}}>
+        <div className="hero-content w-full p-8 flex items-center justify-center gap-24 ">
+          <div className="company-logo w-1/4 ">
+            <img src={`${request.defaults.baseURL}/uploads/${profile.logo}`} 
+            className="w-44 h-44 rounded-full mx-auto" alt="Company Logo"  />
           </div>
-          <div className="">
-            {/* <h1 className="text-3xl font-bold text-left pl-4">
-                  {profile.name}
-                </h1> */}
+          <div className="w-3/4">
             <h1 className="text-2xl font-bold py-6 text-left pl-4">{profile.name}</h1>
             <ul className="grid grid-rows-3 grid-flow-col gap-4 text-lg text-left">
               <div className="grid grid-cols-2 gap-4 ">
@@ -100,22 +90,12 @@ const CompanyProfile = ({accountId}) => {
       </header>
 
       <main
-        className="p-8 text-justify text-lg "
+        className="bg-white rounded-md px-32 py-20 text-justify text-lg"
         style={{ whiteSpace: "pre-line" }}
       >
         {profile.description}
       </main>
-      {/* )
-} */}
     </div>
-    {/* {accountId ? (
-      <Button
-      className="btn mt-10 mx-auto text-black text-base font-medium w-1/3 bg-[#ffce00] hover:bg-[#ffce00]">
-      Edit Profile
-    </Button>
-    ) : (
-      null
-    )} */}
     </>
   )
 }

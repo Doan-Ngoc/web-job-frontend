@@ -15,7 +15,22 @@ import './index.css';
       <ThemeProvider>
         <BrowserRouter>
           <App />
-          <Toaster />
+          <Toaster 
+           toastOptions={{
+            success: {
+              iconTheme: {
+                primary: 'var(--primary-color)',
+                secondary: 'var( --white-color)',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: 'var(--secondary-color)',
+                secondary: 'var(--font-color)',
+              },
+            },
+          }}
+          />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>,
