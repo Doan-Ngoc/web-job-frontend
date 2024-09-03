@@ -1,6 +1,6 @@
 import CustomDate from '../../utils/dateUtils';
-import { Link } from 'react-router-dom';
 import { request } from '../../utils/request';
+import { Link } from 'react-router-dom';
 
 const JobItem = (props) => {
   const { jobData } = props;
@@ -15,18 +15,14 @@ const JobItem = (props) => {
       <Link to={`/job/${jobData._id}`}>
         <p className="text-xl font-bold">{jobData.title}</p>
         </Link>
-        <div className="w-100 flex">
-          <div className="w-1/2 ">
         <Link to={`/profile/company/${jobData.createdBy}`}>
           <p className="font-semibold">{jobData.company}</p>
           </Link>
         <p className="opacity-50">{jobData.location}</p>
-        </div>
-        <div className="w-1/2 text-lgs flex flex-col gap-1">
+      </div>
+      <div className="flex-1 text-left flex flex-col gap-1 py-auto py-3">
         <p>Salary: {jobData.salary}</p>
         <p>Valid Until: {new CustomDate(jobData.closedDate).formatDate()}</p>
-        </div>
-      </div>
       </div>
     </article>
   );
