@@ -5,7 +5,7 @@ import * as authApi from '../api/authenticate'
 
 export const request = axios.create({
   // baseURL: 'http://localhost:3000',
-  baseURL: "https://job-board-api-ruddy.vercel.app",
+  baseURL: "https://job-connect-api.onrender.com",
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
