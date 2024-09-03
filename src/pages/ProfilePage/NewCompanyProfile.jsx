@@ -135,10 +135,10 @@ function NewCompanyProfile() {
       onSubmit={handleSubmit(onSubmit)} >
       <div className="mb-8">
         <Typography variant="h4" color="blue-gray" className="text-center">
-          New Applicant Profile
+          New Company Profile
         </Typography>
         <Typography color="gray" className="mt-1 font-normal text-center">
-          Tell us more about yourself
+          Tell us more about your business
         </Typography>
       </div>
 

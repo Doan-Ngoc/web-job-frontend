@@ -167,9 +167,6 @@ const CreateJobNews = () => {
             {...register("position")}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
-            Expected Number of Applicants
-          </Typography>
-          <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Description
           </Typography>
           <textarea

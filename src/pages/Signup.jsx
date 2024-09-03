@@ -54,9 +54,10 @@ export function Signup() {
   if (isLoggedIn) {
     return <AlreadyLogin />;
   }
+
   return (
     <div className="w-full h-full shadow-2xl rounded-md flex flex-col gap-10 items-center justify-center ">
-      <h2 className='text-2xl font-bold'>Sign in to your account</h2>
+      <h2 className='text-2xl font-bold'>Create an account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className=" w-1/3">
         <div className="mb-8 flex flex-col gap-6 ">
           <InputWrapper error={errors.email}>
