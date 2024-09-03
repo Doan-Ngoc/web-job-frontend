@@ -4,8 +4,8 @@ import { jwtDecode } from "jwt-decode";
 import * as authApi from '../api/authenticate'
 
 export const request = axios.create({
-  baseURL: 'http://localhost:3000',
-  // baseURL: "https://job-board-api-ruddy.vercel.app",
+  // baseURL: 'http://localhost:3000',
+  baseURL: "https://job-board-api-ruddy.vercel.app",
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

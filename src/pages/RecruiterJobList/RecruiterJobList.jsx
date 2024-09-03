@@ -70,7 +70,7 @@ function RecruiterJobList() {
     try {
       const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, _id)
       if (validateAccount) {
-      await Axios.post(`http://localhost:3000/job/remove/${_id}`);
+      await Axios.post(`${request.defaults.baseURL}/job/remove/${_id}`);
       setOpen(!open);
       setRefresh(true)
       }

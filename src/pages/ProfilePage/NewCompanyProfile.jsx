@@ -12,7 +12,8 @@ import { HttpStatusCode } from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
-import * as authorizeApi from '../../api/authorize'
+import * as authorizeApi from '../../api/authorize';
+import { request } from '../../utils/request';
 import { useAuth } from '../../contexts/AuthContext';
 import { useJobContext } from '../../contexts/JobContext';
 
@@ -47,7 +48,7 @@ function NewCompanyProfile() {
     const openErrorDialog = () => setOpen(!open);
     
   //Declare variables for displaying photo
-  const defaultLogo="http://localhost:3000/uploads/profilePictures/companyLogos/default-logo.jpg"
+  const defaultLogo=`${request.defaults.baseURL}/uploads/profilePictures/companyLogos/default-logo.jpg`
   const [companyLogo, setCompanyLogo] = useState(defaultLogo);
   const photoInputRef = useRef(null);
   const [photoUploaded, setphotoUploaded] = useState(false);
@@ -61,40 +62,16 @@ function NewCompanyProfile() {
     }
   };
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const response = await authApi.signup(signUpData);
-  //     const newProfileData = {
-  //       ...data,
-  //       accountId: response.data.id,
-  //       logo: "https://cdn.pixabay.com/photo/2021/05/24/09/15/google-logo-6278331_960_720.png"
-  //     }
-  //     const res = await companyApi.createCompanyProfile(
-  //       newProfileData,
-  //     );
-  //     toast.success('Successfully created a company profile!');
-  //     navigate(`/signin`);
-  //   }
-  //   catch (err) {
-  //     console.log(err);
-  //     const errorMessage = err.response?.data?.message || ' Oops something went wrong! ';
-  //     toast.error(errorMessage);
-  //   }
-  // }
-
   const onSubmit = async (data) => {
     try {
       const response = await authApi.signup(signUpData);
-      console.log(data.companyIndustries)
       const formData = new FormData();
-      console.log('data.companyLogo[0]', data.companyLogo[0])
       if (data.companyLogo[0]) {
         // formData.append('profilePicture', data.profilePicture[0]);
         const file = data.companyLogo[0];
         const newFileName = `photo_${response.data.id}${file.name.slice(file.name.lastIndexOf('.'))}`;
         // const newFileName = `photo_1_${file.name.slice(file.name.lastIndexOf('.'))}`;
         const renamedFile = new File([file], newFileName, { type: file.type });
-        console.log('renamed file ', renamedFile)
         formData.append('companyLogo', renamedFile);
       }
       formData.append('accountId', response.data.id)
@@ -103,7 +80,6 @@ function NewCompanyProfile() {
           formData.append(key, data[key]);
         }
       });
-      console.log('formData', formData)
       try {
         const res = await companyApi.createCompanyProfile(formData);
         toast.success('Your profile is created successfully!');

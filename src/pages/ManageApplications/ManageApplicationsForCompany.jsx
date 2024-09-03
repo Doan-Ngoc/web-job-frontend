@@ -164,7 +164,7 @@ function ManageApplicationsForCompany() {
                   </td>
                   <td className={classes}>
                     <div className="m-auto">
-                    <a href={`http://localhost:3000/applicant/download/${applicantCV}`} download>
+                    <a href={`${request.defaults.baseURL}/applicant/download/${applicantCV}`} download>
                           <Tooltip content="Download">
                             <IconButton variant="text">
                             <i className="fa fa-file-download text-base"></i>

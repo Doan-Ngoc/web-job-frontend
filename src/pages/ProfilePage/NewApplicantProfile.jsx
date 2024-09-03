@@ -48,7 +48,7 @@ export default function NewApplicantProfile() {
   const openErrorDialog = () => setOpen(!open);
 
   //Declare variables for displaying photo
-  const defaultAvatar = "http://localhost:3000/uploads/profilePictures/applicantAvatars/default-avatar.jpg"
+  const defaultAvatar = `${request.defaults.baseURL}/uploads/profilePictures/applicantAvatars/default-avatar.jpg`
   const [profilePic, setProfilePic] = useState(defaultAvatar);
   const photoInputRef = useRef(null);
   const [photoUploaded, setphotoUploaded] = useState(false);
