@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { store } from '../store/index';
 import { jwtDecode } from "jwt-decode";
 import * as authApi from '../api/authenticate'
 

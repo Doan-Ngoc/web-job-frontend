@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormWrapper } from '../../components/FormWrapper';
 import { InputWrapper } from '../../components/InputWrapper';
 import { applicantSchema } from '../../utils/validation-schemas';
-import * as accountApi from '../../api/account';
 import * as companyApi from '../../api/company';
 import * as authApi from '../../api/authenticate'
 import * as applicantApi from '../../api/applicant'
@@ -15,7 +14,6 @@ import { request } from '../../utils/request';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NoPermission } from '../errors/NoPermission';
-import * as authorizeApi from '../../api/authorize'
 import { useAuth } from '../../contexts/AuthContext';
 import { useJobContext } from '../../contexts/JobContext';
 

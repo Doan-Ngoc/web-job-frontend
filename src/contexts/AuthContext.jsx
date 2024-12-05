@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn,
         accessToken,
         setAccessToken,
-        checkLoginStatus,
         accountId,
         accountRole,
       }}

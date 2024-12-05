@@ -3,12 +3,10 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
-import { store } from './store';
 import App from './App.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
     <ThemeProvider>
       <BrowserRouter>
         <App />
@@ -30,5 +28,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         />
       </BrowserRouter>
     </ThemeProvider>
-  </Provider>,
 );
