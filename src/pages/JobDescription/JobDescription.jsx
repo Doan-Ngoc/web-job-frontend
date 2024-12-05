@@ -34,7 +34,7 @@ const JobDescription = () => {
   const submitApplication = async () => {
     try {
       setOpenDialog(!openDialog)
-      const response = await applicantApi.sendApllication(accessToken, jobId)
+      const response = await applicantApi.sendApplication(accessToken, jobId)
       toast.success('Your application has been sent!');
       navigate('/job/applied');
     } catch (err) {

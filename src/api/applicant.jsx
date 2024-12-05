@@ -6,38 +6,36 @@ export const getApplicantProfile = async (accountId) => {
 };
 
 export const createApplicantProfile = async (profileData) => {
-  const response = await request.post('/applicant/profile/new', profileData, 
-    {
+  const response = await request.post('/applicant/profile/new', profileData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  }
-);
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response;
 };
 
-export const sendApllication = async (accessToken, jobId) => {
-  const response = await request.patch(`/applicant/apply/${jobId}`, 
+export const sendApplication = async (accessToken, jobId) => {
+  const response = await request.patch(
+    `/applicant/apply/${jobId}`,
     {},
     {
-    headers: {
-     'Authorization': `Bearer ${accessToken}`
-    }
-  }
-);
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
   return response;
 };
 
-export const cancelApllication = async (accessToken, jobId) => {
-  const response = await request.post(`/applicant/cancel/${jobId}`, 
+export const cancelApplication = async (accessToken, jobId) => {
+  const response = await request.post(
+    `/applicant/cancel/${jobId}`,
     {},
     {
-    headers: {
-     'Authorization': `Bearer ${accessToken}`
-    }
-  }
-);
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
   return response;
 };
-
-

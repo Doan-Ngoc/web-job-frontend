@@ -4,7 +4,7 @@ import { useJobContext } from "../../contexts/JobContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { useAuth } from '../../contexts/AuthContext';
-import * as authorizeApi from '../../api/authorize';
+import * as companyApi from '../../api/company'
 import { request } from '../../utils/request';
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -32,7 +32,7 @@ const EditJob = () => {
   //Verify account and get job data
   const fetchJobData = async () => {
     try {
-      const jobData = await authorizeApi.jobCreatorAuthorize(accessToken, jobId)
+      const jobData = await companyApi.jobCreatorAuthorize(accessToken, jobId)
       if (jobData) {
         setJobData(jobData)
       }
@@ -68,7 +68,7 @@ const EditJob = () => {
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
-      const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, jobId)
+      const validateAccount = await companyApi.jobCreatorAuthorize(accessToken, jobId)
       if (validateAccount) {
       const response = await request.put(
         `/job/update/${jobId}`,

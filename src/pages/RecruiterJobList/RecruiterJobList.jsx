@@ -3,7 +3,7 @@ import CustomDate from "../../utils/dateUtils";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 import { request } from '../../utils/request';
-import * as authorizeApi from '../../api/authorize';
+import * as companyApi from '../../api/company'
 import toast from 'react-hot-toast';
 import Axios from "axios";
 import {
@@ -68,7 +68,7 @@ function RecruiterJobList() {
   //Remove job
   const handleRemoveJob = async (_id) => {
     try {
-      const validateAccount = await authorizeApi.jobCreatorAuthorize(accessToken, _id)
+      const validateAccount = await companyApi.jobCreatorAuthorize(accessToken, _id)
       if (validateAccount) {
       await Axios.post(`${request.defaults.baseURL}/job/remove/${_id}`);
       setOpen(!open);

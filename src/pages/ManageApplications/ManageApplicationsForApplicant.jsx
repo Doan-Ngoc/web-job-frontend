@@ -58,7 +58,7 @@ function ManageApplicationsForApplicant() {
   //Cancel application
   const handleCancelApplication = async (jobId) => {
     try {
-      const cancelApplication = await applicantApi.cancelApllication(accessToken, jobId)
+      const cancelApplication = await applicantApi.cancelApplication(accessToken, jobId)
       setOpen(!open);
       toast.success('Your application has been canceled!');
       setRefresh(true);
