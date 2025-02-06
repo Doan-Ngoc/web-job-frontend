@@ -26,6 +26,7 @@ const CompanyProfile = ({accountId}) => {
   //Fetch profile data
   const fetchProfile = async () => {
     try {
+      console.log("Starting")
       const res = await companyApi.getCompanyProfile(companyId);
       if (res.data) {
         setProfile(res.data)
@@ -36,6 +37,7 @@ const CompanyProfile = ({accountId}) => {
     }
     finally {
       setLoading(false);
+      console.log('logo', profile.logo)
     }
   }
 

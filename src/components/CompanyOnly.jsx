@@ -1,16 +1,14 @@
-import React from 'react'
-import { Outlet, useNavigate, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-hot-toast';
+import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useEffect } from 'react';
 
 const CompanyOnly = () => {
-  const navigate = useNavigate();
-  const {accountRole, isLoggedIn} = useAuth();
+  const { accountRole } = useAuth();
 
-  return accountRole === "company" ? <Outlet /> : <Navigate to="/error/no-permission" />;
-  
-}
+  return accountRole === 'company' ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/error/no-permission" />
+  );
+};
 
-export default CompanyOnly
+export default CompanyOnly;

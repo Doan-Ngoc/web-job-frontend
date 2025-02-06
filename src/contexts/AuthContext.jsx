@@ -7,7 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accountRole, setAccountRole] = useState('');
+  const [accountRole, setAccountRole] = useState();
   const [accountId, setAccountId] = useState();
   const [loadingAuth, isLoadingAuth] = useState(true);
   const [accessToken, setAccessToken] = useState(
@@ -29,6 +29,8 @@ export const AuthProvider = ({ children }) => {
           setAccessToken(null);
           localStorage.removeItem('accessToken');
           localStorage.setItem('login status', false);
+          setAccountRole('');
+          setAccountId('')
         }
       } else {
         setIsLoggedIn(false);

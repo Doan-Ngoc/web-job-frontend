@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useJobContext } from "../../contexts/JobContext";
+import { useJobContext } from '../../contexts/JobContext';
 import * as authApi from '../../api/authenticate';
 import toast from 'react-hot-toast';
 import './Sidebar.css';
@@ -17,7 +17,7 @@ const Sidebar = () => {
     // Delete item from localStorage
     localStorage.removeItem('accessToken');
     localStorage.removeItem('login status');
-    setAccessToken(null)
+    setAccessToken(null);
     setIsLoggedIn(false);
     toast.success('Logged out successfully');
     navigate('/');
@@ -46,7 +46,9 @@ const Sidebar = () => {
         {/* Sidebar menu if logged in */}
         {isLoggedIn ? (
           <div>
-            <Link to={accountRole === 'applicant' ? '/job/applied' : '/job/created'}>
+            <Link
+              to={accountRole === 'applicant' ? '/job/applied' : '/job/created'}
+            >
               <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
                 <ion-icon name="briefcase"></ion-icon>
                 Manage Jobs
@@ -58,7 +60,7 @@ const Sidebar = () => {
                 My Profile
               </li>
             </Link>
-            {accountRole === "company" && (
+            {accountRole === 'company' && (
               <Link to="/job/new">
                 <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
                   <i className="fa fa-edit"></i>
@@ -86,6 +88,6 @@ const Sidebar = () => {
       </ul>
     </div>
   );
-}
+};
 
 export default Sidebar;
