@@ -27,7 +27,7 @@ const Sidebar = () => {
     <div className="sidebar py-5 flex flex-col justify-around text-[#fff] bg-[#4c50d3]">
       <Link to="/">
         <h1
-          className="text-4xl font-black mt-10 cursor-pointer"
+          className="text-3xl font-black mt-10 cursor-pointer"
           onClick={() => setCurrentPage(1)}
         >
           JobsConnect
@@ -36,7 +36,7 @@ const Sidebar = () => {
       <ul className="flex flex-col font-bold">
         <Link to="/">
           <li
-            className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg "
+            className="sidebar-item"
             onClick={() => setCurrentPage(1)}
           >
             <ion-icon name="home"></ion-icon>
@@ -49,20 +49,20 @@ const Sidebar = () => {
             <Link
               to={accountRole === 'applicant' ? '/job/applied' : '/job/created'}
             >
-              <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+              <li className="sidebar-item">
                 <ion-icon name="briefcase"></ion-icon>
                 Manage Jobs
               </li>
             </Link>
             <Link to="/my-profile">
-              <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+              <li className="sidebar-item">
                 <i className="fa fa-user"></i>
                 My Profile
               </li>
             </Link>
             {accountRole === 'company' && (
               <Link to="/job/new">
-                <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+                <li className="sidebar-item">
                   <i className="fa fa-edit"></i>
                   Create New Job
                 </li>
@@ -70,16 +70,16 @@ const Sidebar = () => {
             )}
             {/* Log out/Log in button */}
             <button
-              className="btn bg-white hover:bg-[#ffce00] m-10 gap-2"
+              className="btn bg-white hover:bg-[#ffce00] m-6 gap-1"
               onClick={handleLogout}
             >
-              <ion-icon name="log-in" size="large"></ion-icon>
-              Logout
+              <ion-icon name="log-in"></ion-icon>
+              Log Out
             </button>
           </div>
         ) : (
           <Link to="/signin">
-            <li className="sidebar-item flex items-center hover:bg-[#494bc2] pl-10 py-4 gap-2 cursor-pointer text-lg">
+            <li className="sidebar-item">
               <ion-icon name="log-in"></ion-icon>
               Sign In
             </li>

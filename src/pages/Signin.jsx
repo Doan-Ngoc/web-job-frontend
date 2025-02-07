@@ -35,7 +35,7 @@ export function Signin() {
     try {
       const response = await authApi.signin(data);
       localStorage.setItem('accessToken', response.data.accessToken);
-      setAccessToken(localStorage.getItem('accessToken'))
+      setAccessToken(localStorage.getItem('accessToken'));
       setIsLoggedIn(true);
       toast.success('Successfully logged in');
       navigate('/');
@@ -54,20 +54,18 @@ export function Signin() {
       } else {
         toast.error('Opps! There are issues with the sign in process!');
       }
-    } 
+    }
   };
   //If accessed when already logged in
   if (isLoggedIn) {
     return <AlreadyLogin />;
   }
-  
+
   return (
     <div className="w-full h-full shadow-2xl rounded-md flex flex-col items-center justify-center gap-20">
-      <h2 className='text-2xl font-bold'>Sign in to your account</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className=" w-1/3"
-      >
+      {/* Sign in form */}
+      <h2 className="text-2xl font-bold">Sign in to your account</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className=" w-1/3">
         <div className="mb-8 flex flex-col gap-6">
           <InputWrapper error={errors.email}>
             <Input
@@ -89,9 +87,15 @@ export function Signin() {
             />
           </InputWrapper>
         </div>
-        <Button type="submit" className="text-black text-sm bg-[#ffce00]" fullWidth>
+        <Button
+          type="submit"
+          className="text-black text-sm bg-[#ffce00]"
+          fullWidth
+        >
           Sign In
         </Button>
+
+        {/* Link to sign up page */}
         <Typography color="gray" className="mt-4 text-center font-normal">
           Do not have an account?{' '}
           <Link to="/signup" className="font-medium text-blue-600">

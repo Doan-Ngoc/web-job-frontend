@@ -26,7 +26,7 @@ export function NotFoundPage() {
           404 - Page not found
         </h1>
         <p className="text-slate-600 mt-5 mb-6 lg:text-lg">
-          The page you are looking for doesn't exist or <br />
+          The page you are looking for does not exist or <br />
           has been removed.
         </p>
         <Button variant="outlined" color="purple">

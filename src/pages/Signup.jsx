@@ -1,5 +1,4 @@
 import {
-  Card,
   Input,
   Button,
   Typography,
@@ -8,15 +7,9 @@ import {
 } from '@material-tailwind/react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { HttpStatusCode } from 'axios';
-import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import * as authApi from '../api/authenticate';
 import { userSignUpSchema } from '../utils/validation-schemas';
-import { FormWrapper } from '../components/FormWrapper';
 import { InputWrapper } from '../components/InputWrapper';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { AlreadyLogin } from './errors/AlreadyLogin';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -33,7 +26,6 @@ export function Signup() {
   const {
     register,
     handleSubmit,
-    setError,
     control,
     formState: { errors },
   } = useForm({
@@ -42,6 +34,7 @@ export function Signup() {
     mode: 'onSubmit'
   });
 
+  //Sign up request
   const onSubmit = async (data) => {
     if (data.role === "company") {
       navigate(`/profile/company/create`, { state: { signUpData: data } })
@@ -50,13 +43,15 @@ export function Signup() {
       navigate(`/profile/applicant/create`, { state: { signUpData: data } })
     }
   }
-
+  
+  //If accessed when already logged in
   if (isLoggedIn) {
     return <AlreadyLogin />;
   }
 
   return (
     <div className="w-full h-full shadow-2xl rounded-md flex flex-col gap-10 items-center justify-center ">
+      {/* Sign up form */}
       <h2 className='text-2xl font-bold'>Create an account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className=" w-1/3">
         <div className="mb-8 flex flex-col gap-6 ">
@@ -112,6 +107,8 @@ export function Signup() {
         >
           Register
         </Button>
+
+         {/* Link to sign in page */}
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{' '}
           <Link to="/signin" href="#" className="font-medium text-blue-600">

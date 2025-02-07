@@ -2,3 +2,11 @@
   font-size: 22px;
   margin: 0 10px;
 }
+
+.job-description .hero {
+  background-color: var(--slate-color)
+}
+
+.job-description {
+  white-space: pre-line
+}

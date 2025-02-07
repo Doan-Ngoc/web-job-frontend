@@ -1,8 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sidebar-item {
+  @apply flex items-center pl-10 py-4 gap-2 cursor-pointer text-base;
+}
+
 .sidebar-item:hover {
-  background-color: var(--primary-color)
+  background-color: #494bc2
   /* #494bc2; */
+}
+
+ion-icon {
+  font-size: 20px
 }
 
 .logout-sidebar-btn:hover {
   background-color: var(--secondary-color);
 }
+

@@ -1,98 +1,105 @@
-import { useEffect, useState } from "react";
-import {useParams, useNavigate } from "react-router-dom";
-import { request } from "../../utils/request";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { request } from '../../utils/request';
 import * as companyApi from '../../api/company';
-import "./CompanyProfile.css"
-import Loading from "../../components/Loading";
+import './CompanyProfile.css';
+import Loading from '../../components/Loading';
 
-const CompanyProfile = ({accountId}) => {
+const CompanyProfile = ({ accountId }) => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   const { accountId: paramAccountId } = useParams();
   const [companyId, setCompanyId] = useState();
 
-  //Get company's account id. If the user is the company itself, get it from props. If not, get it from URL param.
+  //Get company's account id.
+  // If the user is the company itself, get it from props. If not, get it from URL param.
   useEffect(() => {
     if (accountId) {
       setCompanyId(accountId);
     } else if (paramAccountId) {
       setCompanyId(paramAccountId);
     } else {
-      navigate("/error/404");
+      navigate('/error/404');
     }
   }, [accountId, paramAccountId]);
 
   //Fetch profile data
   const fetchProfile = async () => {
     try {
-      console.log("Starting")
+      console.log('Starting');
       const res = await companyApi.getCompanyProfile(companyId);
       if (res.data) {
-        setProfile(res.data)
+        setProfile(res.data);
       }
     } catch (err) {
-      console.log(err)
-      navigate("/error/500")
-    }
-    finally {
+      console.log(err);
+      navigate('/error/500');
+    } finally {
       setLoading(false);
-      console.log('logo', profile.logo)
+      console.log('logo', profile.logo);
     }
-  }
+  };
 
   useEffect(() => {
     if (!companyId) return;
     fetchProfile();
   }, [companyId]);
-  
-  return (
-    isLoading ? 
-       <Loading />
-       : 
+
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
-    <div className="company-profile grow flex flex-col items-center justify-center">
-      <header className="hero rounded-md" style={{ backgroundColor: 'var(--slate-color)'}}>
-        <div className="hero-content w-full p-8 flex items-center justify-center gap-24 ">
-          <div className="company-logo w-1/4 ">
-            <img src={`${request.defaults.baseURL}/uploads/${profile.logo}`} 
-            className="w-44 h-44 rounded-full mx-auto" alt="Company Logo"  />
-          </div>
-          <div className="w-3/4">
-            <h1 className="text-2xl font-bold py-6 text-left pl-4">{profile.name}</h1>
-            <ul className="grid grid-rows-3 grid-flow-col gap-4 text-lg text-left">
-              <div className="grid grid-cols-2 gap-4 ">
+      <div className="company-profile grow flex flex-col items-center justify-center">
+        <header
+          className="hero rounded-md"
+          style={{ backgroundColor: 'var(--slate-color)' }}
+        >
+          <div className="hero-content w-full p-8 flex items-center justify-center gap-24 ">
+            <div className="company-logo w-1/4 ">
+              <img
+                src={`${request.defaults.baseURL}/uploads/${profile.logo}`}
+                className="w-44 h-44 rounded-full mx-auto"
+                alt="Company Logo"
+              />
+            </div>
+            <div className="w-3/4">
+              <h1 className="text-2xl font-bold py-6 text-left pl-4">
+                {profile.name}
+              </h1>
+              <ul className="grid grid-rows-3 grid-flow-col gap-4 text-lg text-left">
+                <div className="grid grid-cols-2 gap-4 ">
+                  <li className="opacity-70 flex gap-3 ">
+                    <ion-icon className="icon" name="mail"></ion-icon>
+                    {profile.email}
+                  </li>
+                  <li className="opacity-70 flex gap-3 ">
+                    <ion-icon className="icon" name="call"></ion-icon>
+                    Tel: {profile.phone}
+                  </li>
+                </div>
                 <li className="opacity-70 flex gap-3 ">
-                  <ion-icon className="icon" name="mail"></ion-icon>
-                  {profile.email}
+                  <ion-icon className="icon" name="location"></ion-icon>
+                  Address: {profile.address}
                 </li>
                 <li className="opacity-70 flex gap-3 ">
-                  <ion-icon className="icon" name="call"></ion-icon>
-                  Tel: {profile.phone}
+                  <ion-icon className="icon" name="briefcase"></ion-icon>
+                  Field: {profile.companyIndustries.join(', ')}
                 </li>
-              </div>
-              <li className="opacity-70 flex gap-3 ">
-                <ion-icon className="icon" name="location"></ion-icon>
-                Address: {profile.address}
-              </li>
-              <li className="opacity-70 flex gap-3 ">
-                <ion-icon className="icon" name="briefcase"></ion-icon>
-                Field: {profile.companyIndustries.join(", ")}
-              </li>
-            </ul>
+              </ul>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main
-        className="bg-white rounded-md px-32 py-20 text-justify text-lg"
-        style={{ whiteSpace: "pre-line" }}
-      >
-        {profile.description}
-      </main>
-    </div>
+        <main
+          className="bg-white rounded-md px-32 py-20 text-justify text-lg"
+          style={{ whiteSpace: 'pre-line' }}
+        >
+          {profile.description}
+        </main>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default CompanyProfile
+export default CompanyProfile;

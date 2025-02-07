@@ -1,4 +1,3 @@
-import './JobList.css';
 import JobItem from '../JobItem/JobItem';
 
 const JobList = ({ allJobs }) => {

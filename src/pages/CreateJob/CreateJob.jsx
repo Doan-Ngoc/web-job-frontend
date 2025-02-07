@@ -1,9 +1,7 @@
-import { React, useState } from "react";
-import { useContext } from "react";
-import { useForm } from "react-hook-form";
-import { useJobContext } from "../../contexts/JobContext";
-import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { useJobContext } from '../../contexts/JobContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import * as authApi from '../../api/authenticate';
 import * as companyApi from '../../api/company';
 import { request } from '../../utils/request';
@@ -16,23 +14,23 @@ import {
   Dialog,
   DialogBody,
   DialogFooter,
-} from "@material-tailwind/react";
+} from '@material-tailwind/react';
 
 const CreateJobNews = () => {
   //Get the job field list
-  const { jobFields } = useJobContext()
+  const { jobFields } = useJobContext();
   //Get the access token
-  const { accessToken } = useAuth()
+  const { accessToken } = useAuth();
   //Set states
   const companyData = {
     accountId: null,
     name: '',
-    logo: ''
-  }
-  // Calculate the minimum date (10 days from today)
+    logo: '',
+  };
+  // Calculate the minimum expiration date (10 days from today)
   const today = new Date();
   today.setDate(today.getDate() + 10);
-  const minDate = today.toISOString().split("T")[0];
+  const minDate = today.toISOString().split('T')[0];
   //Use React Hook Form
   const { register, handleSubmit } = useForm();
   //Open dialog when click button
@@ -43,21 +41,24 @@ const CreateJobNews = () => {
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
-      //Account authentication
+      //Account authentication & Fetch company profile's data
       const response = await authApi.verifyAccessToken(accessToken);
       if (response.user.role === 'company') {
-        companyData.accountId =  response.user.id
+        companyData.accountId = response.user.id;
       }
-      const companyProfile = await companyApi.getCompanyProfile(response.user.id);
+      const companyProfile = await companyApi.getCompanyProfile(
+        response.user.id,
+      );
       if (companyProfile.data) {
-          companyData.name = companyProfile.data.name,
-          companyData.logo = companyProfile.data.logo
+        (companyData.name = companyProfile.data.name),
+          (companyData.logo = companyProfile.data.logo);
       }
+      //Submit job data
       const newJobData = {
         title: data.title,
         company: companyData.name,
         logo: companyData.logo,
-        createdAt: new Date().toISOString().split("T")[0],
+        createdAt: new Date().toISOString().split('T')[0],
         closedDate: data.closedDate,
         createdBy: companyData.accountId,
         salary: data.salary,
@@ -65,14 +66,15 @@ const CreateJobNews = () => {
         field: data.field,
         position: data.position,
         description: data.description,
-        status: "active",
+        status: 'active',
         applicants: [],
-      }
-      const res = await request.post('/job/new', newJobData)
+      };
+      const res = await request.post('/job/new', newJobData);
       openConfirmDialog();
-    }catch(error) {
-      console.error("Creating job failed:", error.message);
-      const errorMessage = error.response?.data?.message || ' Oops something went wrong! ';
+    } catch (error) {
+      console.error('Creating job failed:', error.message);
+      const errorMessage =
+        error.response?.data?.message || ' Oops something went wrong! ';
       toast.error(errorMessage);
     }
   };
@@ -86,6 +88,8 @@ const CreateJobNews = () => {
         onSubmit={handleSubmit(handleFormSubmit)}
       >
         <div className="mb-1 flex flex-col gap-6 w-100 text-lg">
+
+          {/* Job Title */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg ">
             Title
           </Typography>
@@ -93,11 +97,13 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("title")}
+            {...register('title')}
           />
+
+          {/* Expiration Date */}
           <Typography variant="h6" color="blue-gray" className="-mb-3  text-lg">
             Expiration Date <br></br> (At least 10 days after created date)
           </Typography>
@@ -107,9 +113,10 @@ const CreateJobNews = () => {
             name="datepicker"
             min={minDate}
             required
-            {...register("closedDate")}
+            {...register('closedDate')}
           />
 
+          {/* Field of job */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Field
           </Typography>
@@ -118,7 +125,7 @@ const CreateJobNews = () => {
             id="jobField"
             className="block w-full bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
             required
-            {...register("field")}
+            {...register('field')}
           >
             <option value="" selected disabled hidden>
               --Select an option--
@@ -130,6 +137,7 @@ const CreateJobNews = () => {
             ))}
           </select>
 
+          {/* Salary */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Salary
           </Typography>
@@ -137,11 +145,13 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("salary")}
+            {...register('salary')}
           />
+
+          {/* Location */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Location
           </Typography>
@@ -149,11 +159,13 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("location")}
+            {...register('location')}
           />
+
+          {/* Job position */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Position
           </Typography>
@@ -161,11 +173,13 @@ const CreateJobNews = () => {
             size="lg"
             className="text-xl bg-white !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
-              className: "before:content-none after:content-none",
+              className: 'before:content-none after:content-none',
             }}
             required
-            {...register("position")}
+            {...register('position')}
           />
+
+          {/* Job description */}
           <Typography variant="h6" color="blue-gray" className="-mb-3 text-lg">
             Job Description
           </Typography>
@@ -174,9 +188,11 @@ const CreateJobNews = () => {
             className="text-xl bg-white h-full min-h-[100px] w-full resize-none rounded-[7px] border
              px-3 py-2  transition-all !border-t-blue-gray-200 focus:!border-t-gray-900"
             placeholder=" "
-            {...register("description")}
+            {...register('description')}
           ></textarea>
         </div>
+
+        {/* Submit button */}
         <Button
           className="btn mt-10 mx-auto text-black text-base font-medium w-1/3 bg-[#ffce00] hover:bg-[#ffce00]"
           type="submit"
@@ -184,6 +200,8 @@ const CreateJobNews = () => {
           Submit
         </Button>
       </form>
+
+      {/* Success Dialog */}
       <Dialog
         open={open}
         size="xs"
@@ -197,7 +215,7 @@ const CreateJobNews = () => {
           <Button
             className="bg-[#ffce00] text-black font-medium"
             color="black"
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           >
             <span>OK</span>
           </Button>
@@ -206,4 +224,5 @@ const CreateJobNews = () => {
     </Card>
   );
 };
+
 export default CreateJobNews;
