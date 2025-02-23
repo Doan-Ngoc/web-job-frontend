@@ -34,7 +34,7 @@ const JobDescription = () => {
   const submitApplication = async () => {
     try {
       setOpenDialog(!openDialog);
-      const response = await applicantApi.sendApplication(accessToken, jobId);
+      await applicantApi.sendApplication(accessToken, jobId);
       toast.success('Your application has been sent!');
       navigate('/job/applied');
     } catch (err) {
@@ -56,7 +56,11 @@ const JobDescription = () => {
           <div className="hero-content w-full p-8 flex">
             <div className="w-1/4">
               <img
-                src={`${request.defaults.baseURL}/uploads/${jobData.logo}`}
+                src={
+                  jobData.company === 'Green Earth Solutions'
+                    ? 'https://bcassetcdn.com/public/blog/wp-content/uploads/2022/10/31010325/xbox.png'
+                    : `${request.defaults.baseURL}/uploads/${jobData.logo}`
+                }
                 className="rounded-full w-44 h-44 mx-auto"
                 alt="Company Logo"
               />

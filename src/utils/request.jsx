@@ -3,8 +3,8 @@ import { jwtDecode } from "jwt-decode";
 import * as authApi from '../api/authenticate'
 
 export const request = axios.create({
-  baseURL: 'http://localhost:3000',
-  // baseURL: "https://job-connect-api.onrender.com",
+  // baseURL: 'http://localhost:3000',
+  baseURL: "https://job-connect-api.onrender.com",
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ if (accessToken) {
   return config;
 });
 
-// // Function to check if the token is expired
+// Function to check if the token is expired
 function isTokenExpired(token) {
   try {
     const decodedToken = jwtDecode(token);

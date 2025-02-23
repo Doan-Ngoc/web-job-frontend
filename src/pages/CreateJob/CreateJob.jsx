@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useJobContext } from '../../contexts/JobContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -69,7 +70,7 @@ const CreateJobNews = () => {
         status: 'active',
         applicants: [],
       };
-      const res = await request.post('/job/new', newJobData);
+      await request.post('/job/new', newJobData);
       openConfirmDialog();
     } catch (error) {
       console.error('Creating job failed:', error.message);

@@ -1,6 +1,6 @@
 import CustomDate from '../../utils/dateUtils';
-import { request } from '../../utils/request';
 import { Link } from 'react-router-dom';
+import { request } from '../../utils/request';
 
 const JobItem = (props) => {
   const { jobData } = props;
@@ -9,7 +9,11 @@ const JobItem = (props) => {
       <div className="w-24 h-24 bg-white avatar">
         <div className="w-24 h-24 rounded-lg">
           <img
-            src={`${request.defaults.baseURL}/uploads/${jobData.logo}`}
+            src={
+              jobData.company === 'Green Earth Solutions'
+                ? 'https://bcassetcdn.com/public/blog/wp-content/uploads/2022/10/31010325/xbox.png'
+                : `${request.defaults.baseURL}/uploads/${jobData.logo}`
+            }
             alt="Company Logo"
             className="w-44 h-44 rounded-full object-cover"
           />

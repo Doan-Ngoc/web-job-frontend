@@ -88,7 +88,7 @@ function NewCompanyProfile() {
 
       // Send data to backend
       try {
-        const res = await companyApi.createCompanyProfile(formData);
+        await companyApi.createCompanyProfile(formData);
         toast.success('Your profile is created successfully!');
         navigate(`/signin`);
         //Request for creating profile failed
@@ -109,7 +109,7 @@ function NewCompanyProfile() {
   };
 
   return (
-    <div className="w-screen flex items-center justify-center">
+    <div className="w-100 flex items-center justify-center">
       <Card color="transparent" className="items-center p-12 shadow-2xl">
         <form
           className="mt-8 mb-2 sm:w-96 flex-col justify-evenly gap-2"
@@ -141,7 +141,6 @@ function NewCompanyProfile() {
               </button>
             ) : (
               <label
-                for="photoInput"
                 className="btn text-white text-xs bg-black hover:bg-black cursor-pointer"
               >
                 Upload photo

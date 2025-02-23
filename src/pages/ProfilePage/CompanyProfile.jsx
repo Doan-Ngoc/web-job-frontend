@@ -58,7 +58,11 @@ const CompanyProfile = ({ accountId }) => {
           <div className="hero-content w-full p-8 flex items-center justify-center gap-24 ">
             <div className="company-logo w-1/4 ">
               <img
-                src={`${request.defaults.baseURL}/uploads/${profile.logo}`}
+                src={
+                  profile.name === 'Green Earth Solutions'
+                    ? 'https://bcassetcdn.com/public/blog/wp-content/uploads/2022/10/31010325/xbox.png'
+                    : `${request.defaults.baseURL}/uploads/${profile.logo}`
+                }
                 className="w-44 h-44 rounded-full mx-auto"
                 alt="Company Logo"
               />

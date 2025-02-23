@@ -1,6 +1,7 @@
 const Loading = () => {
   return (
-    <div className="h-full flex gap-6 justify-center items-center">
+    <div className="h-full justify-center flex flex-col gap-5">
+    <div className="flex gap-6 justify-center items-center">
       <div>
         <svg
           aria-hidden="true"
@@ -21,6 +22,11 @@ const Loading = () => {
       </div>
       <span className="h-fit text-2xl font-light">Loading...</span>
     </div>
+     <div>
+     <p className="h-fit text-l font-light">If it is your first time visiting the website, it may take around 1 minute for the page to load.</p>
+     <p className="h-fit text-l font-light">Thank you for your patience.</p>
+     </div>
+     </div>
   );
 };
 

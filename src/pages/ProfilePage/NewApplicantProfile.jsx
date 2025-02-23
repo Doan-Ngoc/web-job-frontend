@@ -96,7 +96,7 @@ export default function NewApplicantProfile() {
 
       // Send data to backend
       try {
-        const res = await applicantApi.createApplicantProfile(formData);
+       await applicantApi.createApplicantProfile(formData);
         toast.success('Your profile is created successfully!');
         navigate(`/signin`);
         //Request for creating profile failed
@@ -117,7 +117,7 @@ export default function NewApplicantProfile() {
   };
   
   return (
-    <div className="w-screen flex items-center justify-center">
+    <div className="w-100 flex items-center justify-center">
       <Card color="transparent" className="items-center p-12 shadow-2xl">
         <form
           className="mt-8 mb-2 sm:w-96 flex-col justify-evenly gap-2"
@@ -149,7 +149,6 @@ export default function NewApplicantProfile() {
               </button>
             ) : (
               <label
-                for="photoInput"
                 className="btn text-white text-xs bg-black hover:bg-black cursor-pointer"
               >
                 Upload photo
