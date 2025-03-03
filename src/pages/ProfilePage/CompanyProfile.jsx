@@ -10,41 +10,30 @@ const CompanyProfile = ({ accountId }) => {
   const [isLoading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   const { accountId: paramAccountId } = useParams();
-  const [companyId, setCompanyId] = useState();
 
-  //Get company's account id.
-  // If the user is the company itself, get it from props. If not, get it from URL param.
   useEffect(() => {
-    if (accountId) {
-      setCompanyId(accountId);
-    } else if (paramAccountId) {
-      setCompanyId(paramAccountId);
-    } else {
-      navigate('/error/404');
-    }
-  }, [accountId, paramAccountId]);
-
-  //Fetch profile data
-  const fetchProfile = async () => {
-    try {
-      console.log('Starting');
-      const res = await companyApi.getCompanyProfile(companyId);
-      if (res.data) {
-        setProfile(res.data);
+    //Get company's account id. 
+    // If the user is the company itself, get it from props. If not, get it from URL param.
+    const companyId = accountId || paramAccountId
+    //Fetch profile data
+    const fetchProfile = async () => {
+      try {
+        const res = await companyApi.getCompanyProfile(companyId);
+        if (res.data) {
+          setProfile(res.data);
+        }
+        else {
+          navigate('/profile/company/create')
+        }
+      } catch (err) {
+        console.log(err);
+        navigate('/error/500');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.log(err);
-      navigate('/error/500');
-    } finally {
-      setLoading(false);
-      console.log('logo', profile.logo);
-    }
-  };
-
-  useEffect(() => {
-    if (!companyId) return;
+    };
     fetchProfile();
-  }, [companyId]);
+  }, [accountId, paramAccountId, navigate]);
 
   return isLoading ? (
     <Loading />
@@ -96,7 +85,7 @@ const CompanyProfile = ({ accountId }) => {
         </header>
 
         <main
-          className="bg-white rounded-md px-32 py-20 text-justify text-lg"
+          className="w-full bg-white rounded-md px-32 py-20 text-justify text-lg"
           style={{ whiteSpace: 'pre-line' }}
         >
           {profile.description}

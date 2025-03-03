@@ -9,38 +9,28 @@ const ApplicantProfile = ({ accountId }) => {
   const [isLoading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const { accountId: paramAccountId } = useParams();
-  const [applicantId, setApplicantId] = useState();
 
-  const fetchProfile = async () => {
-    try {
-      const res = await applicantApi.getApplicantProfile(applicantId);
-      if (res.data) {
-        setProfile(res.data);
+  useEffect(() => {
+    const applicantId = accountId || paramAccountId
+    //Fetch profile data
+    const fetchProfile = async () => {
+      try {
+        const res = await applicantApi.getApplicantProfile(applicantId);
+        if (res.data) {
+          setProfile(res.data);
+        }
+        else {
+          navigate('/profile/applicant/create')
+        }
+      } catch (err) {
+        console.log(err);
+        navigate('/error/500');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.log(err);
-      navigate('/error/500');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    //if the applicant access their own profile page and the account id is sent through props
-    if (accountId) {
-      setApplicantId(accountId);
-      //if someone else access an applicant profile page and the account id is on URL param
-    } else if (paramAccountId) {
-      setApplicantId(paramAccountId);
-    } else {
-      navigate('/error/404');
-    }
-  }, [accountId, paramAccountId]);
-
-  useEffect(() => {
-    if (!applicantId) return;
+    };
     fetchProfile();
-  }, [applicantId]);
+  }, [accountId, paramAccountId, navigate]);
 
   if (isLoading) {
     return <div>Loading...</div>;

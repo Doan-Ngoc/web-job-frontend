@@ -26,22 +26,22 @@ const EditJob = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    fetchJobData();
-  }, []);
-  //Verify account and get job data
-  const fetchJobData = async () => {
-    try {
-      const jobData = await companyApi.jobCreatorAuthorize(accessToken, jobId);
-      if (jobData) {
-        setJobData(jobData);
-      } else {
-        navigate('/error/no-permission');
+    //Verify account and get job data
+    const fetchJobData = async () => {
+      try {
+        const jobData = await companyApi.jobCreatorAuthorize(accessToken, jobId);
+        if (jobData) {
+          setJobData(jobData);
+        } else {
+          navigate('/error/no-permission');
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching job data:', error);
       }
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching job data:', error);
-    }
-  };
+    };
+    fetchJobData();
+  }, [accessToken, jobId, navigate]);
   
   //Get the job field list
   const { jobFields } = useJob();
@@ -72,7 +72,7 @@ const EditJob = () => {
         jobId,
       );
       if (validateAccount) {
-        const response = await request.put(`/job/update/${jobId}`, {
+        await request.put(`/job/update/${jobId}`, {
           ...jobData,
           ...data,
         });

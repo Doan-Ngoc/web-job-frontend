@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,7 +16,7 @@ const userSigninDefaultValues = {
 };
 
 export function Signin() {
-  const { isLoggedIn, setIsLoggedIn, setAccessToken } = useAuth();
+  const { isLoggedIn, setAccessToken } = useAuth();
   const {
     register,
     handleSubmit,

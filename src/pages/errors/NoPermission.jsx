@@ -1,5 +1,6 @@
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 export function NoPermission() {
   return (

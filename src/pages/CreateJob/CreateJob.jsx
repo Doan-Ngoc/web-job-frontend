@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import { useJob } from '../../hooks/useJob';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import * as authApi from '../../api/authenticate';
 import * as companyApi from '../../api/company';
 import { request } from '../../utils/request';
 import toast from 'react-hot-toast';
@@ -21,13 +20,10 @@ const CreateJobNews = () => {
   //Get the job field list
   const { jobFields } = useJob();
   //Get the access token
-  const { accessToken, accountId } = useAuth();
+  const { accountId } = useAuth();
   //Set states
-  const companyData = {
-    accountId: null,
-    name: '',
-    logo: '',
-  };
+  const [companyData, setCompanyData] = useState({accountId: '', name: '', logo: '' });
+  const [isLoading, setIsLoading] = useState()
   // Calculate the minimum expiration date (10 days from today)
   const today = new Date();
   today.setDate(today.getDate() + 10);
@@ -38,22 +34,34 @@ const CreateJobNews = () => {
   const [open, setOpen] = useState(false);
   const openConfirmDialog = () => setOpen(!open);
   const navigate = useNavigate();
+  //Fetch company profile's data
+  useEffect(() => {
+    const getCompanyProfile = async() => {
+      try {
+      setIsLoading(true)
+      const companyProfile = await companyApi.getCompanyProfile(accountId);
+      if (companyProfile.data) {
+        setCompanyData({
+          accountId: accountId,
+          name: companyProfile.data.name,
+          logo: companyProfile.data.logo
+        });
+        setIsLoading(false)
+      }
+      else {
+        navigate('/profile/company/create')
+      }
+    }catch {
+      console.error('Error fetching profile data')
+      navigate('/error/500')
+    }
+  } 
+    getCompanyProfile();
+  }, [accountId, navigate])
 
   //Submit form
   const handleFormSubmit = async (data) => {
     try {
-      //Account authentication & Fetch company profile's data
-      const response = await authApi.verifyAccessToken(accessToken);
-      if (response.user.role === 'company') {
-        companyData.accountId = response.user.id;
-      }
-      const companyProfile = await companyApi.getCompanyProfile(
-        response.user.id,
-      );
-      if (companyProfile.data) {
-        (companyData.name = companyProfile.data.name),
-          (companyData.logo = companyProfile.data.logo);
-      }
       //Submit job data
       const newJobData = {
         title: data.title,
@@ -61,7 +69,7 @@ const CreateJobNews = () => {
         logo: companyData.logo,
         createdAt: new Date().toISOString().split('T')[0],
         closedDate: data.closedDate,
-        createdBy: companyData.accountId,
+        createdBy: accountId,
         salary: data.salary,
         location: data.location,
         field: data.field,
@@ -79,7 +87,10 @@ const CreateJobNews = () => {
       toast.error(errorMessage);
     }
   };
+
   return (
+    <>
+    {!isLoading && (
     <Card color="transparent" shadow={false}>
       <Typography variant="h3" color="blue-gray">
         Create New Job
@@ -223,6 +234,9 @@ const CreateJobNews = () => {
         </DialogFooter>
       </Dialog>
     </Card>
+    )}
+    </>
+  
   );
 };
 

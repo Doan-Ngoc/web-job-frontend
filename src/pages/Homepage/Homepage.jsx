@@ -17,28 +17,27 @@ const Homepage = () => {
   const limitPerPage = 5;
 
   useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        //Fetch jobs
+        const response = await request.get(
+          `/job?page=${currentPage || 1}&limit=${limitPerPage}`,
+        );
+        const { docs, totalPages } = response.data;
+        setAllJobs(docs);
+        setTotalPages(totalPages);
+        // Update the URL when changing the page
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set('page', currentPage.toString());
+        navigate(`${location.pathname}?${searchParams.toString()}`);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching job data:', error);
+        navigate('/error/500');
+      }
+    };
     fetchJobs();
-  }, [currentPage]);
-
-  const fetchJobs = async () => {
-    try {
-      //Fetch jobs
-      const response = await request.get(
-        `/job?page=${currentPage || 1}&limit=${limitPerPage}`,
-      );
-      const { docs, totalPages } = response.data;
-      setAllJobs(docs);
-      setTotalPages(totalPages);
-      // Update the URL when changing the page
-      const searchParams = new URLSearchParams(location.search);
-      searchParams.set('page', currentPage.toString());
-      navigate(`${location.pathname}?${searchParams.toString()}`);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching job data:', error);
-      navigate('/error/500');
-    }
-  };
+  }, [currentPage, location.pathname, location.search, navigate]);
 
   return isLoading ? (
     <Loading />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import CustomDate from '../../utils/dateUtils';
-import { Link, useNavigate } from 'react-router-dom';
+import formatDate from '../../utils/dateUtils';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/request';
 import * as companyApi from '../../api/company';
@@ -55,10 +55,6 @@ function RecruiterJobList() {
   const openConfirmDialog = (_id) => {
     setSelectedJobId(_id);
     setOpen(!open);
-  };
-  const navigate = useNavigate();
-  const backToHomePage = () => {
-    navigate('/');
   };
   //Remove job
   const handleRemoveJob = async (_id) => {
@@ -130,7 +126,7 @@ function RecruiterJobList() {
                   <td className={classes}>
                     <div className="text-center">
                       <Typography color="blue-gray" className="font-normal">
-                        {new CustomDate(createdAt).formatDate()}
+                        {formatDate(createdAt)}
                       </Typography>
                     </div>
                   </td>

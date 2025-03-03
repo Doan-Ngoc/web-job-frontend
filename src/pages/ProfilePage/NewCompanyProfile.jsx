@@ -9,22 +9,22 @@ import {
   DialogFooter,
 } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { useState,  useRef } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { InputWrapper } from '../../components/InputWrapper';
 import { companySchema } from '../../utils/validation-schemas';
 import * as companyApi from '../../api/company';
-import * as authApi from '../../api/authenticate';
 import toast from 'react-hot-toast';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { request } from '../../utils/request';
 import { useJob } from '../../hooks/useJob';
+import { useAuth } from '../../hooks/useAuth';
 
 function NewCompanyProfile() {
-  const location = useLocation();
-  const { signUpData } = location.state || '';
+  // const location = useLocation();
+  // const { signUpData } = location.state || '';
   const { jobFields } = useJob();
-  // const { accessToken } = useAuth();
+  const { accountId } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -36,12 +36,6 @@ function NewCompanyProfile() {
       companyIndustries: [],
     },
   });
-
-  useEffect(() => {
-    if (!signUpData) {
-      navigate('/error/500');
-    }
-  }, []);
 
   //Open dialog for signup error message
   const [open, setOpen] = useState(false);
@@ -66,20 +60,20 @@ function NewCompanyProfile() {
   const onSubmit = async (data) => {
     try {
       //Sign up with email and password first
-      const response = await authApi.signup(signUpData);
+      // const response = await authApi.signup(signUpData);
       //If sign up successfully, send data to create user profile 
       const formData = new FormData();
       //Format company logo
       if (data.companyLogo[0]) {
         const file = data.companyLogo[0];
-        const newFileName = `photo_${response.data.id}${file.name.slice(
+        const newFileName = `photo_${accountId}${file.name.slice(
           file.name.lastIndexOf('.'),
         )}`;
         const renamedFile = new File([file], newFileName, { type: file.type });
         formData.append('companyLogo', renamedFile);
       }
       //Add other data to formData
-      formData.append('accountId', response.data.id);
+      formData.append('accountId', accountId);
       Object.keys(data).forEach((key) => {
         if (key !== 'companyLogo') {
           formData.append(key, data[key]);
@@ -90,7 +84,7 @@ function NewCompanyProfile() {
       try {
         await companyApi.createCompanyProfile(formData);
         toast.success('Your profile is created successfully!');
-        navigate(`/signin`);
+        navigate(`/my-profile`);
         //Request for creating profile failed
       } catch (err) {
         console.error('Creating company profile failed', err.message);
@@ -141,6 +135,7 @@ function NewCompanyProfile() {
               </button>
             ) : (
               <label
+              htmlFor="photoInput"
                 className="btn text-white text-xs bg-black hover:bg-black cursor-pointer"
               >
                 Upload photo

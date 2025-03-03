@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import CustomDate from '../../utils/dateUtils';
+import formatDate from '../../utils/dateUtils';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/request';
@@ -34,31 +34,28 @@ function ManageApplicationsForCompany() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const fetchApplicationList = async () => {
+      try {
+        const response = await request.get(`job/applications/${jobId}`);
+        setApplicationList(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        const errorMessage =
+          error.response?.data?.message ||
+          'Something went wrong! Please try again later.';
+        toast.error(errorMessage);
+      }
+    };
     fetchApplicationList();
-  }, [refresh]);
+  }, [refresh, accessToken, jobId]);
 
-  const fetchApplicationList = async () => {
-    try {
-      const response = await request.get(`job/applications/${jobId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setApplicationList(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      const errorMessage =
-        error.response?.data?.message ||
-        'Something went wrong! Please try again later.';
-      toast.error(errorMessage);
-    }
-  };
+  
 
   const handleChangingStatus = async (profileId, status) => {
     try {
       setOpen(!open);
-      const response = await companyApi.changeApplicationStatus(
+      await companyApi.changeApplicationStatus(
         accessToken,
         profileId,
         jobId,
@@ -151,7 +148,7 @@ function ManageApplicationsForCompany() {
                   <td className={classes}>
                     <div className="text-center">
                       <Typography color="blue-gray" className="font-normal">
-                        {new CustomDate(appliedDate).formatDate()}
+                        {formatDate(appliedDate)}
                       </Typography>
                     </div>
                   </td>

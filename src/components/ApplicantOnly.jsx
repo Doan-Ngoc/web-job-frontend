@@ -3,7 +3,6 @@ import { useAuth } from '../hooks/useAuth';
 
 const ApplicantOnly = () => {
   const { accountRole } = useAuth();
-
   return accountRole === 'applicant' ? (
     <Outlet />
   ) : (

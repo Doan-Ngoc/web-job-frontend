@@ -1,4 +1,4 @@
-import CustomDate from '../../utils/dateUtils';
+import formatDate from '../../utils/dateUtils';
 import { Link } from 'react-router-dom';
 import { request } from '../../utils/request';
 
@@ -30,7 +30,7 @@ const JobItem = (props) => {
       </div>
       <div className="flex-1 text-left flex flex-col gap-1 py-auto py-3">
         <p>Salary: {jobData.salary}</p>
-        <p>Valid Until: {new CustomDate(jobData.closedDate).formatDate()}</p>
+        <p>Valid Until: {formatDate(jobData.closedDate)}</p>
       </div>
     </article>
   );

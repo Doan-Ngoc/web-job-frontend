@@ -5,6 +5,7 @@ import {
   Select,
   Option,
 } from '@material-tailwind/react';
+import toast from 'react-hot-toast';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { userSignUpSchema } from '../utils/validation-schemas';
 import { InputWrapper } from '../components/InputWrapper';
 import { AlreadyLogin } from './errors/AlreadyLogin';
 import { useAuth } from '../hooks/useAuth';
+import * as authApi from '../api/authenticate'
 
 const defaultAccountValue = {
   email: '',
@@ -36,12 +38,18 @@ export function Signup() {
 
   //Sign up request
   const onSubmit = async (data) => {
-    if (data.role === "company") {
-      navigate(`/profile/company/create`, { state: { signUpData: data } })
-    }
-    else if (data.role === "applicant") {
-      navigate(`/profile/applicant/create`, { state: { signUpData: data } })
-    }
+    await authApi.signup(data);
+    toast.success('Thank you for joining us! Please sign in.');
+    navigate('/signin');
+    // const signInData = {
+    //   email: response.data.
+    // }
+    // if (data.role === "company") {
+    //   navigate(`/profile/company/create`, { state: { signUpData: data } })
+    // }
+    // else if (data.role === "applicant") {
+    //   navigate(`/profile/applicant/create`, { state: { signUpData: data } })
+    // }
   }
   
   //If accessed when already logged in

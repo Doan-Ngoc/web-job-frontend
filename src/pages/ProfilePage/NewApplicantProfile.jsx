@@ -9,21 +9,20 @@ import {
   DialogFooter,
 } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { InputWrapper } from '../../components/InputWrapper';
 import { applicantSchema } from '../../utils/validation-schemas';
-import * as authApi from '../../api/authenticate';
 import * as applicantApi from '../../api/applicant';
 import { request } from '../../utils/request';
 import toast from 'react-hot-toast';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useJob } from '../../hooks/useJob';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function NewApplicantProfile() {
-  const location = useLocation();
-  const { signUpData } = location.state || '';
   const { jobFields } = useJob();
+  const {accountId} = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -35,12 +34,6 @@ export default function NewApplicantProfile() {
       workingFields: [],
     },
   });
-  // If data was not passed from the Signup page
-  useEffect(() => {
-    if (!signUpData) {
-      navigate('/error/500');
-    }
-  }, []);
 
   //Open dialog for signup error message
   const [open, setOpen] = useState(false);
@@ -64,14 +57,11 @@ export default function NewApplicantProfile() {
 
   const onSubmit = async (data) => {
     try {
-      //Sign up with email and password first
-      const response = await authApi.signup(signUpData);
-      //If sign up successfully, send data to create user profile 
       const formData = new FormData();
       //Format profile picture
       if (data.profilePicture[0]) {
         const file = data.profilePicture[0];
-        const newFileName = `photo_${response.data.id}${file.name.slice(
+        const newFileName = `photo_${accountId}${file.name.slice(
           file.name.lastIndexOf('.'),
         )}`;
         const renamedFile = new File([file], newFileName, { type: file.type });
@@ -80,14 +70,14 @@ export default function NewApplicantProfile() {
       //Format applicant's CV
       if (data.applicantCV[0]) {
         const file = data.applicantCV[0];
-        const newFileName = `cv_${response.data.id}${file.name.slice(
+        const newFileName = `cv_${accountId}${file.name.slice(
           file.name.lastIndexOf('.'),
         )}`;
         const renamedFile = new File([file], newFileName, { type: file.type });
         formData.append('applicantCV', renamedFile);
       }
       //Add other data to formData
-      formData.append('accountId', response.data.id);
+      formData.append('accountId', accountId);
       Object.keys(data).forEach((key) => {
         if (key !== 'profilePicture' && key !== 'applicantCV') {
           formData.append(key, data[key]);
@@ -98,7 +88,7 @@ export default function NewApplicantProfile() {
       try {
        await applicantApi.createApplicantProfile(formData);
         toast.success('Your profile is created successfully!');
-        navigate(`/signin`);
+        navigate(`/my-profile`);
         //Request for creating profile failed
       } catch (err) {
         console.error('Creating applicant profile failed', err.message);
@@ -149,6 +139,7 @@ export default function NewApplicantProfile() {
               </button>
             ) : (
               <label
+              htmlFor="photoInput"
                 className="btn text-white text-xs bg-black hover:bg-black cursor-pointer"
               >
                 Upload photo

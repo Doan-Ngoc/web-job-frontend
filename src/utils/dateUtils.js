@@ -1,14 +1,12 @@
-class CustomDate extends Date {
-  constructor(dateStr) {
-    super(dateStr);
-  }
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return 'Invalid Date';
 
-  formatDate() {
-    const day = this.getDate().toString().padStart(2, "0");
-    const month = (this.getMonth() + 1).toString().padStart(2, "0");
-    const year = this.getFullYear();
-    return `${month}/${day}/${year}`;
-  }
-}
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
 
-export default CustomDate;
+  return `${day}/${month}/${year}`;
+};
+
+export default formatDate;

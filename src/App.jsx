@@ -37,51 +37,30 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/loading" element={<Loading />} />
-              <Route
-                path="/profile/company/:accountId"
-                element={<CompanyProfile />}
-              />
-              <Route
-                path="/profile/company/create"
-                element={<NewCompanyProfile />}
-              />
-              <Route
-                path="/profile/applicant/create"
-                element={<NewApplicantProfile />}
-              />
-              <Route
-                path="/profile/applicant/:accountId"
-                element={<ApplicantProfile />}
-              />
               <Route path="/signin" element={<Signin />} />
               <Route path="/job/search" element={<SearchPage />} />
-
+              <Route path="/error/no-permission" element={<NoPermission />} />
+              <Route path="/error/500" element={<ErrorPage />} />
               {/* Routes that require login */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/my-profile" element={<ProfilePageWrapper />} />
-
                 <Route element={<CompanyOnly />}>
                   <Route path="/job/created" element={<RecruiterJobList />} />
                   <Route path="/job/new" element={<CreateJob />} />
                   <Route path="/job/edit/:jobId" element={<EditJob />} />
                   <Route path="/job/restore/:jobId" element={<EditJob />} />
-                  <Route
-                    path="/job/applications/:jobId"
-                    element={<ManageApplicationsForCompany />}
-                  />
+                  <Route path="/job/applications/:jobId" element={<ManageApplicationsForCompany />}/>
+                  <Route path="/profile/company/create" element={<NewCompanyProfile />}/>
                 </Route>
 
                 <Route element={<ApplicantOnly />}>
-                  <Route
-                    path="/job/applied"
-                    element={<ManageApplicationsForApplicant />}
-                  />
+                <Route path="/profile/applicant/create" element={<NewApplicantProfile />}/>
+                  <Route path="/job/applied" element={<ManageApplicationsForApplicant />}/>
                 </Route>
               </Route>
-
+              <Route path="/profile/company/:accountId" element={<CompanyProfile />}/>
+              <Route path="/profile/applicant/:accountId" element={<ApplicantProfile />}/>
               <Route path="/job/:jobId" element={<JobDescription />} />
-              <Route path="/error/no-permission" element={<NoPermission />} />
-              <Route path="/error/500" element={<ErrorPage />} />
             </Routes>
           </section>
         </JobProvider>

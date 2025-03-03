@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import CustomDate from '../../utils/dateUtils';
+import formatDate from '../../utils/dateUtils';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/request';
 import * as applicantApi from '../../api/applicant';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import {
   Typography,
@@ -19,25 +20,31 @@ import {
 const TABLE_HEAD = ['Job Title', 'Company', 'Applied Date', 'Status', ''];
 
 function ManageApplicationsForApplicant() {
+  const navigate = useNavigate();
   const { accessToken, accountId } = useAuth();
   const [appliedJobList, setAppliedJobList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const fetchAppliedJobs = async () => {
+      try {
+        //Check if applicant already created a profile
+        const res = await applicantApi.getApplicantProfile(accountId);
+        if (!res.data) {
+          navigate('/profile/applicant/create');
+          return;
+        }
+        const response = await request.get(`/job/applied/${accountId}`);
+        const appliedJobData = response.data;
+        setAppliedJobList(appliedJobData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching job data:', error);
+      }
+    };
     fetchAppliedJobs();
-  }, [refresh]);
-
-  const fetchAppliedJobs = async () => {
-    try {
-      const response = await request.get(`/job/applied/${accountId}`);
-      const appliedJobData = response.data;
-      setAppliedJobList(appliedJobData);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching job data:', error);
-    }
-  };
+  }, [refresh, accountId, navigate ]);
 
   //Open confirm dialog when clicking remove button
   const [open, setOpen] = useState(false);
@@ -50,10 +57,7 @@ function ManageApplicationsForApplicant() {
   //Cancel application
   const handleCancelApplication = async (jobId) => {
     try {
-      const cancelApplication = await applicantApi.cancelApplication(
-        accessToken,
-        jobId,
-      );
+      await applicantApi.cancelApplication(accessToken, jobId);
       setOpen(!open);
       toast.success('Your application has been canceled!');
       setRefresh(true);
@@ -72,7 +76,7 @@ function ManageApplicationsForApplicant() {
   }
 
   if (appliedJobList.length <= 0) {
-    return <div>You haven't applied to any job.</div>;
+    return <div>{`You haven't applied to any job.`}</div>;
   }
 
   return (
@@ -138,7 +142,7 @@ function ManageApplicationsForApplicant() {
                   <td className={classes}>
                     <div className="text-center">
                       <Typography color="blue-gray" className="font-normal">
-                        {new CustomDate(appliedDate).formatDate()}
+                        {formatDate(appliedDate)}
                       </Typography>
                     </div>
                   </td>

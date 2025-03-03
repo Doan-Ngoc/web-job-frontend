@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import * as applicantApi from '../../api/applicant';
 import { request } from '../../utils/request';
-import CustomDate from '../../utils/dateUtils';
+import formatDate from '../../utils/dateUtils';
 import toast from 'react-hot-toast';
 import Loading from '../../components/Loading';
 import './JobDescription.css';
@@ -77,11 +77,11 @@ const JobDescription = () => {
               <ul className="grid grid-cols-2 gap-4 text-lg text-left">
                 <li className="opacity-70 flex gap-2 ">
                   <ion-icon className="icon" name="time"></ion-icon>
-                  Created at: {new CustomDate(jobData.createdAt).formatDate()}
+                  Created at: {formatDate(jobData.createdAt)}
                 </li>
                 <li className="opacity-70 flex gap-2 ">
                   <ion-icon className="icon" name="calendar"></ion-icon>
-                  Valid Until: {new CustomDate(jobData.closedDate).formatDate()}
+                  Valid Until: {formatDate(jobData.closedDate)}
                 </li>
                 <li className="opacity-70 flex gap-2 ">
                   <ion-icon className="icon" name="location"></ion-icon>
@@ -148,7 +148,7 @@ const JobDescription = () => {
               </Button>
               <Button
                 variant="text"
-                color="black"
+                color="gray"
                 onClick={() => setOpenDialog(!openDialog)}
                 className="mr-1 text-base"
               >
@@ -160,7 +160,7 @@ const JobDescription = () => {
             <DialogFooter className="flex justify-center">
               <Button
                 className="bg-[#ffce00] text-base text-black "
-                color="black"
+                color="gray"
                 onClick={() => setOpenDialog(!openDialog)}
               >
                 <span>OK</span>
