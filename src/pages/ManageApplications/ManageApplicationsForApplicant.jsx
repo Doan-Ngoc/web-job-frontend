@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import CustomDate from '../../utils/dateUtils';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/request';
 import * as applicantApi from '../../api/applicant';
 import toast from 'react-hot-toast';

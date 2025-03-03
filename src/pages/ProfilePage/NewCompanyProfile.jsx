@@ -18,12 +18,12 @@ import * as authApi from '../../api/authenticate';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { request } from '../../utils/request';
-import { useJobContext } from '../../contexts/JobContext';
+import { useJob } from '../../hooks/useJob';
 
 function NewCompanyProfile() {
   const location = useLocation();
   const { signUpData } = location.state || '';
-  const { jobFields } = useJobContext();
+  const { jobFields } = useJob();
   // const { accessToken } = useAuth();
   const navigate = useNavigate();
   const {

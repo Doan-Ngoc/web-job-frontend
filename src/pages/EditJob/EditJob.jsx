@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useJobContext } from '../../contexts/JobContext';
+import { useJob } from '../../hooks/useJob';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import * as companyApi from '../../api/company';
 import { request } from '../../utils/request';
 import { useParams } from 'react-router-dom';
@@ -44,7 +44,7 @@ const EditJob = () => {
   };
   
   //Get the job field list
-  const { jobFields } = useJobContext();
+  const { jobFields } = useJob();
   //Conditionally rendering the edit page or the restore page
   const location = useLocation();
   const currentPath = location.pathname;

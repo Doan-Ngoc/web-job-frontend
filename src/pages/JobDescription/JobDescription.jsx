@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import * as applicantApi from '../../api/applicant';
 import { request } from '../../utils/request';
 import CustomDate from '../../utils/dateUtils';

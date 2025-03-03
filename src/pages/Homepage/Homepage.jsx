@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { request } from '../../utils/request';
-import { useJobContext } from '../../contexts/JobContext';
+import { useJob } from '../../hooks/useJob';
 import JobList from '../../components/JobList/JobList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Loading from '../../components/Loading';
@@ -12,7 +12,7 @@ const Homepage = () => {
   const navigate = useNavigate();
   const [allJobs, setAllJobs] = useState([]);
   //Pagination variables
-  const { currentPage, setCurrentPage } = useJobContext();
+  const { currentPage, setCurrentPage } = useJob();
   const [totalPages, setTotalPages] = useState(1);
   const limitPerPage = 5;
 

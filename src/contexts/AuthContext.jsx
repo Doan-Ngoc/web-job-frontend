@@ -1,43 +1,50 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import * as authApi from '../api/authenticate';
+import { request, setUpdateAccessToken } from '../utils/request';
 
-const AuthContext = createContext();
-
-export const useAuth = () => useContext(AuthContext);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountRole, setAccountRole] = useState();
   const [accountId, setAccountId] = useState();
-  const [loadingAuth, isLoadingAuth] = useState(true);
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem('accessToken'),
-  );
+  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [accessToken, setAccessToken] = useState(null);
+
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     setAuthToken(accessToken); // ✅ Automatically update token in Axios
+  //   }
+  // }, [accessToken]);
 
   useEffect(() => {
-    //Verify access token and check login status every time access token changes
+    setUpdateAccessToken(setAccessToken); // ✅ Now interceptors can update the token
+  }, [setAccessToken]);
+
+  useEffect(() => {
     const checkLoginStatus = async () => {
-      if (accessToken) {
-        const response = await authApi.verifyAccessToken(accessToken);
-        if (response) {
-          setIsLoggedIn(true);
-          localStorage.setItem('login status', true);
+      setLoadingAuth(true);
+      try {
+        //Try reissue the access token if the user has a valid refresh token
+        if (!accessToken) {
+          setIsLoggedIn(false);
+          setAccountRole('');
+          setAccountId('');
+          delete request.defaults.headers.common["Authorization"];
+        } else {
+          //Verify access token if it's available
+          const response = await authApi.verifyAccessToken(accessToken);
           setAccountRole(response.user.role);
           setAccountId(response.user.id);
-        } else {
-          setIsLoggedIn(false);
-          setAccessToken(null);
-          localStorage.removeItem('accessToken');
-          localStorage.setItem('login status', false);
-          setAccountRole('');
-          setAccountId('')
+          setIsLoggedIn(true);
+          request.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
         }
-      } else {
-        setIsLoggedIn(false);
+      } catch (error) {
+        console.error('Auth initialization failed:', error);
+        // handleLogout();
       }
-      isLoadingAuth(false);
+      setLoadingAuth(false);
     };
-
     checkLoginStatus();
   }, [accessToken]);
 

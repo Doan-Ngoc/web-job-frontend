@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { userSignUpSchema } from '../utils/validation-schemas';
 import { InputWrapper } from '../components/InputWrapper';
 import { AlreadyLogin } from './errors/AlreadyLogin';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const defaultAccountValue = {
   email: '',

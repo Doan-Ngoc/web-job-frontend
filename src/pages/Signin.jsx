@@ -6,7 +6,7 @@ import { HttpStatusCode } from 'axios';
 import { userSigninSchema } from '../utils/validation-schemas';
 import { InputWrapper } from '../components/InputWrapper';
 import * as authApi from '../api/authenticate';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { AlreadyLogin } from './errors/AlreadyLogin';
 import toast from 'react-hot-toast';
 import { Input, Button, Typography } from '@material-tailwind/react';
@@ -34,9 +34,7 @@ export function Signin() {
   const onSubmit = async (data) => {
     try {
       const response = await authApi.signin(data);
-      localStorage.setItem('accessToken', response.data.accessToken);
-      setAccessToken(localStorage.getItem('accessToken'));
-      setIsLoggedIn(true);
+      setAccessToken(response.data.accessToken);
       toast.success('Successfully logged in');
       navigate('/');
     } catch (err) {

@@ -18,12 +18,12 @@ import * as applicantApi from '../../api/applicant';
 import { request } from '../../utils/request';
 import toast from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useJobContext } from '../../contexts/JobContext';
+import { useJob } from '../../hooks/useJob';
 
 export default function NewApplicantProfile() {
   const location = useLocation();
   const { signUpData } = location.state || '';
-  const { jobFields } = useJobContext();
+  const { jobFields } = useJob();
   const navigate = useNavigate();
   const {
     register,

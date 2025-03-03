@@ -26,10 +26,9 @@ export const refreshAccessToken = async () => {
       {},
       { withCredentials: true },
     );
-    const newAccessToken = response.data.accessToken;
-    localStorage.setItem('accessToken', newAccessToken);
+    return response.data.accessToken;
   } catch (error) {
-    console.error('Token reissue failed');
+    throw new Error('Token reissue failed');
   }
 };
 

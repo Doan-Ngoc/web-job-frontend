@@ -1,12 +1,8 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { request } from '../utils/request';
 import { useNavigate } from 'react-router-dom';
 
-const JobContext = createContext();
-
-export const useJobContext = () => {
-  return useContext(JobContext);
-};
+export const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
   const [jobFields, setJobFields] = useState([]);

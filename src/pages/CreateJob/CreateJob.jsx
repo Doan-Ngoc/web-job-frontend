@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useJobContext } from '../../contexts/JobContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { useJob } from '../../hooks/useJob';
+import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import * as authApi from '../../api/authenticate';
 import * as companyApi from '../../api/company';
@@ -19,9 +19,9 @@ import {
 
 const CreateJobNews = () => {
   //Get the job field list
-  const { jobFields } = useJobContext();
+  const { jobFields } = useJob();
   //Get the access token
-  const { accessToken } = useAuth();
+  const { accessToken, accountId } = useAuth();
   //Set states
   const companyData = {
     accountId: null,

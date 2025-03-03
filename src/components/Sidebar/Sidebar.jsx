@@ -1,24 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { useJobContext } from '../../contexts/JobContext';
+import { useAuth } from '../../hooks/useAuth';
+import { useJob } from '../../hooks/useJob';
 import * as authApi from '../../api/authenticate';
 import toast from 'react-hot-toast';
 import './Sidebar.css';
 
 const Sidebar = () => {
-  const { isLoggedIn, setIsLoggedIn, setAccessToken, accountRole } = useAuth();
-  const { setCurrentPage } = useJobContext();
+  const { isLoggedIn, setAccessToken, accountRole } = useAuth();
+  const { setCurrentPage } = useJob();
   const navigate = useNavigate();
 
   //Log out logic
   const handleLogout = async () => {
     //Remove refresh token
-    const response = await authApi.signout();
-    // Delete item from localStorage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('login status');
+    await authApi.signout();
     setAccessToken(null);
-    setIsLoggedIn(false);
     toast.success('Logged out successfully');
     navigate('/');
   };

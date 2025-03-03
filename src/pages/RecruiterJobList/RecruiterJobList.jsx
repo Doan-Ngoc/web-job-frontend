@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import CustomDate from '../../utils/dateUtils';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/request';
 import * as companyApi from '../../api/company';
 import toast from 'react-hot-toast';
@@ -32,10 +32,10 @@ function RecruiterJobList() {
   const fetchCreatedJobs = async () => {
     try {
       const response = await request.get('/job/created', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        //   'Content-Type': 'application/json',
+        // },
       });
 
       const responseData = response.data;
